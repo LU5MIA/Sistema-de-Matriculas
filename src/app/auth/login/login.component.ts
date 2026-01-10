@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  standalone: false,
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
