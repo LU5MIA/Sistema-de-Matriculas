@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-padres',
-  imports: [],
+  standalone: false,
   templateUrl: './padres.component.html',
   styleUrl: './padres.component.css'
 })

@@ -1,0 +1,10 @@
+<div class="main-layout">
+  <app-sidenav (onTogleSideNav)="onTogleSideNav($event)"></app-sidenav>
+  <div class="dashboard-body ">
+    <app-body
+    [collapsed]="isSidenavCollapse"
+    [screenWidth]="screenWidth"
+    ></app-body>
+  </div> 
+</div>
+ 

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-bancos',
-  imports: [],
+  standalone: false,
   templateUrl: './bancos.component.html',
   styleUrl: './bancos.component.css'
 })

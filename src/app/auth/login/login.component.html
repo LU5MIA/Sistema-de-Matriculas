@@ -1,34 +1,63 @@
 <div class="container">
-    <div class="geometric-bg"></div>
-    <div class="login-card">
-        <div class="card-header">
-            <i class="material-icons school-icon">school</i>
-            <h1>Colegio Hosanna</h1>
-            <p>Gestion de Matriculas</p>
-        </div>
-        <form id="login-form" action="Validar" method="POST">
-            <div class="input-group">
-                <label for="username">Nombre de usuario</label>
-                <div class="input-wrapper">
-                    <i class="material-icons">person</i>
-                    <input type="text" id="username" name="txtuser" placeholder="Ingrese su usuario" required>
-                </div>
-            </div>
-            <div class="input-group">
-                <label for="password">Contraseña</label>
-                <div class="input-wrapper">
-                    <i class="material-icons">lock</i>
-                    <input type="password" id="password" name="txtpass" placeholder="Ingrese su contraseña" required>
-                    <button type="button" id="toggle-password" aria-label="Mostrar contraseña">
-                        <i class="material-icons" id="ojo">visibility</i>
-                    </button>
-                </div>
-            </div>
-            <button type="submit" name="accion" value="Ingresar" class="login-button">Iniciar Sesión</button>
-        </form>
-        <div class="card-footer">
-            <i class="material-icons">menu_book</i>
-            <span>Aprendizaje y crecimiento</span>
-        </div>
+  <div class="geometric-bg"></div>
+
+  <div class="login-card">
+    <div class="card-header">
+      <i class="material-icons school-icon">school</i>
+      <h1>Colegio Hosanna</h1>
+      <p>Gestión de Matrículas</p>
     </div>
+
+    <!-- FORMULARIO ANGULAR -->
+    <form (ngSubmit)="iniciarSesion()">
+
+      <!-- USUARIO -->
+      <div class="input-group">
+        <label>Nombre de usuario</label>
+        <div class="input-wrapper">
+          <i class="material-icons">person</i>
+          <input
+            type="text"
+            placeholder="Ingrese su usuario"
+            [(ngModel)]="usuario"
+            name="usuario"
+            required>
+        </div>
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="input-group">
+        <label>Contraseña</label>
+        <div class="input-wrapper-pass">
+          
+          <input
+            [type]="mostrarPassword ? 'text' : 'password'"
+            placeholder="Ingrese su contraseña"
+            [(ngModel)]="password"
+            name="password"
+            required>
+
+          <button
+            type="button"
+            (click)="togglePassword()"
+            aria-label="Mostrar contraseña">
+            <i class="material-icons">
+              {{ mostrarPassword ? 'lock_open' : 'lock' }}
+            </i>
+          </button>
+        </div>
+      </div>
+
+      <!-- BOTÓN -->
+      <button type="submit" class="login-button">
+        Iniciar Sesión
+      </button>
+
+    </form>
+
+    <div class="card-footer">
+      <i class="material-icons">menu_book</i>
+      <span>Aprendizaje y crecimiento</span>
+    </div>
+  </div>
 </div>

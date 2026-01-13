@@ -1,0 +1,11 @@
+/* dashboard-layout.component.css */
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.dashboard-body {
+  flex: 1;
+  padding: 16px;
+  
+}

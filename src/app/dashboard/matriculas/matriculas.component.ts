@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-matriculas',
-  imports: [],
+  standalone: false,
   templateUrl: './matriculas.component.html',
   styleUrl: './matriculas.component.css'
 })

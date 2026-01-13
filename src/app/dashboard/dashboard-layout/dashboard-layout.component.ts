@@ -6,20 +6,21 @@ interface SideNavToggle {
 }
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-dashboard-layout',
   standalone: false,
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  templateUrl: './dashboard-layout.component.html',
+  styleUrl: './dashboard-layout.component.css'
 })
-export class AppComponent {
-  title = 'Sistema_Matriculas';
+export class DashboardLayoutComponent {
+
+  title = 'Sistema de Matriculas';
 
   isSidenavCollapse = false;
   screenWidth = 0;
-
 
   onTogleSideNav(data: SideNavToggle): void {
     this.screenWidth = data.screenWidth;
     this.isSidenavCollapse = data.collapse
   }
+
 }
