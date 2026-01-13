@@ -4,7 +4,7 @@ export const navbarData: INavbarData[] = [
     {
         routeLink: 'panel-control',
         icon: 'fal fa-home',
-        label: 'Panel_de_Control'
+        label: 'Panel de Control'
     },
     {
         routeLink: 'bancos',
@@ -25,6 +25,11 @@ export const navbarData: INavbarData[] = [
         routeLink: 'padres',
         icon: 'fa fa-users',
         label: 'Padres'
+    },
+    {
+        routeLink: 'pagos',
+        icon: 'fa fa-credit-card',
+        label: 'Pagos'
     }
 
 ]

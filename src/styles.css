@@ -21,7 +21,7 @@ body {
 .card {
     display: flex;
     flex-direction: column;
-    border-radius: .5rem;
+    border-radius: 5rem;
     background-color: #fff;
     margin: 1.25rem 0 1.25rem 0;
     box-shadow: 0 .25rem .5rem #e6edef;

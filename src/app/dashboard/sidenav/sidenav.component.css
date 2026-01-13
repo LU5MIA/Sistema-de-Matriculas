@@ -15,20 +15,21 @@
         align-items: center;
         padding: 0.800rem 0.800rem 0 0.800rem;
         width: 100%;
-        margin-top: 1.5rem;
-        margin-bottom: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
 
-        .logo-image {
+        .logo-image{
+            background: transparent; /* quita el fondo */
             border: none;
-
         }
 
         .logo-text {
-            margin-top: 0.4rem;
+            margin-bottom: 0.5rem;
             margin-left: 1rem;
-            font-size: 30px;
+            font-size: 9px;
             font-weight: 700;
             color: white;
+            white-space: nowrap; 
         }
 
         .btn-close {
@@ -44,7 +45,7 @@
 
             .fa-times {
                 color: white;
-                font-size: 24px;
+                font-size: 20px;
 
             }
         }
@@ -66,34 +67,36 @@
 
     .sidenav-nav-item {
         width: 100%;
-        margin-bottom: 0.625rem;
+        margin-bottom: 0.225rem;
 
         .sidenav-nav-link {
             display: flex;
             align-items: center;
-            height: 3rem;
-            color: #8a8a8a;
-            border-radius: 10rem;
+            height: 3.2rem;
+            color: rgb(201, 201, 217);
+            border-radius: 0.5rem;
             text-decoration: none;
             transition: all .3s ease;
 
             .sidenav-link-icon {
-                font-size: 20px;
+                font-size: 18px;
                 width: 2rem;
                 min-width: 2rem;
-                margin: 0 0.2rem 0 0.6rem;
+                margin: 0 0.2rem 0 0.8rem;
                 text-align: center;
             }
 
             .sidenav-link-text {
+                font-size: 14px;
                 margin-left: 1.5rem;
+                white-space: nowrap; 
 
             }
         }
 
         .sidenav-nav-link:hover {
             /*background-color: #fff;*/
-            color: #000;
+            color: #fff;
 
 
         }
@@ -101,19 +104,19 @@
 }
 
 .active {
-    background-color: #142b44 !important;
+    background-color: white !important;
     position: relative;
     z-index: 1;
 
     .menu-collapse-icon,
     .sidenav-link-icon,
     .sidenav-link-text {
-        color: #fff !important;
+        color: #142b44 !important;
     }
 }
 
 .active-sublevel {
-    color: #000 !important;
+    color: #142b44 !important;
     /*opacity: 1 !important;*/
 }
 
@@ -122,7 +125,7 @@
     width: 2rem;
     min-width: auto 0.5rem auto auto;
     text-align: center;
-    color: #8a8a8a;
+    color: black;
 }
 
 .sublevel-nav {
