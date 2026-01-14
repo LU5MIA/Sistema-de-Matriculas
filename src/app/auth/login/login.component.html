@@ -3,7 +3,7 @@
 
   <div class="login-card">
     <div class="card-header">
-      <i class="material-icons school-icon">school</i>
+      <i class="fas fa-school school-icon"></i>
       <h1>Colegio Hosanna</h1>
       <p>Gestión de Matrículas</p>
     </div>
@@ -14,14 +14,9 @@
       <!-- USUARIO -->
       <div class="input-group">
         <label>Nombre de usuario</label>
-        <div class="input-wrapper">
-          <i class="material-icons">person</i>
-          <input
-            type="text"
-            placeholder="Ingrese su usuario"
-            [(ngModel)]="usuario"
-            name="usuario"
-            required>
+        <div class="input-wrapper-user">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="Ingrese su usuario" [(ngModel)]="usuario" name="usuario" required>
         </div>
       </div>
 
@@ -29,22 +24,14 @@
       <div class="input-group">
         <label>Contraseña</label>
         <div class="input-wrapper-pass">
-          
-          <input
-            [type]="mostrarPassword ? 'text' : 'password'"
-            placeholder="Ingrese su contraseña"
-            [(ngModel)]="password"
-            name="password"
-            required>
 
-          <button
-            type="button"
-            (click)="togglePassword()"
-            aria-label="Mostrar contraseña">
-            <i class="material-icons">
-              {{ mostrarPassword ? 'lock_open' : 'lock' }}
-            </i>
+          <input [type]="mostrarPassword ? 'text' : 'password'" placeholder="Ingrese su contraseña"
+            [(ngModel)]="password" name="password" required>
+
+          <button type="button" class="toggle-password" (click)="togglePassword()">
+            <i [class]="mostrarPassword ? 'fas fa-lock-open' : 'fas fa-lock'"></i>
           </button>
+
         </div>
       </div>
 
@@ -56,7 +43,7 @@
     </form>
 
     <div class="card-footer">
-      <i class="material-icons">menu_book</i>
+      <i class="fas fa-book"></i>
       <span>Aprendizaje y crecimiento</span>
     </div>
   </div>

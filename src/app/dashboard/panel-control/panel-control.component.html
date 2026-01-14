@@ -1,1 +1,67 @@
-<p>panel-control works!</p>
+
+<div class="cont-panel">
+
+  <div class="cont">
+    <div class="pars">
+      <p class="p1"><b>Bienvenido Administrador! 😊🎉</b></p>
+      <p>Sistema de Gestión de Matrículas y Stock</p>
+    </div>
+  
+    <img src="assets/images/idea-9.svg" alt="Icono SVG">
+  </div>
+  
+  <ul class="box-info">
+  
+    <!-- MATRÍCULAS -->
+    <li class="item">
+      <div class="item-content">
+        <i class="fas fa-users"></i>
+  
+        <div class="text">
+          <h3 id="totalMatriculas">58</h3>
+          <p>Matrículas</p>
+        </div>
+      </div>
+  
+      <button class="btn btn-primary"
+        onclick="window.location.href='controlador?menu=Matriculas&accion=Listar'">
+        Matrícula
+      </button>
+    </li>
+  
+    <!-- PAGOS -->
+    <li class="item">
+      <div class="item-content">
+        <i class="fas fa-dollar-sign"></i>
+  
+        <div class="text">
+          <h3 id="totalPagos">$0.00</h3>
+          <p>Pagos</p>
+        </div>
+      </div>
+  
+      <button class="btn btn-warning"
+        onclick="window.location.href='controlador?menu=Pagos&accion=Listar'">
+        Pagos
+      </button>
+    </li>
+  
+    <!-- REPORTES -->
+    <li class="item">
+      <div class="item-content">
+        <i class="fas fa-chart-line"></i>
+  
+        <div class="text">
+          <h3>2834</h3>
+          <p>Reportes</p>
+        </div>
+      </div>
+  
+      <button class="btn btn-info">
+        Reportes
+      </button>
+    </li>
+  
+  </ul>
+</div>
+

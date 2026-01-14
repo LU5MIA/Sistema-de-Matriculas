@@ -1,17 +1,14 @@
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': '' ">
     <div class="logo-container">
         <button class="logo-image" (click)="toggleCollapse()">
-            <img src="assets/images/logo.png" alt="" style="width: 60px;">
+            <img src="assets/images/logo.png" alt="" style="width: 70px;">
         </button>
         <div class="logo-colegio">
             <div class="logo-text" @fadeInOut *ngIf="collapsed">INSTITUCION EDUCATIVA PRIVADA</div>
-            <div class="logo-nombre" @fadeInOut *ngIf="collapsed">
-                <img src="assets/images/MARCA HOSANNA blanco.png" alt="HOSANNA" style="max-width: 140px; height: auto; margin-left: 18px;">
+            <div class="logo-img" @fadeInOut *ngIf="collapsed">
+                <img src="assets/images/MARCA HOSANNA blanco.png" alt="HOSANNA" style="max-width: 150px; height: auto; margin-left: 30px;">
             </div>
         </div>
-        <!-- <button class="btn-close" @rotate *ngIf="collapsed" (click)="closeSidenav()" >
-            <i class="fal fa-times close-icon"></i>
-        </button> -->
     </div>
     <div class="scrollwrap scrollwrap_delayed">
         <ul class="sidenav-nav">

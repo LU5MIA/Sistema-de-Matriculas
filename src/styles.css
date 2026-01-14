@@ -4,6 +4,20 @@
     --school-blue: #012245;
     --white: #ffffff;
     --gray: #6b7280;
+    --light: #F9F9F9;
+    --grey: #e0e0e0;
+    --light-blue: #cce5ff;
+    --blue: #007bff;
+    --yellow: #ffc107;
+    --orange: #ff9800;
+    --light-yellow: #fff3cd;
+    --light-orange: #ffe5b4;
+    --light-green: #66bb6a;
+    --dark-green: #006400;
+    --light-red: #ffcccc; /* Rojo claro */
+    --dark-red: #990000; /* Rojo oscuro */
+    --light-cyan: #b3e5fc; /* Celeste claro */
+    --dark-cyan: #00838f; /* Celeste oscuro */
 }
 
 * {
