@@ -1,1 +1,210 @@
-<p>estudiantes works!</p>
+<div>
+    <div class="cont-es">
+        <p class="titulo">ESTUDIANTES</p>
+        <button class="btn-es" (click)="abrirAgregar()">
+            <i class="fa-solid fa-pencil"></i>
+            Agregar estudiante
+        </button>
+    </div>
+    <div class="acciones-tabla">
+        <div class="mostrar-registros">
+            <span>Mostrar</span>
+            <select>
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+            </select>
+            <span>registros</span>
+        </div>
+
+        <div class="buscar-es">
+            <button class="btn-buscar">Buscar</button>
+            <input type="number" name="buscar" placeholder="Ingrese el DNI" minlength="8" maxlength="8"
+                oninput="this.value = this.value.slice(0,8)">
+        </div>
+    </div>
+</div>
+
+<div class="cont-tabla">
+    <table class="tabla-datos">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>DNI</th>
+                <th>NOMBRES</th>
+                <th>APELLIDO PATERNO</th>
+                <th>APELLIDO MATERNO</th>
+                <th>GENERO</th>
+                <th>FECHA DE NACIMIENTO</th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>
+                    <button class="btn-icon btn-edit" (click)="abrirEditar()">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+
+
+                    <button class="btn-icon btn-delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+
+                </td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="modalAbierto">
+    <div class="modal-content">
+
+        <!-- Header -->
+        <div class="modal-header">
+            <h2>
+                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-user-pen' : 'fa-user-plus'">
+                </i>
+                {{ modoEditar ? 'Editar estudiante' : 'Agregar estudiante' }}
+            </h2>
+            <span class="close" (click)="cerrarModal()">&times;</span>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+            <div class="form-grid">
+
+                <div>
+                    <label>DNI</label>
+                    <input type="number" minlength="8" maxlength="8" placeholder="Ingrese el DNI"
+                        oninput="this.value = this.value.slice(0,8)">
+                </div>
+
+                <div>
+                    <label>Nombres</label>
+                    <input type="text" placeholder="Ingrese los nombres">
+                </div>
+
+                <div>
+                    <label>Apellido Paterno</label>
+                    <input type="text" placeholder="Ingrese el apellido paterno">
+                </div>
+
+                <div>
+                    <label>Apellido Materno</label>
+                    <input type="text" placeholder="Ingrese el apellido materno">
+                </div>
+
+                <div>
+                    <label>Género</label>
+                    <select>
+                        <option value="">Seleccione</option>
+                        <option value="M">Masculino</option>
+                        <option value="F">Femenino</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Fecha de nacimiento</label>
+                    <input class="fecha" type="date">
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+            <button class="btn-cancelar" (click)="cerrarModal()">
+                <i class="fa-solid fa-xmark"></i> Cancelar
+            </button>
+
+            <button class="btn-guardar">
+                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'">
+                </i>
+                {{ modoEditar ? 'Actualizar' : 'Guardar' }}
+            </button>
+
+        </div>
+
+    </div>
+</div>

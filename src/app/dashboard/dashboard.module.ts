@@ -13,6 +13,7 @@ import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
 import { DashboardLayoutComponent } from './dashboard-layout/dashboard-layout.component';
 import { BodyComponent } from './body/body.component';
 import { PagosComponent } from './pagos/pagos.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { PagosComponent } from './pagos/pagos.component';
     DashboardLayoutComponent,
     PanelControlComponent,
     BodyComponent,
-    PagosComponent
+    PagosComponent,
+    NavbarComponent
 
   ],
   imports: [

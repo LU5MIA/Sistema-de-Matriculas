@@ -3,7 +3,7 @@
     /*color de fondo*/
     transition: all .5s ease;
     position: fixed;
-    /*z-index: 1;*/
+    z-index: 1;
     top: 0;
     width: 6rem;
     /* ancho */
@@ -15,16 +15,13 @@
         align-items: center;
         padding: 0.800rem 0.800rem 0 0.800rem;
         width: 100%;
-        margin-top: 1rem;
+        
         margin-bottom: 1rem;
 
         .logo-image {
             background: transparent;
             /* quita el fondo */
             border: none;
-            
-            
-
         }
 
         .logo-text {

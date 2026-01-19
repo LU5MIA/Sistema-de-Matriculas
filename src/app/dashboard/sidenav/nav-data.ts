@@ -3,7 +3,7 @@ import { INavbarData } from "./helper";
 export const navbarData: INavbarData[] = [
     {
         routeLink: 'panel-control',
-        icon: 'fal fa-home',
+        icon: 'fas fa-home',
         label: 'Panel de Control'
     },
     {
