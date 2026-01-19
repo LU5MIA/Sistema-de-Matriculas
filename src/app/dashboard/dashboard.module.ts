@@ -1,19 +1,19 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BancosComponent } from './bancos/bancos.component';
-import { EstudiantesComponent } from './estudiantes/estudiantes.component';
-import { MatriculasComponent } from './matriculas/matriculas.component';
-import { PadresComponent } from './padres/padres.component';
+import { BancosComponent } from './pages/bancos/bancos.component';
+import { EstudiantesComponent } from './pages/estudiantes/estudiantes.component';
+import { MatriculasComponent } from './pages/matriculas/matriculas.component';
+import { PadresComponent } from './pages/padres/padres.component';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DashboardRoutingModule } from './dashboard-routing.module';
-import { PanelControlComponent } from './panel-control/panel-control.component';
-import { SidenavComponent } from './sidenav/sidenav.component';
-import { SublevelMenuComponent } from './sidenav/sublevel-menu.component';
-import { DashboardLayoutComponent } from './dashboard-layout/dashboard-layout.component';
+import { PanelControlComponent } from './pages/panel-control/panel-control.component';
+import { SidenavComponent } from './layout/sidenav/sidenav.component';
+import { SublevelMenuComponent } from './layout/sidenav/sublevel-menu.component';
+import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
 import { BodyComponent } from './body/body.component';
-import { PagosComponent } from './pagos/pagos.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { PagosComponent } from './pages/pagos/pagos.component';
+import { NavbarComponent } from './layout/navbar/navbar.component';
 
 @NgModule({
   declarations: [

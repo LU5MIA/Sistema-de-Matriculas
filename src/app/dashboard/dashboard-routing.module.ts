@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { DashboardLayoutComponent } from "./dashboard-layout/dashboard-layout.component";
-import { PanelControlComponent } from "./panel-control/panel-control.component";
-import { BancosComponent } from "./bancos/bancos.component";
-import { EstudiantesComponent } from "./estudiantes/estudiantes.component";
-import { MatriculasComponent } from "./matriculas/matriculas.component";
-import { PadresComponent } from "./padres/padres.component";
-import { PagosComponent } from "./pagos/pagos.component";
+import { DashboardLayoutComponent } from "./layout/dashboard-layout/dashboard-layout.component";
+import { PanelControlComponent } from "./pages/panel-control/panel-control.component";
+import { BancosComponent } from "./pages/bancos/bancos.component";
+import { EstudiantesComponent } from "./pages/estudiantes/estudiantes.component";
+import { MatriculasComponent } from "./pages/matriculas/matriculas.component";
+import { PadresComponent } from "./pages/padres/padres.component";
+import { PagosComponent } from "./pages/pagos/pagos.component";
 
 const routes: Routes = [
   {
