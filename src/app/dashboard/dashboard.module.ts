@@ -11,7 +11,7 @@ import { PanelControlComponent } from './pages/panel-control/panel-control.compo
 import { SidenavComponent } from './layout/sidenav/sidenav.component';
 import { SublevelMenuComponent } from './layout/sidenav/sublevel-menu.component';
 import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-layout.component';
-import { BodyComponent } from './body/body.component';
+import { BodyComponent } from './layout/body/body.component';
 import { PagosComponent } from './pages/pagos/pagos.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 
