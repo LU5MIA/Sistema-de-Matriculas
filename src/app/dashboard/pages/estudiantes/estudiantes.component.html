@@ -2,7 +2,7 @@
     <div class="cont-es">
         <p class="titulo">ESTUDIANTES</p>
         <button class="btn-es" (click)="abrirAgregar()">
-            <i class="fa-solid fa-pencil"></i>
+            <i class="fa-solid fa-plus"></i>
             Agregar estudiante
         </button>
     </div>
@@ -54,10 +54,10 @@
                         <i class="fa-solid fa-pen"></i>
                     </button>
 
-
-                    <button class="btn-icon btn-delete">
+                    <button class="btn-icon btn-delete" (click)="confirmarEliminar()">
                         <i class="fa-solid fa-trash"></i>
                     </button>
+
 
                 </td>
             </tr>
@@ -154,25 +154,31 @@
         <div class="modal-body">
             <div class="form-grid">
 
-                <div>
-                    <label>DNI</label>
-                    <input type="number" minlength="8" maxlength="8" placeholder="Ingrese el DNI"
-                        oninput="this.value = this.value.slice(0,8)">
+                <div class="dni-container">
+                    <div class="dni-input">
+                        <label>DNI</label>
+                        <input type="number" placeholder="Ingrese el DNI" oninput="this.value = this.value.slice(0,8)">
+                    </div>
+
+                    <button *ngIf="!modoEditar" class="btn-buscar-dni">
+                        Buscar
+                    </button>
                 </div>
+
 
                 <div>
                     <label>Nombres</label>
-                    <input type="text" placeholder="Ingrese los nombres">
+                    <input type="text" placeholder="Ingrese los nombres" [disabled]="modoEditar">
                 </div>
 
                 <div>
                     <label>Apellido Paterno</label>
-                    <input type="text" placeholder="Ingrese el apellido paterno">
+                    <input type="text" placeholder="Ingrese el apellido paterno" [disabled]="modoEditar">
                 </div>
 
                 <div>
                     <label>Apellido Materno</label>
-                    <input type="text" placeholder="Ingrese el apellido materno">
+                    <input type="text" placeholder="Ingrese el apellido materno" [disabled]="modoEditar">
                 </div>
 
                 <div>

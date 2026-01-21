@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
 
 :root {
     --school-blue: #012245;
@@ -14,10 +14,14 @@
     --light-orange: #ffe5b4;
     --light-green: #66bb6a;
     --dark-green: #006400;
-    --light-red: #ffcccc; /* Rojo claro */
-    --dark-red: #990000; /* Rojo oscuro */
-    --light-cyan: #b3e5fc; /* Celeste claro */
-    --dark-cyan: #00838f; /* Celeste oscuro */
+    --light-red: #ffcccc;
+    /* Rojo claro */
+    --dark-red: #990000;
+    /* Rojo oscuro */
+    --light-cyan: #b3e5fc;
+    /* Celeste claro */
+    --dark-cyan: #00838f;
+    /* Celeste oscuro */
 }
 
 * {
@@ -29,7 +33,7 @@
 body {
     position: relative;
     font-family: 'Roboto', sans-serif;
-    
+
 }
 
 .card {
@@ -48,6 +52,16 @@ body {
     }
 
     .card-body {
-        padding: 1rem 1.5rem; 
+        padding: 1rem 1.5rem;
     }
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    position: relative;
+    font-family: 'Roboto', sans-serif;
 }

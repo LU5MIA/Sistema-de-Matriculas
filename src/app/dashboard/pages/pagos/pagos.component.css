@@ -1,0 +1,550 @@
+.cont-es {
+    display: flex;
+    justify-content: space-between;
+    /* separa título y botón */
+    align-items: center;
+    /* centra verticalmente */
+    width: 100%;
+    padding: 1rem;
+}
+
+.titulo {
+    font-weight: 400;
+    font-size: 1.2rem;
+    margin: 0;
+    /* evita saltos */
+}
+
+.btn-es {
+    padding: 0.8rem 1.5rem;
+    border-radius: 0.5rem;
+    background: var(--dark-green);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-es:hover {
+    background: #0f5833;
+    transform: scale(1.05);
+}
+
+.btn-es:active {
+    transform: scale(0.97);
+    /* pequeño efecto al presionar */
+}
+
+
+.fa-sack-dollar {
+    margin-right: 0.4rem;
+}
+
+.buscar-es {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    /* lo mueve debajo del botón */
+    gap: 0.8rem;
+
+}
+
+.btn-buscar {
+    padding: 0.7rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: var(--dark-green);
+    color: white;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.btn-buscar:hover {
+    background: #0f5833;
+    transform: scale(1.05);
+}
+
+.btn-buscar:active {
+    transform: scale(0.97);
+    /* pequeño efecto al presionar */
+}
+
+input {
+    width: 12rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+}
+
+input:focus {
+    outline: none;
+}
+
+.acciones-tabla {
+    display: flex;
+    justify-content: space-between;
+    /* izquierda / derecha */
+    align-items: center;
+    padding: 0 1rem;
+}
+
+select {
+    appearance: none;
+    /* quita estilo nativo */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    margin: 0.5rem;
+    padding: 0.45rem 2rem 0.45rem 0.8rem;
+    /* espacio para flecha */
+    border-radius: 0.6rem;
+
+    border: 1px solid #d1d5db;
+    /* gris suave */
+    background-color: #fff;
+    color: #374151;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Flecha personalizada */
+select {
+    background-image:
+        linear-gradient(45deg, transparent 50%, #6b7280 50%),
+        linear-gradient(135deg, #6b7280 50%, transparent 50%);
+    background-position:
+        calc(100% - 1rem) calc(50% - 0.15rem),
+        calc(100% - 0.8rem) calc(50% - 0.15rem);
+    background-size: 5px 5px;
+    background-repeat: no-repeat;
+}
+
+/* Focus elegante */
+select:focus {
+    outline: none;
+}
+
+/* Hover sutil */
+select:hover {
+    border-color: #9ca3af;
+}
+
+.tabla-datos {
+    margin-top: 2.5rem;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    /* recorta el thead */
+}
+
+.tabla-datos th,
+.tabla-datos td {
+    /*border: 1px solid #ddd;*/
+    padding: 0.8rem;
+    text-align: center;
+}
+
+.tabla-datos thead {
+    background-color: #142b44;
+    /* azul */
+    color: #ffffff;
+    height: 3.2rem;
+}
+
+.tabla-datos tbody tr:nth-child(even) {
+    background-color: #f5f5f5;
+}
+
+
+/* FONDO DEL MODAL */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeBgIn 0.3s ease;
+}
+
+/* CONTENEDOR */
+.modal-content {
+    background: #fff;
+    width: 750px;
+    max-width: 95%;
+    border-radius: 14px;
+    overflow: hidden;
+    animation: modalFade 0.3s ease;
+}
+
+.modal-content.salir {
+    animation: modalFadeOut 0.25s ease forwards;
+}
+
+/* HEADER */
+.modal-header {
+    background: #1f7a4b;
+    color: #fff;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h2 {
+    font-size: 1.2rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-subheader{
+    padding: 1rem 1.5rem;
+    display: flex;
+   justify-content: center;
+    
+}
+
+.modal-subheader h3 {
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 400;
+    margin-right: 1rem;
+    gap: 0.5rem;
+}
+
+.close {
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+
+/* BODY */
+.modal-body {
+    padding: 1.5rem;
+}
+
+.codigo-container {
+    display: flex;
+    align-items: flex-end; /* alinea con el input */
+    gap: 0.8rem;
+}
+
+.codigo-input {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.codigo-input input {
+    padding: 0.5rem 0.7rem;
+    border-radius: 0.4rem;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+}
+
+.btn-buscar-codigo {
+    padding: 0.6rem 1.2rem;
+    background-color: #1f7a4b;
+    color: #fff;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-buscar-codigo:hover {
+    background-color: #16603b;
+}
+
+.fa-wallet{
+    font-size: 1.2rem;
+}
+
+.btn-pagar{
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.5rem;
+    background-color: #1f7a4b;
+    color: #fff;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.btn-pagar:hover{
+    background-color: #16603b;
+}
+
+
+/* GRID 2 COLUMNAS */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.2rem;
+}
+
+.form-grid label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+    display: block;
+}
+
+.form-grid input,
+.form-grid select {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    outline: none;
+    margin: 0;
+}
+
+/* GRID 3 COLUMNAS */
+
+.form-second-grid{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem 1.2rem;
+}
+
+.form-second-grid label{
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+    display: block;
+}
+
+.form-second-grid input,
+.form-second-grid select{
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    outline: none;
+    margin: 0;
+}
+
+/* GRID 2 COLUMNAS */
+
+.form-third-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.2rem;
+}
+
+.form-third-grid label{
+    font-size: 0.85rem;
+    font-weight: 500;
+    
+    margin-bottom: 0.8rem;
+    display: block;
+}
+
+.form-third-grid input,
+.form-third-grid select{
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    outline: none;
+    margin: 0;
+}
+
+.form-first-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem 1.2rem;
+}
+.form-first-grid label{
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-top: 0.8rem;
+    margin-bottom: 0.8rem;
+    display: block;
+}
+.form-first-grid input,
+.form-first-grid select{
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+    outline: none;
+    margin: 0;
+}
+
+
+/* FOOTER */
+.modal-footer {
+    padding: 1rem 1.5rem;
+    background: #f5f5f5;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.8rem;
+}
+
+/* BOTONES */
+.btn-guardar {
+    background: #1f7a4b;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.3rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-guardar:hover {
+    background: #16603b;
+}
+
+.btn-cancelar {
+    background: #d3d3d3;
+    border: none;
+    padding: 0.6rem 1.3rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.btn-cancelar:hover {
+    background: #bdbdbd;
+}
+
+.modal-subheader {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+  
+}
+
+.modal-subheader button {
+  flex: 1;
+  padding: 0.8rem;
+  background: transparent;
+  border: none;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  color: #6b7280;
+  border-bottom: 3px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.modal-subheader button:hover {
+  color: #1f7a4b;
+}
+
+.modal-subheader button.active {
+  color: #1f7a4b;
+  border-bottom: 3px solid #1f7a4b;
+  background-color: #f1f5f9;
+}
+
+
+/* ANIMACIÓN */
+@keyframes modalFade {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes modalFadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+}
+
+
+@keyframes fadeBgIn {
+    from {
+        background: rgba(0, 0, 0, 0);
+    }
+
+    to {
+        background: rgba(0, 0, 0, 0.45);
+    }
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+.btn-icon {
+    border: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+
+}
+
+/* EDITAR */
+.btn-money {
+    background: #1f7a4b;
+    /* amarillo */
+    color: #fff;
+    margin: 0.5rem;
+}
+
+.btn-money:hover {
+    background: #16603b;
+    transform: scale(1.05);
+}
+
+/* ELIMINAR */
+.btn-delete {
+    background: #dc2626;
+    /* rojo */
+    color: #fff;
+}
+
+.btn-delete:hover {
+    background: #b91c1c;
+    transform: scale(1.05);
+}

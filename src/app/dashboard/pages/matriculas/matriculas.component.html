@@ -1,1 +1,164 @@
-<p>matriculas works!</p>
+<div>
+    <div class="cont-es">
+        <p class="titulo">MATRÍCULAS</p>
+        <button class="btn-es">
+            <i class="fa-solid fa-book"></i>
+            Realizar Matrícula
+        </button>
+    </div>
+    <div>
+
+        <div>
+            <label for="">NIVEL</label>
+            <select>
+                <option value="todos" selected>Todos</option>
+                <option value="inicial">Inicial</option>
+                <option value="primaria">Primaria</option>
+                <option value="secundaria">Secundaria</option>
+            </select>
+            <label for="">GRADO</label>
+            <select>
+                <option value="todos" selected>Todos</option>
+                <option value="1">1°</option>
+                <option value="2">2°</option>
+                <option value="3">3°</option>
+                <option value="4">4°</option>
+                <option value="5">5°</option>
+                <option value="6">6°</option>
+            </select>
+            <label for="">SECCION</label>
+            <select>
+                <option value="todos" selected>Todos</option>
+                <option value="A">A</option>
+                <option value="B">B</option>
+                <option value="C">C</option>
+            </select>
+        </div>
+        
+    </div>
+
+    <div class="acciones-tabla">
+
+        
+
+
+        <div class="mostrar-registros">
+            <span>Mostrar</span>
+            <select>
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+            </select>
+            <span>registros</span>
+        </div>
+
+        <div class="buscar-es">
+            <button class="btn-buscar">Buscar</button>
+            <input type="number" name="buscar" placeholder="Ingrese el Cod.M" minlength="8" maxlength="8"
+                oninput="this.value = this.value.slice(0,8)">
+        </div>
+    </div>
+</div>
+
+<div class="cont-tabla">
+    <table class="tabla-datos">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>CODIGO</th>
+                <th>DNI</th>
+                <th>NIVEL</th>
+                <th>GRADO</th>
+                <th>SECCION</th>
+                <th>SITUACIÓN</th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>
+                    <button class="btn-icon btn-edit">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+
+                    <button class="btn-icon btn-delete" (click)="confirmarEliminar()">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+               
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                
+            </tr>
+
+        </tbody>
+    </table>
+</div>

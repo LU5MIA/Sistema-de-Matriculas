@@ -1,1 +1,350 @@
-<p>pagos works!</p>
+<div>
+    <div class="cont-es">
+        <p class="titulo">PAGOS</p>
+        <button class="btn-es" (click)="RealizarPago()">
+            <i class="fa-solid fa-sack-dollar"></i>
+            Realizar pago
+        </button>
+    </div>
+    <div class="acciones-tabla">
+        <div class="mostrar-registros">
+            <span>Mostrar</span>
+            <select>
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+            </select>
+            <span>registros</span>
+        </div>
+
+        <div class="buscar-es">
+            <button class="btn-buscar">Buscar</button>
+            <input type="number" name="buscar" placeholder="Ingrese el Cod.M" minlength="8" maxlength="8"
+                oninput="this.value = this.value.slice(0,8)">
+        </div>
+    </div>
+</div>
+
+<div class="cont-tabla">
+    <table class="tabla-datos">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>RECIBO</th>
+                <th>FECHA</th>
+                <th>ESTUDIANTE</th>
+                <th>CONCEPTO</th>
+                <th>AULA</th>
+                <th>MEDIO</th>
+                <th>MONTO</th>
+                <th>ESTADO</th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>
+                    <button class="btn-icon btn-money" (click)="pagoEstudiante()">
+                        <i class="fa-solid fa-money-bill"></i>
+                    </button>
+
+                    <button class="btn-icon btn-delete" (click)="confirmarEliminarPago()">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+            <tr>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+                <td>Dato</td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="modalAbierto">
+    <div class="modal-content" #modalPrincipal>
+
+        <!-- Header -->
+        <div class="modal-header">
+            <h2>
+                <i class="fa-solid fa-sack-dollar">
+                </i>
+                Realizar pago
+            </h2>
+            <span class="close" (click)="cerrarModal(modalPrincipal, 'principal')">&times;</span>
+        </div>
+
+        <!-- SubHeader -->
+        <div class="modal-subheader">
+            <button [class.active]="seccionActiva === 'datos'" (click)="seccionActiva = 'datos'">
+                Datos del Estudiante
+            </button>
+
+            <button [class.active]="seccionActiva === 'pago'" (click)="seccionActiva = 'pago'">
+                Detalles de pago
+            </button>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+            <div *ngIf="seccionActiva === 'datos'">
+                <div class="form-grid">
+                    <div class="codigo-container">
+                        <div class="codigo-input">
+                            <label>Codigo de Matricula</label>
+                            <input type="number" minlength="8" maxlength="8" placeholder="Codigo"
+                                oninput="this.value = this.value.slice(0,8)">
+                        </div>
+                        <button class="btn-buscar-codigo">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+
+                    <div>
+                        <label>Alumno</label>
+                        <input type="text" placeholder="Nombres y Apellidos">
+                    </div>
+
+                    <div>
+                        <label>Apoderado</label>
+                        <input type="text" placeholder="Apoderado">
+                    </div>
+
+                    <div>
+                        <label>Aula</label>
+                        <input type="text" placeholder="Ej: Secundaria - 4°C">
+                    </div>
+                </div>
+                <div class="form-second-grid">
+                    <div>
+                        <label>Inscripcion</label>
+                        <input type="number" placeholder="150.00">
+                    </div>
+
+                    <div>
+                        <label>Matricula</label>
+                        <input type="number" placeholder="350.00">
+                    </div>
+
+                    <div>
+                        <label>Mensualidad</label>
+                        <input type="number" placeholder="350.00">
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="seccionActiva === 'pago'">
+                <div class="form-third-grid">
+                    <div>
+                        <label>Concepto</label>
+                        <select [(ngModel)]="conceptoSeleccionado">
+                            <option value="">Seleccione</option>
+                            <option value="I">Inscripcion</option>
+                            <option value="MENSUALIDAD">Mensualidad</option>
+                            <option value="M">Matricula</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Canal de pago</label>
+                        <select>
+                            <option value="">Seleccione</option>
+                            <option value="Yape">Yape</option>
+                            <option value="Plin">Plin</option>
+                            <option value="Efectivo">Efectivo</option>
+                            <option value="Tunki">Tunki</option>
+                            <option value="BCP">BCP</option>
+                            <option value="BVVA">BVVA</option>
+                        </select>
+                    </div>
+                    <div *ngIf="conceptoSeleccionado === 'MENSUALIDAD'">
+                        <label>Mes a pagar</label>
+                        <select>
+                            <option value="">Seleccione</option>
+                            <option *ngFor="let mes of meses" [value]="mes">
+                                {{ mes }}
+                            </option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Monto</label>
+                        <input type="number" name="monto" id="" placeholder="0.00">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+            <button class="btn-cancelar" (click)="cerrarModal(modalPrincipal, 'principal')">
+                <i class="fa-solid fa-xmark"></i> Cancelar
+            </button>
+
+            <button class="btn-guardar">
+                <i class="fa-solid" [ngClass]="modalPagoEstudiante ? 'fa-arrows-rotate' : 'fa-floppy-disk'">
+                </i>
+                {{ modalPagoEstudiante ? 'Actualizar' : 'Guardar' }}
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Pago por estudiante -->
+<div class="modal" *ngIf="modalPagoEstudiante">
+    <div class="modal-content" #modalPago>
+
+        <!-- Header -->
+        <div class="modal-header">
+            <h2>
+                <i class="fa-solid fa-chalkboard-user"></i>
+                Pago de Estudiante
+            </h2>
+            <span class="close" (click)="cerrarModal(modalPago, 'pago')">&times;</span>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+            <div class="form-grid">
+                <div class="codigo-container">
+                    <div class="codigo-input">
+                        <label>Codigo de Matricula</label>
+                        <input type="number" minlength="8" maxlength="8" placeholder="Codigo"
+                            oninput="this.value = this.value.slice(0,8)">
+                    </div>
+                </div>
+
+                <div>
+                    <label>Alumno</label>
+                    <input type="text" placeholder="Nombres y Apellidos">
+                </div>
+
+                <div>
+                    <label>Apoderado</label>
+                    <input type="text" placeholder="Apoderado">
+                </div>
+
+                <div>
+                    <label>Aula</label>
+                    <input type="text" placeholder="Ej: Secundaria - 4°C">
+                </div>
+            </div>
+            <div class="form-first-grid">
+                <div>
+                    <label>Concepto</label>
+                    <input type="text" placeholder="Concepto">
+                </div>
+                <div>
+                    <label>Canal de pago</label>
+                    <select>
+                        <option value="">Seleccione</option>
+                        <option value="Yape">Yape</option>
+                        <option value="Plin">Plin</option>
+                        <option value="Efectivo">Efectivo</option>
+                        <option value="Tunki">Tunki</option>
+                        <option value="BCP">BCP</option>
+                        <option value="BVVA">BVVA</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-second-grid">
+                <div>
+                    <label>Monto Esperado</label>
+                    <input type="number" name="monto" id="" placeholder="0.00">
+                </div>
+                <div>
+                    <label>Monto Pagado</label>
+                    <input type="number" name="monto" id="" placeholder="0.00">
+                </div>
+                <div>
+                    <label>Monto a Pagar</label>
+                    <input type="number" name="monto" id="" placeholder="0.00">
+                </div>
+            </div>
+
+            <button class="btn-pagar">
+                <i class="fa-solid fa-wallet"></i>
+                Realizar Pago
+            </button>
+        </div>
+    </div>
+</div>
