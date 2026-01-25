@@ -61,7 +61,7 @@
 
 .btn-buscar:hover {
     background: #0f5833;
-    transform: scale(1.05);
+     transform: scale(1.05);
 }
 
 .btn-buscar:active {
@@ -80,12 +80,56 @@ input:focus {
     outline: none;
 }
 
+.filtros-tabla {
+    display: flex;
+    justify-content: flex-start;
+    /* alinea a la izquierda */
+    align-items: center;
+    padding: 1rem;
+}
+
+.filtros-tabla > div {
+    display: flex;
+    gap: 0.5rem; /* espacio entre los elementos */
+    align-items: center;
+    
+}
+
+.filtros-tabla select {
+    width: 140px;      /* ancho */
+    height: 36px;      /* alto */
+    font-size: 14px;   /* tamaño del texto */
+}
+
+.btn-filtrar {
+    margin-left: 0.5rem;
+    width: 140px;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--dark-green);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.btn-filtrar:hover {
+    background: #0f5833;
+     transform: scale(1.05);
+}
+
 .acciones-tabla {
+    margin-top: 0;
     display: flex;
     justify-content: space-between;
     /* izquierda / derecha */
     align-items: center;
-    padding: 0 1rem;
+    padding-left: 1rem;
 }
 
 select {
@@ -131,7 +175,7 @@ select:hover {
 }
 
 .tabla-datos {
-    margin-top: 2.5rem;
+    margin-top: 1.5rem;
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;

@@ -4,22 +4,20 @@
   flex-direction: column;
   align-items: center;   /* centra horizontalmente */
   justify-content: center;
-  padding: 4rem;
 }
-
 
 .cont {
   display: flex;
   padding: 1rem 3rem;
   justify-content: center;
   align-items: center;
+  margin-top: 2rem;
   margin-bottom: 4rem;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
 
 .cont img{
-  
   margin-left: 1rem;
 }
 
@@ -28,13 +26,17 @@
 }
 
 .p1 {
-  font-size: 1.3rem;
+  font-size: 1rem;
   color: #4682B4;
-  
+}
+
+.p2{
+  font-size: 0.9rem;
 }
 
 /* TARJETAS */
 .box-info {
+  flex-wrap: wrap;
   justify-content: center;
   list-style: none;
   display: flex;
@@ -44,11 +46,11 @@
 }
 
 .box-info li .fas{
-  width: 6rem;
-  height: 6rem;
-  border-radius:  1rem;
+  width: 4.5rem;
+  height: 4rem;
+  border-radius: 0.5rem;
   background: #0d6efd;
-  font-size: 3rem;
+  font-size: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -70,8 +72,8 @@
 }
 
 .item {
-  width: 300px;
-  height: 220px;
+  width: clamp(220px, 20vw, 320px);
+  height: 180px;
   border: 1px solid #ddd;
   border-radius: 12px;
   padding: 2rem;
@@ -88,29 +90,26 @@
   gap: 1rem;
 }
 
-.item i {
-  font-size: 1rem;
-  
-}
 
 .text h3 {
-  margin: 0;
-  font-size: 1.4rem;
+  margin-bottom: 0.2rem;
+  font-size: 1.1rem;
 }
 
 .text p {
+  font-size: 0.9rem;
   margin: 0;
   color: #666;
 }
 
 /* BOTONES */
 .btn {
-  padding: 0.6rem;
+  padding: 0.5rem;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   color: #fff;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
 }
 
 .btn-primary {
@@ -124,3 +123,57 @@
 .btn-info {
   background-color: #0dcaf0;
 }
+
+
+.btn-primary:hover{
+  background-color: #0b5ed7;
+}
+
+.btn-warning:hover{
+  background-color: #f59e0b;
+}
+
+.btn-info:hover{
+  background-color: #0aa2c0;
+}
+
+.footer {
+  max-width: 1000px;
+  margin: 3.5rem auto 2rem auto;
+  padding: 1.5rem;
+  text-align: center;
+  border-radius: 1.5rem;
+}
+
+.footer-text {
+  margin-bottom: 0.65rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 0.7rem;
+}
+
+.social-icon {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #000;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+
+/* Hover */
+.social-icon:hover {
+  transform: translateY(-4px) scale(1.05);
+}
+
+
