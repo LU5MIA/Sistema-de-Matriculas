@@ -35,9 +35,19 @@
         </div>
       </div>
 
+      <!-- MENSAJE DE ERROR -->
+      <div class="error-message" *ngIf="errorMessage">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ errorMessage }}
+      </div>
+
       <!-- BOTÓN -->
-      <button type="submit" class="login-button">
-        Iniciar Sesión
+      <button type="submit" class="login-button" [disabled]="isLoading">
+        <span *ngIf="!isLoading">Iniciar Sesión</span>
+        <span *ngIf="isLoading">
+          <i class="fas fa-spinner fa-spin"></i>
+          Iniciando sesión...
+        </span>
       </button>
 
     </form>
