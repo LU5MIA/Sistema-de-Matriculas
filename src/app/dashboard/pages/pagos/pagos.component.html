@@ -1,9 +1,9 @@
 <div>
     <div class="cont-es">
         <p class="titulo">PAGOS</p>
-        <button class="btn-es" (click)="RealizarPago()">
+        <button class="btn-pago" (click)="RealizarPago()">
             <i class="fa-solid fa-sack-dollar"></i>
-            Realizar pago
+            Nuevo Pago
         </button>
     </div>
     <div class="acciones-tabla">
@@ -18,10 +18,14 @@
             <span>registros</span>
         </div>
 
-        <div class="buscar-es">
-            <button class="btn-buscar">Buscar</button>
-            <input type="number" name="buscar" placeholder="Ingrese el Cod.M" minlength="8" maxlength="8"
-                oninput="this.value = this.value.slice(0,8)">
+        <div class="buscar-estudiante">
+            <div class="input-busqueda">
+                <label>Buscar:</label>
+                <div class="input-icono">
+                    <input type="text" placeholder="Ingrese al estudiante matriculado" [(ngModel)]="textoBusqueda"
+                        (input)="filtrarPagos()" />
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -43,99 +47,41 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
+            <tr *ngFor="let pago of pagosVista; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td class="text-center">
+                    <button class="btn-icon btn-download" title="Recibo">
+                        <i class="fa-solid fa-file-arrow-down"></i>
+                    </button>
+                </td>
+                <td>
+                    {{ pago.fecha_pago | date:'dd/MM/yyyy HH:mm' }}
+                </td>
+
+                <td>{{ pago.estudianteNombre }}</td>
+                <td>
+                    {{ pago.concepto }} <br>
+                    <span *ngIf="pago.meses">({{ pago.meses }})</span>
+                </td>
+
+                <td>{{ pago.aulaNombre }}</td>
+                <td>{{ pago.canal_pago }}</td>
+                <td>{{ pago.monto }}</td>
+                <td>
+                    <span [ngClass]="pago.estado === 'Pagado' ? 'estado-pagado' : 'estado-deuda'">
+                        {{ pago.estado }}
+                    </span>
+                </td>
                 <td>
                     <button class="btn-icon btn-money" (click)="pagoEstudiante()">
                         <i class="fa-solid fa-money-bill"></i>
                     </button>
 
-                    <button class="btn-icon btn-delete" (click)="confirmarEliminarPago()">
+                    <button class="btn-icon btn-delete">
                         <i class="fa-solid fa-trash"></i>
                     </button>
                 </td>
             </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-
         </tbody>
     </table>
 </div>
@@ -149,7 +95,7 @@
             <h2>
                 <i class="fa-solid fa-sack-dollar">
                 </i>
-                Realizar pago
+                Nuevo pago
             </h2>
             <span class="close" (click)="cerrarModal(modalPrincipal, 'principal')">&times;</span>
         </div>

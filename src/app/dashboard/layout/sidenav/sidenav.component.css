@@ -142,7 +142,7 @@
 }
 
 /*scrollbar and visibility on hover and focus*/
-
+/* 
 .scrollwrap {
     overflow-y: auto;
     visibility: hidden;
@@ -161,11 +161,11 @@
 
 .scrollwrap_delayed:hover {
     transition: visibility 0.2s 0.2s;
-}
+} */
 
 /*para que trabaje con chrome, edge y safari*/
 
-.scrollwrap::-webkit-scrollbar {
+/* .scrollwrap::-webkit-scrollbar {
     width: 10px;
 }
 
@@ -176,11 +176,11 @@
 .scrollwrap::-webkit-scrollbar-thumb {
     background-color: #556268;
     border-radius: 20px;
-}
+} */
 
 /*para trabjar con firefox*/
 
-.scrollwrap {
+/* .scrollwrap {
     scrollbar-width: thin;
     scrollbar-color: #556268 transparent;
-}
+} */

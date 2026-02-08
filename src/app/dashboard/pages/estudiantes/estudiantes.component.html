@@ -2,31 +2,36 @@
     <div class="cont-es">
         <p class="titulo">ESTUDIANTES</p>
         <button class="btn-es" (click)="abrirAgregar()">
-            <i class="fa-solid fa-plus"></i>
-            Agregar estudiante
+            <i class="fa-solid fa-user-plus"></i>
+            Nuevo Estudiante
         </button>
     </div>
     <div class="acciones-tabla">
         <div class="mostrar-registros">
             <span>Mostrar</span>
-            <select>
-                <option value="5">5</option>
+
+            <select (change)="cambiarCantidad($event)">
+                <option value="0">Todos</option>
                 <option value="10" selected>10</option>
                 <option value="25">25</option>
                 <option value="50">50</option>
             </select>
+
             <span>registros</span>
         </div>
-
         <div class="buscar-es">
-            <button class="btn-buscar">Buscar</button>
-            <input type="number" name="buscar" placeholder="Ingrese el DNI" minlength="8" maxlength="8"
-                oninput="this.value = this.value.slice(0,8)">
+            <div class="input-busqueda">
+                <label>Buscar:</label>
+                <div class="input-icono">
+                    <input type="text" maxlength="8" [(ngModel)]="dniBusqueda" (input)="filtrarPorDni()"
+                        inputmode="numeric" pattern="[0-9]*" placeholder="Ingrese Dni del Estudiante" />
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="cont-tabla">
+<div class="cont-tabla tabla-scroll">
     <table class="tabla-datos">
         <thead>
             <tr>
@@ -37,103 +42,46 @@
                 <th>APELLIDO MATERNO</th>
                 <th>GENERO</th>
                 <th>FECHA DE NACIMIENTO</th>
+                <th>ESTADO</th>
                 <th>ACCIONES</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
+            <tr *ngFor="let estudiante of estudiantes; let i = index">
+                <td>{{i+1}}</td>
+                <td>{{ estudiante.dni }}</td>
+                <td>{{ estudiante.nombres }}</td>
+                <td>{{ estudiante.apellido_paterno }}</td>
+                <td>{{ estudiante.apellido_materno }}</td>
+                <td>{{ estudiante.genero }}</td>
+                <td>{{ estudiante.fecha_nacimiento | date:'dd/MM/yyyy' }}</td>
                 <td>
-                    <button class="btn-icon btn-edit" (click)="abrirEditar()">
+                    <span [ngClass]="estudiante.estado === 'Activo' ? 'estado-activo' : 'estado-inactivo'">
+                        {{ estudiante.estado }}
+                    </span>
+                </td>
+                <td>
+                    <button class="btn-icon btn-edit" (click)="abrirEditar(estudiante)">
                         <i class="fa-solid fa-pen"></i>
                     </button>
 
-                    <button class="btn-icon btn-delete" (click)="confirmarEliminar()">
-                        <i class="fa-solid fa-trash"></i>
+                    <button class="btn-icon"
+                        [ngClass]="estudiante.estado === 'Activo' ? 'btn-desactivar' : 'btn-activar'"
+                        (click)="cambiarEstado(estudiante)"
+                        [title]="estudiante.estado === 'Activo' ? 'Desactivar estudiante' : 'Activar estudiante'">
+
+                        <i class="fa-solid"
+                            [ngClass]="estudiante.estado === 'Activo' ? 'fa-user-slash' : 'fa-user-check'">
+                        </i>
                     </button>
-
-
                 </td>
             </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-            </tr>
-            <tr>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
-                <td>Dato</td>
 
-            </tr>
         </tbody>
     </table>
+    <p class="sin-resultados" *ngIf="estudiantes.length === 0 && dniBusqueda.trim() !== ''">
+        No se encontraron estudiantes con ese DNI
+    </p>
 </div>
 
 <!-- Modal -->
@@ -145,7 +93,7 @@
             <h2>
                 <i class="fa-solid" [ngClass]="modoEditar ? 'fa-user-pen' : 'fa-user-plus'">
                 </i>
-                {{ modoEditar ? 'Editar estudiante' : 'Agregar estudiante' }}
+                {{ modoEditar ? 'Editar estudiante' : 'Nuevo Estudiante' }}
             </h2>
             <span class="close" (click)="cerrarModal()">&times;</span>
         </div>
@@ -157,7 +105,8 @@
                 <div class="dni-container">
                     <div class="dni-input">
                         <label>DNI</label>
-                        <input type="number" placeholder="Ingrese el DNI" oninput="this.value = this.value.slice(0,8)">
+                        <input type="text" placeholder="Ingrese el DNI" maxlength="8" [(ngModel)]="estudiante.dni"
+                            required>
                     </div>
 
                     <button *ngIf="!modoEditar" class="btn-buscar-dni">
@@ -165,34 +114,35 @@
                     </button>
                 </div>
 
-
                 <div>
                     <label>Nombres</label>
-                    <input type="text" placeholder="Ingrese los nombres" [disabled]="modoEditar">
+                    <input type="text" placeholder="Ingrese los nombres" [(ngModel)]="estudiante.nombres" required>
                 </div>
 
                 <div>
                     <label>Apellido Paterno</label>
-                    <input type="text" placeholder="Ingrese el apellido paterno" [disabled]="modoEditar">
+                    <input type="text" placeholder="Ingrese el apellido paterno"
+                        [(ngModel)]="estudiante.apellido_paterno" required>
                 </div>
 
                 <div>
                     <label>Apellido Materno</label>
-                    <input type="text" placeholder="Ingrese el apellido materno" [disabled]="modoEditar">
+                    <input type="text" placeholder="Ingrese el apellido materno"
+                        [(ngModel)]="estudiante.apellido_materno" required>
                 </div>
 
                 <div>
                     <label>Género</label>
-                    <select>
+                    <select [(ngModel)]="estudiante.genero" required>
                         <option value="">Seleccione</option>
-                        <option value="M">Masculino</option>
-                        <option value="F">Femenino</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
                     </select>
                 </div>
 
                 <div>
                     <label>Fecha de nacimiento</label>
-                    <input class="fecha" type="date">
+                    <input class="fecha" type="date" required [(ngModel)]="estudiante.fecha_nacimiento">
                 </div>
 
             </div>
@@ -204,12 +154,14 @@
                 <i class="fa-solid fa-xmark"></i> Cancelar
             </button>
 
-            <button class="btn-guardar">
-                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'">
-                </i>
-                {{ modoEditar ? 'Actualizar' : 'Guardar' }}
-            </button>
-
+            <form (ngSubmit)="guardar()">
+                <button class="btn-guardar" type="submit">
+                    <i class="fa-solid" [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'">
+                    </i>
+                    {{ modoEditar ? 'Actualizar' : 'Guardar' }}
+                </button>
+            </form>
+            
         </div>
 
     </div>

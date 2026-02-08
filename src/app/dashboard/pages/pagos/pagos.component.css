@@ -15,7 +15,7 @@
     /* evita saltos */
 }
 
-.btn-es {
+.btn-pago {
     padding: 0.8rem 1.5rem;
     border-radius: 0.5rem;
     background: var(--dark-green);
@@ -25,59 +25,45 @@
     font-size: 0.9rem;
 }
 
-.btn-es:hover {
-    background: #0f5833;
-    transform: scale(1.05);
-}
-
-.btn-es:active {
-    transform: scale(0.97);
-    /* pequeño efecto al presionar */
-}
-
 
 .fa-sack-dollar {
     margin-right: 0.4rem;
 }
 
-.buscar-es {
-    margin-top: 1rem;
-    display: flex;
-    justify-content: flex-end;
-    /* lo mueve debajo del botón */
-    gap: 0.8rem;
-
+.buscar-estudiante{
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.btn-buscar {
-    padding: 0.7rem;
-    border-radius: 0.5rem;
-    border: none;
-    background: var(--dark-green);
-    color: white;
-    font-size: 0.9rem;
-    cursor: pointer;
+/* contenedor general */
+.input-busqueda {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
 
-.btn-buscar:hover {
-    background: #0f5833;
-    transform: scale(1.05);
+/* label */
+.input-busqueda label {
+  font-size: 1rem;
+  color: #374151;
+  font-weight: 500;
 }
 
-.btn-buscar:active {
-    transform: scale(0.97);
-    /* pequeño efecto al presionar */
+/* input */
+.input-icono input {
+  width: 18rem;
+  padding: 0.55rem 0.75rem 0.55rem 1rem;
+  border-radius: 0.6rem;
+  border: 1px solid #d1d5db;
+  font-size: 0.9rem;
+  transition: all 0.25s ease;
 }
 
-input {
-    width: 12rem;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid #ccc;
-}
+/* focus */
+.input-icono input:focus {
+  outline: none;
 
-input:focus {
-    outline: none;
 }
 
 .acciones-tabla {
@@ -130,6 +116,21 @@ select:hover {
     border-color: #9ca3af;
 }
 
+.btn-download {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #d32f2f; /* rojo tipo PDF */
+}
+
+.btn-download i {
+  font-size: 1.5rem;   /* prueba 2rem o 1.8rem */
+}
+
+.btn-download:hover {
+  color: #b71c1c;
+}
+
 .tabla-datos {
     margin-top: 2.5rem;
     width: 100%;
@@ -156,6 +157,26 @@ select:hover {
 
 .tabla-datos tbody tr:nth-child(even) {
     background-color: #f5f5f5;
+}
+
+.estado-pagado {
+  background-color: #198754;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 4px; 
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.estado-deuda {
+  background-color: #dc3545;
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
 }
 
 
@@ -300,7 +321,7 @@ select:hover {
     font-size: 0.85rem;
     font-weight: 500;
     margin-bottom: 0.8rem;
-    display: block;
+    display: block;  
 }
 
 .form-grid input,
@@ -514,7 +535,7 @@ select:hover {
     border: none;
     width: 36px;
     height: 36px;
-    border-radius: 8px;
+    border-radius: 5px;
     cursor: pointer;
     display: inline-flex;
     align-items: center;
@@ -524,7 +545,7 @@ select:hover {
 
 }
 
-/* EDITAR */
+/* PAGAR */
 .btn-money {
     background: #1f7a4b;
     /* amarillo */
@@ -532,10 +553,10 @@ select:hover {
     margin: 0.5rem;
 }
 
-.btn-money:hover {
+/* .btn-money:hover {
     background: #16603b;
     transform: scale(1.05);
-}
+} */
 
 /* ELIMINAR */
 .btn-delete {
@@ -543,8 +564,8 @@ select:hover {
     /* rojo */
     color: #fff;
 }
-
+/* 
 .btn-delete:hover {
     background: #b91c1c;
     transform: scale(1.05);
-}
+} */
