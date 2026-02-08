@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,28 +12,41 @@ export class LoginComponent {
   usuario: string = '';
   password: string = '';
   mostrarPassword: boolean = false;
+  isLoading: boolean = false;
+  errorMessage: string = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private authService: AuthService
+  ) { }
 
   togglePassword() {
     this.mostrarPassword = !this.mostrarPassword;
   }
 
   iniciarSesion() {
+    this.errorMessage = '';
 
     if (!this.usuario || !this.password) {
-      alert('Complete todos los campos');
+      this.errorMessage = 'Complete los campos';
       return;
     }
 
-    // 🔹 PRUEBA LOCAL (luego backend)
-    if (this.usuario === 'admin' && this.password === '1234') {
-      alert('Login correcto');
-      this.router.navigate(['/dashboard/panel-control']);
-      // aquí luego rediriges al dashboard
-    } else {
-      alert('Usuario o contraseña incorrectos');
-    }
+    this.isLoading = true;
+
+    this.authService.login({
+      username: this.usuario,
+      password: this.password
+    }).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        this.router.navigate(['/dashboard/panel-control']);
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = error.message || 'Nombre de usuario o contrasela incorrectos';
+      }
+    });
   }
 
 }
