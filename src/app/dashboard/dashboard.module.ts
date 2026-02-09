@@ -14,6 +14,7 @@ import { DashboardLayoutComponent } from './layout/dashboard-layout/dashboard-la
 import { BodyComponent } from './layout/body/body.component';
 import { PagosComponent } from './pages/pagos/pagos.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { NavbarComponent } from './layout/navbar/navbar.component';
     CommonModule,
     RouterModule,
     DashboardRoutingModule,
-    
+    MatDialogModule
   ],
   exports: []
 })

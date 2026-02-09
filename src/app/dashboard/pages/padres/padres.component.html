@@ -1,1 +1,246 @@
-<p>padres works!</p>
+<div>
+    <div class="cont-es">
+        <p class="titulo">PADRES</p>
+        <button class="btn-es" (click)="abrirAgregar()">
+            <i class="fa-solid fa-plus"></i>
+            Agregar Padre
+        </button>
+    </div>
+    <div class="acciones-tabla">
+        <div class="mostrar-registros">
+            <span>Mostrar</span>
+            <select>
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+            </select>
+            <span>registros</span>
+        </div>
+
+        <div class="buscar-es">
+            <button class="btn-buscar">Buscar</button>
+            <input type="number" name="buscar" placeholder="Ingrese el DNI" minlength="8" maxlength="8"
+                oninput="this.value = this.value.slice(0,8)">
+        </div>
+    </div>
+</div>
+
+<div class="cont-tabla">
+    <table class="tabla-datos">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>DNI</th>
+                <th>NOMBRE</th>
+                <th>APELLIDO</th>
+                <th>TELÉFONO</th>
+                <th>EMAIL</th>
+                <th>DIRECCIÓN</th>
+                <th>TIPO RELACIÓN</th>
+                <th>ACCIONES</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let padre of padres; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ padre.dni }}</td>
+                <td>{{ padre.nombres }}</td>
+                <td>{{ padre.apellido_paterno }} {{ padre.apellido_materno }}</td>
+                <td>{{ padre.telefono }}</td>
+                <td>{{ padre.email }}</td>
+                <td>{{ padre.direccion }}</td>
+                <td>{{ padre.tipo_relacion }}</td>
+                <td>
+                    <button class="btn-icon btn-edit" (click)="abrirEditar(padre)">
+                        <i class="fa-solid fa-pen"></i>
+                    </button>
+
+                    <button class="btn-icon btn-delete" (click)="confirmarEliminar(padre)">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            <tr *ngIf="padres.length === 0">
+                <td colspan="9" style="text-align: center; padding: 2rem;">No hay padres registrados</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="modalAbierto">
+    <div class="modal-content">
+
+        <!-- Header -->
+        <div class="modal-header">
+            <h2>
+                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-user-pen' : 'fa-user-plus'">
+                </i>
+                {{ modoEditar ? 'Editar Padre' : 'Agregar Padre' }}
+            </h2>
+            <span class="close" (click)="cerrarModal()">&times;</span>
+        </div>
+
+        <!-- Body -->
+        <div class="modal-body">
+            <div class="form-grid">
+
+                <!-- DNI con botón buscar -->
+                <div class="dni-container">
+                    <div class="dni-input">
+                        <label>DNI</label>
+                        <input type="text" placeholder="Ingrese el DNI (8 dígitos)" [(ngModel)]="dni" name="dni"
+                            [disabled]="modoEditar" maxlength="8" oninput="this.value = this.value.slice(0,8)">
+                    </div>
+
+                    <button *ngIf="!modoEditar" class="btn-buscar-dni" (click)="buscarDniReniec()"
+                        [disabled]="buscandoDni">
+                        <i class="fa-solid" [ngClass]="buscandoDni ? 'fa-spinner fa-spin' : 'fa-magnifying-glass'"></i>
+                        {{ buscandoDni ? 'Buscando...' : 'Buscar' }}
+                    </button>
+                </div>
+
+                <!-- Nombres -->
+                <div>
+                    <label>Nombres</label>
+                    <input type="text" placeholder="Ingrese los nombres" [(ngModel)]="nombres" name="nombres">
+                </div>
+
+                <!-- Apellido Paterno -->
+                <div>
+                    <label>Apellido Paterno</label>
+                    <input type="text" placeholder="Ingrese el apellido paterno" [(ngModel)]="apellido_paterno"
+                        name="apellido_paterno">
+                </div>
+
+                <!-- Apellido Materno -->
+                <div>
+                    <label>Apellido Materno</label>
+                    <input type="text" placeholder="Ingrese el apellido materno" [(ngModel)]="apellido_materno"
+                        name="apellido_materno">
+                </div>
+
+                <!-- Teléfono -->
+                <div>
+                    <label>Teléfono</label>
+                    <input type="tel" placeholder="Ingrese el teléfono (9 dígitos)" maxlength="9" [(ngModel)]="telefono"
+                        name="telefono" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,9)">
+                </div>
+
+                <!-- Email -->
+                <div>
+                    <label>Email</label>
+                    <input type="email" placeholder="ejemplo@correo.com" [(ngModel)]="email" name="email">
+                </div>
+
+                <!-- Dirección -->
+                <div class="full-width">
+                    <label>Dirección</label>
+                    <input type="text" placeholder="Ingrese la dirección completa" [(ngModel)]="direccion"
+                        name="direccion">
+                </div>
+
+                <!-- Tipo de Relación y Apoderado Principal -->
+                <div class="relacion-container">
+                    <div class="full-width">
+                        <label>Tipo de Relación</label>
+                        <select [(ngModel)]="tipoRelacion" name="tipoRelacion">
+                            <option value="">Seleccione el tipo de relación</option>
+                            <option value="Padre">Padre</option>
+                            <option value="Madre">Madre</option>
+                            <option value="Tutor">Tutor</option>
+                        </select>
+                    </div>
+
+                    <div class="apoderado-principal-check">
+                        <label class="toggle-switch">
+                            <input type="checkbox" [(ngModel)]="esApoderadoPrincipal" name="esApoderadoPrincipal">
+                            <span class="slider round"></span>
+                        </label>
+                        <span class="toggle-label" [class.active]="esApoderadoPrincipal">
+                            {{ esApoderadoPrincipal ? 'Sí, es contacto principal' : 'No es contacto principal' }}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Detalles de Relación (condicional) -->
+                <div class="full-width" *ngIf="tipoRelacion === 'Tutor'">
+                    <label>Especifique el parentesco</label>
+                    <input type="text" placeholder="Ej: Abuelo, Tío, Hermano mayor, etc." [(ngModel)]="detallesRelacion"
+                        name="detallesRelacion">
+                </div>
+
+            </div>
+
+            <!-- Sección de Asignar Estudiantes -->
+            <div class="asignar-estudiantes-section">
+                <h3 class="section-title">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    ASIGNAR ESTUDIANTES
+                </h3>
+
+                <div class="estudiante-search">
+                    <div class="search-group">
+                        <label>DNI del Estudiante</label>
+                        <div class="search-input-group">
+                            <input type="text" placeholder="Ingrese el DNI del estudiante (8 dígitos)"
+                                [(ngModel)]="dniEstudiante" name="dniEstudiante" maxlength="8"
+                                oninput="this.value = this.value.slice(0,8)">
+                            <button class="btn-buscar-estudiante" (click)="buscarEstudiante()">
+                                <i class="fa-solid fa-plus"></i>
+                                Agregar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lista de estudiantes asignados -->
+                <div class="estudiantes-asignados">
+                    <div class="empty-state" *ngIf="estudiantesAsignados.length === 0">
+                        <i class="fa-solid fa-user-graduate"></i>
+                        <p>No hay estudiantes asignados</p>
+                        <small>Busque un estudiante por DNI para asignarlo a este padre</small>
+                    </div>
+
+                    <!-- Tabla de estudiantes asignados -->
+                    <table class="tabla-estudiantes" *ngIf="estudiantesAsignados.length > 0">
+                        <thead>
+                            <tr>
+                                <th>DNI</th>
+                                <th>Nombre Completo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let estudiante of estudiantesAsignados; let i = index">
+                                <td>{{ estudiante.dni }}</td>
+                                <td>{{ estudiante.nombres }} {{ estudiante.apellido_paterno }}</td>
+                                <td>
+                                    <button class="btn-delete-small" (click)="eliminarEstudianteDeLista(i)">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+            <button class="btn-cancelar" (click)="cerrarModal()">
+                <i class="fa-solid fa-xmark"></i> Cancelar
+            </button>
+
+            <button class="btn-guardar" (click)="guardarPadre()">
+                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'">
+                </i>
+                {{ modoEditar ? 'Actualizar' : 'Guardar' }}
+            </button>
+
+        </div>
+
+    </div>
+</div>
