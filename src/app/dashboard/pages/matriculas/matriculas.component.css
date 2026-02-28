@@ -353,13 +353,20 @@ select:hover {
 }
 
 .btn-buscar-dni {
-  padding: 0.6rem 1.2rem;
-  background-color: #1f7a4b;
-  color: #fff;
-  border: none;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  font-size: 0.9rem;
+    display: flex;
+    padding: 0.6rem 1.2rem;
+    background-color: #1f7a4b;
+    color: #fff;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-buscar-dni i {
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    margin-top: 0.1rem;
 }
 
 .btn-buscar:hover {

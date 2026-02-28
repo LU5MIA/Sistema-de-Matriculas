@@ -36,11 +36,11 @@
             <tr>
                 <th>ID</th>
                 <th>RECIBO</th>
-                <th>FECHA</th>
+                <!-- <th>FECHA</th> -->
+                <th>CODIGO. M</th>
                 <th>ESTUDIANTE</th>
                 <th>CONCEPTO</th>
-                <th>AULA</th>
-                <th>MEDIO</th>
+                <!-- <th>MEDIO</th> -->
                 <th>MONTO</th>
                 <th>ESTADO</th>
                 <th>ACCIONES</th>
@@ -54,19 +54,19 @@
                         <i class="fa-solid fa-file-arrow-down"></i>
                     </button>
                 </td>
-                <td>
+                <!-- <td>
                     {{ pago.fecha_pago | date:'dd/MM/yyyy HH:mm' }}
-                </td>
+                </td> -->
 
+                <td>{{ pago.codigoMatricula }}</td>
                 <td>{{ pago.estudianteNombre }}</td>
                 <td>
                     {{ pago.concepto }} <br>
                     <span *ngIf="pago.meses">({{ pago.meses }})</span>
                 </td>
 
-                <td>{{ pago.aulaNombre }}</td>
-                <td>{{ pago.canal_pago }}</td>
-                <td>{{ pago.monto }}</td>
+                <!-- <td>{{ pago.canal_pago }}</td> -->
+                <td>{{ pago.monto_pagado }}</td>
                 <td>
                     <span [ngClass]="pago.estado === 'Pagado' ? 'estado-pagado' : 'estado-deuda'">
                         {{ pago.estado }}
@@ -118,60 +118,93 @@
                     <div class="codigo-container">
                         <div class="codigo-input">
                             <label>Codigo de Matricula</label>
-                            <input type="number" minlength="8" maxlength="8" placeholder="Codigo"
-                                oninput="this.value = this.value.slice(0,8)">
+                            <input type="text" placeholder="Codigo" [(ngModel)]="codigoBusqueda">
                         </div>
-                        <button class="btn-buscar-codigo">
+                        <button class="btn-buscar-codigo" (click)="buscarMatriculaPorCodigo()">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
 
                     <div>
                         <label>Alumno</label>
-                        <input type="text" placeholder="Nombres y Apellidos">
+                        <input type="text" placeholder="Nombres y Apellidos" [(ngModel)]="alumnoNombre" readonly>
                     </div>
+                    <div class="autocomplete-container">
+                        <label>Responsable de pago</label>
 
-                    <div>
-                        <label>Apoderado</label>
-                        <input type="text" placeholder="Apoderado">
+                        <input type="text" [(ngModel)]="textoResponsable" (input)="filtrarPadres()"
+                            placeholder="Responsable de pago" autocomplete="off">
+
+                        <ul *ngIf="mostrarLista" class="lista-sugerencias">
+
+                            <!-- Cuando hay resultados -->
+                            <li *ngFor="let p of padresFiltrados" (click)="seleccionarPadre(p)">
+
+                                <span class="item-contenido">
+                                    <i class="fas fa-user icono-padre"></i>
+                                    {{ p.nombre_completo }}
+                                </span>
+
+                            </li>
+
+                            <!-- Cuando NO hay resultados -->
+                            <li *ngIf="padresFiltrados.length === 0" class="sin-resultados">
+                                No hay padres registrados
+                            </li>
+
+                        </ul>
+
                     </div>
 
                     <div>
                         <label>Aula</label>
-                        <input type="text" placeholder="Ej: Secundaria - 4°C">
+                        <input type="text" placeholder="Ej: Secundaria - 4°C" [(ngModel)]="aulaNombre" readonly>
                     </div>
                 </div>
                 <div class="form-second-grid">
                     <div>
                         <label>Inscripcion</label>
-                        <input type="number" placeholder="150.00">
+                        <input type="number" placeholder="150.00" [(ngModel)]="incripcion" readonly>
                     </div>
 
                     <div>
                         <label>Matricula</label>
-                        <input type="number" placeholder="350.00">
+                        <input type="number" placeholder="350.00" [(ngModel)]="totalMatricula" readonly>
                     </div>
 
                     <div>
                         <label>Mensualidad</label>
-                        <input type="number" placeholder="350.00">
+                        <input type="number" placeholder="350.00" [(ngModel)]="mensualidad" readonly>
                     </div>
                 </div>
             </div>
             <div *ngIf="seccionActiva === 'pago'">
-                <div class="form-third-grid">
+                <div class="form-pago-grid"
+                    [ngClass]="pago.concepto === 'Mensualidad' ? 'tres-columnas' : 'dos-columnas'">
+
                     <div>
                         <label>Concepto</label>
-                        <select [(ngModel)]="conceptoSeleccionado">
+                        <select [(ngModel)]="pago.concepto" (change)="onConceptoChange()">
                             <option value="">Seleccione</option>
-                            <option value="I">Inscripcion</option>
-                            <option value="MENSUALIDAD">Mensualidad</option>
-                            <option value="M">Matricula</option>
+                            <option value="Inscripción">Inscripción</option>
+                            <option value="Mensualidad">Mensualidad</option>
+                            <option value="Matrícula">Matrícula</option>
                         </select>
                     </div>
+
+                    <div *ngIf="pago.concepto === 'Mensualidad'">
+                        <label>Mes a pagar</label>
+                        <select [(ngModel)]="pago.meses">
+                            <option value="">Seleccione</option>
+                            <option *ngFor="let mes of meses" [value]="mes.value">
+                                {{ mes.label }}
+                            </option>
+                        </select>
+                    </div>
+
                     <div>
                         <label>Canal de pago</label>
-                        <select>
+                        <select [(ngModel)]="detalle_pago.canal_pago">
                             <option value="">Seleccione</option>
                             <option value="Yape">Yape</option>
                             <option value="Plin">Plin</option>
@@ -181,20 +214,20 @@
                             <option value="BVVA">BVVA</option>
                         </select>
                     </div>
-                    <div *ngIf="conceptoSeleccionado === 'MENSUALIDAD'">
-                        <label>Mes a pagar</label>
-                        <select>
-                            <option value="">Seleccione</option>
-                            <option *ngFor="let mes of meses" [value]="mes">
-                                {{ mes }}
-                            </option>
-                        </select>
+
+                </div>
+                <div class="form-third-grid">
+                    <div class="form-full">
+                        <label>Monto Total</label>
+                        <input type="number" [(ngModel)]="pago.monto_total" placeholder="0.00" readonly>
                     </div>
-                    <div>
-                        <label>Monto</label>
-                        <input type="number" name="monto" id="" placeholder="0.00">
+                    <div class="form-full">
+                        <label>Monto Pagado</label>
+                        <input type="text" inputmode="decimal" [(ngModel)]="detalle_pago.monto" class="pagado"
+                            (blur)="formatearMonto()" [readonly]="pago.concepto === 'Mensualidad'" placeholder="0.00">
                     </div>
                 </div>
+
             </div>
         </div>
 
@@ -204,7 +237,7 @@
                 <i class="fa-solid fa-xmark"></i> Cancelar
             </button>
 
-            <button class="btn-guardar">
+            <button class="btn-guardar" (click)="guardarPagoCompleto()">
                 <i class="fa-solid" [ngClass]="modalPagoEstudiante ? 'fa-arrows-rotate' : 'fa-floppy-disk'">
                 </i>
                 {{ modalPagoEstudiante ? 'Actualizar' : 'Guardar' }}
@@ -229,12 +262,11 @@
 
         <!-- Body -->
         <div class="modal-body">
-            <div class="form-grid">
+            <div class="form-pago-grid dos-columnas">
                 <div class="codigo-container">
                     <div class="codigo-input">
                         <label>Codigo de Matricula</label>
-                        <input type="number" minlength="8" maxlength="8" placeholder="Codigo"
-                            oninput="this.value = this.value.slice(0,8)">
+                        <input type="number" placeholder="Codigo">
                     </div>
                 </div>
 
@@ -243,20 +275,39 @@
                     <input type="text" placeholder="Nombres y Apellidos">
                 </div>
 
-                <div>
-                    <label>Apoderado</label>
-                    <input type="text" placeholder="Apoderado">
-                </div>
+            </div>
 
+            <div class="form-pago-grid dos-columnas">
+                <div>
+                    <label>Responsable de pago</label>
+                    <input type="text" placeholder="Responsable de pago">
+                </div>
                 <div>
                     <label>Aula</label>
                     <input type="text" placeholder="Ej: Secundaria - 4°C">
                 </div>
+
             </div>
-            <div class="form-first-grid">
+
+            <div class="form-pago-grid" [ngClass]="pago.concepto === 'Mensualidad' ? 'tres-columnas' : 'dos-columnas'">
                 <div>
                     <label>Concepto</label>
-                    <input type="text" placeholder="Concepto">
+                    <select [(ngModel)]="pago.concepto" (change)="onConceptoChange()">
+                        <option value="">Seleccione</option>
+                        <option value="Inscripción">Inscripción</option>
+                        <option value="Mensualidad">Mensualidad</option>
+                        <option value="Matrícula">Matrícula</option>
+                    </select>
+                </div>
+
+                <div *ngIf="pago.concepto === 'Mensualidad'">
+                    <label>Mes a pagar</label>
+                    <select [(ngModel)]="pago.meses">
+                        <option value="">Seleccione</option>
+                        <option *ngFor="let mes of meses" [value]="mes.value">
+                            {{ mes.label }}
+                        </option>
+                    </select>
                 </div>
                 <div>
                     <label>Canal de pago</label>
@@ -274,7 +325,7 @@
 
             <div class="form-second-grid">
                 <div>
-                    <label>Monto Esperado</label>
+                    <label>Monto Total</label>
                     <input type="number" name="monto" id="" placeholder="0.00">
                 </div>
                 <div>
@@ -286,6 +337,39 @@
                     <input type="number" name="monto" id="" placeholder="0.00">
                 </div>
             </div>
+
+            <button class="btn-agregar">
+                <i class="fa-solid fa-plus"></i>
+                Agregar
+            </button>
+
+            <div class="linea"></div>
+
+            <div class="detalle-pago">
+                <h2>
+                    <i class="fa-solid fa-receipt"></i>
+                    Detalle de Pago
+                </h2>
+            </div>
+
+            <table class="tabla-detalles">
+                <thead>
+                    <tr>
+                        <th>PADRE</th>
+                        <th>CANAL</th>
+                        <th>MONTO</th>
+                        <th>FECHA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+
+                    </tr>
+                </tbody>
+            </table>
+
+
+
 
             <button class="btn-pagar">
                 <i class="fa-solid fa-wallet"></i>

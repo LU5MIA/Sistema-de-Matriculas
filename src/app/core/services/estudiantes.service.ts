@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 export class EstudiantesService {
 
   private apiUrl = 'http://localhost:3000/api/estudiantes';
+  private apiPeruUrl = 'http://localhost:3000/api/api-peru';
 
   constructor(private http: HttpClient) {
     console.log('Servicio de Estudiantes Activo');
@@ -22,6 +23,11 @@ export class EstudiantesService {
   //Obtener una sola aula
   getEstudianteById(estudiante_id: number): Observable<Estudiantes> {
     return this.http.get<Estudiantes>(`${this.apiUrl}/${estudiante_id}`)
+  }
+
+  // ✅ Buscar DNI en RENIEC (usa el módulo común api-peru)
+  buscarDniEnReniec(dni: string): Observable<any> {
+    return this.http.get<any>(`${this.apiPeruUrl}/dni/${dni}`);
   }
 
   //Agregar estudiante

@@ -6,7 +6,7 @@
     /* centra verticalmente */
     width: 100%;
     padding: 1rem;
-}
+} 
 
 .titulo {
     font-weight: 400;
@@ -249,6 +249,7 @@ select:hover {
 }
 
 .btn-buscar-dni {
+    display: flex;
     padding: 0.6rem 1.2rem;
     background-color: #1f7a4b;
     color: #fff;
@@ -256,6 +257,12 @@ select:hover {
     border-radius: 0.4rem;
     cursor: pointer;
     font-size: 0.9rem;
+}
+
+.btn-buscar-dni i {
+    font-size: 0.8rem;
+    margin-right: 0.4rem;
+    margin-top: 0.1rem;
 }
 
 .btn-buscar:hover {

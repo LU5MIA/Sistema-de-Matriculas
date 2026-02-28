@@ -44,6 +44,7 @@ export class MatriculasComponent {
   //busqueda por dni padre
   dni_padre: string = '';
   padre: any = null;
+  buscandoDni: boolean = false;
 
   //aulas de la bd
   aulas: Aulas[] = [];
@@ -106,14 +107,20 @@ export class MatriculasComponent {
       return;
     }
 
+    this.buscandoDni = true;
+
     this.matriculasService.buscarEstudiantePorDni(this.dni_estudiante)
       .subscribe({
         next: (estudiante) => {
-          this.estudiante = estudiante;
-          this.matricula.estudiante = estudiante;
-
+          setTimeout(() => {
+            this.buscandoDni = false;
+            this.estudiante = estudiante;
+            this.matricula.estudiante = estudiante;
+          }, 800);
         },
+
         error: () => {
+          this.buscandoDni = false;
           alert('Estudiante no encontrado, puede registrarlo');
 
         }
@@ -125,21 +132,25 @@ export class MatriculasComponent {
       alert('Ingrese un DNI válido de 8 dígitos');
       return;
     }
+    this.buscandoDni = true;
 
     this.matriculasService.buscarPadrePorDni(this.dni_padre)
       .subscribe({
         next: (padre) => {
-          this.padre = padre;
-          this.matricula.padre_responsable = padre;
-
+          setTimeout(() => {
+            this.buscandoDni = false;
+            this.padre = padre;
+            this.matricula.padre_responsable = padre;
+          }, 800)
         },
         error: () => {
+          this.buscandoDni = false
           alert('Padre no encontrado, puede registrarlo');
 
         }
       });
   }
-  
+
 
   //filtro para nivel, grado y sección en la tabla
 
@@ -220,6 +231,12 @@ export class MatriculasComponent {
     const valor = Number((event.target as HTMLSelectElement).value);
     this.cantidad_Mostrar = valor;
     this.aplicarFiltros();
+  }
+
+  onCodigoChange(valor: string): void {
+    const sinEspacios = valor.replace(/\s/g, '');
+    this.codigoBusqueda = sinEspacios;
+    this.filtrarPorCodigo();
   }
 
   filtrarPorCodigo(): void {

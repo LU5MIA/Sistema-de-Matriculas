@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pagos, PagosCreatePayload } from '../../shared/interfaces/pagos.intreface';
 import { Observable } from 'rxjs';
+import { Matriculas } from '../../shared/interfaces/matriculas.interface';
+import { DetallesPago } from '../../shared/interfaces/detalles-pago.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -31,9 +33,22 @@ export class PagosService {
     });
   }
 
-  //Agregar pago
-  addPago(pago: PagosCreatePayload): Observable<any> {
-    return this.http.post(this.apiUrl, pago);
+  // 🔎 Buscar matrícula por código
+  getMatriculaByCodigo(codigo: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/matricula/${codigo}`);
+  }
+
+  // 🔹 Crear pago (deuda)
+  addPago(pago: PagosCreatePayload): Observable<Pagos> {
+    return this.http.post<Pagos>(this.apiUrl, pago);
+  }
+
+  // 🔹 Crear detalle de un pago existente
+  addDetalle(pagosId: number, detalle: Partial<DetallesPago>): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/detalle/${pagosId}`,
+      detalle
+    );
   }
 
   //Actualizar pago

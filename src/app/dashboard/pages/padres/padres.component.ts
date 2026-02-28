@@ -110,7 +110,7 @@ export class PadresComponent implements OnInit {
   detallesRelacion: string = '';
   esApoderadoPrincipal: boolean = false;
 
-  // Variables para asignar estudiantes
+  // Variables para asignar estudiantes 
   dniEstudiante: string = '';
   relacionEstudiante: string = '';
   estudiantesAsignados: any[] = [];

@@ -48,8 +48,8 @@
                 <div class="input-busqueda">
                     <label>Buscar:</label>
                     <div class="input-icono">
-                        <input type="text" [(ngModel)]="codigoBusqueda" inputmode="numeric" (input)="filtrarPorCodigo()"
-                            placeholder="Ingrese Cod. M" />
+                        <input type="text" [(ngModel)]="codigoBusqueda" (ngModelChange)="onCodigoChange($event)"
+                            inputmode="text" placeholder="Ingrese Cod. M" />
                     </div>
                 </div>
             </div>
@@ -141,7 +141,9 @@
                         </div>
 
                         <button *ngIf="!modoEditar" class="btn-buscar-dni" (click)="buscarPorDni()">
-                            Buscar
+                            <i class="fa-solid"
+                                [ngClass]="buscandoDni ? 'fa-spinner fa-spin' : 'fa-magnifying-glass'"></i>
+                            {{ buscandoDni ? 'Buscando...' : 'Buscar' }}
                         </button>
                     </div>
 
@@ -245,7 +247,9 @@
                         </div>
 
                         <button *ngIf="!modoEditar" class="btn-buscar-dni" (click)="buscarPorDniPadre()">
-                            Buscar
+                            <i class="fa-solid"
+                                [ngClass]="buscandoDni ? 'fa-spinner fa-spin' : 'fa-magnifying-glass'"></i>
+                            {{ buscandoDni ? 'Buscando...' : 'Buscar' }}
                         </button>
                     </div>
                     <div>
