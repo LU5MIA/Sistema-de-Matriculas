@@ -188,13 +188,15 @@ select:hover {
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.45);
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
-    z-index: 9999;
+    z-index: 99999;
     animation: fadeBgIn 0.3s ease;
 }
 
@@ -203,11 +205,15 @@ select:hover {
     background: #fff;
     width: 750px;
     max-width: 95%;
+    max-height: 85vh;
+    /* Altura máxima del modal */
     border-radius: 14px;
-    overflow-y: auto;   /* Scroll vertical */
-    max-height: 90vh;   /* Altura máxima relativa a la pantalla */
+    overflow: hidden;
     animation: modalFade 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
+
 
 .modal-content.salir {
     animation: modalFadeOut 0.25s ease forwards;
@@ -221,6 +227,8 @@ select:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-shrink: 0;
+
 }
 
 .modal-header h2 {
@@ -236,6 +244,15 @@ select:hover {
     display: flex;
     justify-content: center;
 
+}
+
+/* BODY */
+.modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    /* Scroll vertical */
+    flex: 1;
+    /* Ocupa el espacio disponible */
 }
 
 .modal-subheader h3 {
@@ -516,6 +533,9 @@ select:hover {
 
 .form-pago-grid.tres-columnas {
     grid-template-columns: repeat(3, 1fr);
+    margin-bottom: 8px;
+
+    /* margin-top: 15px; */
 }
 
 .form-pago-grid label {
