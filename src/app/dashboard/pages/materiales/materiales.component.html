@@ -1,0 +1,415 @@
+<!-- Encabezado -->
+<div class="cont-es">
+    <p class="titulo">MATERIALES</p>
+    <button class="btn-es" (click)="abrirAgregar()" *ngIf="tabActivo === 'inventario'">
+        <i class="fa-solid fa-plus"></i>
+        Agregar Material
+    </button>
+</div>
+
+<!-- =========================================== -->
+<!-- SISTEMA DE TABS                              -->
+<!-- =========================================== -->
+<div class="tabs-container">
+    <button class="tab-btn" [class.tab-activo]="tabActivo === 'inventario'" (click)="cambiarTab('inventario')">
+        <i class="fa-solid fa-boxes-stacked"></i> Inventario
+    </button>
+    <button class="tab-btn" [class.tab-activo]="tabActivo === 'aseo'" (click)="cambiarTab('aseo')">
+        <i class="fa-solid fa-broom"></i> Materiales Aseo
+    </button>
+    <button class="tab-btn" [class.tab-activo]="tabActivo === 'trabajo'" (click)="cambiarTab('trabajo')">
+        <i class="fa-solid fa-pencil-ruler"></i> Materiales Trabajo
+    </button>
+</div>
+
+
+<!-- =========================================== -->
+<!-- TAB 1: INVENTARIO (TABLA CRUD EXISTENTE)     -->
+<!-- =========================================== -->
+<div *ngIf="tabActivo === 'inventario'">
+
+    <!-- Acciones de tabla -->
+    <div class="acciones-tabla">
+        <div class="mostrar-registros">
+            <span>Mostrar</span>
+            <select (change)="cambiarLimit($event)">
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+            </select>
+            <span>registros</span>
+        </div>
+        <div class="buscar-es">
+            <input type="text" [(ngModel)]="busqueda" placeholder="Buscar por nombre, categoría o tipo...">
+        </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="cont-tabla">
+        <table class="tabla-datos">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>NOMBRE</th>
+                    <th>TIPO</th>
+                    <th>CANTIDAD TOTAL</th>
+                    <th>CATEGORÍA</th>
+                    <th>FECHA REGISTRO</th>
+                    <th>ACCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let material of materialesFiltrados; let i = index">
+                    <td>{{ (page - 1) * limit + i + 1 }}</td>
+                    <td>{{ material.nombre }}</td>
+                    <td>
+                        <span class="badge-tipo" [ngClass]="material.tipo === 'ASEO' ? 'badge-aseo' : 'badge-trabajo'">
+                            {{ material.tipo }}
+                        </span>
+                    </td>
+                    <td>{{ material.cantidad_total }}</td>
+                    <td>{{ material.categoria }}</td>
+                    <td>{{ formatearFecha(material.creado_en) }}</td>
+                    <td class="acciones-td">
+                        <button class="btn-icon btn-edit" title="Editar" (click)="abrirEditar(material)">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="btn-icon btn-delete" title="Descartar unidades" (click)="descartarMaterial(material)">
+                            <i class="fa-solid fa-minus"></i>
+                        </button>
+                    </td>
+                </tr>
+                <tr *ngIf="materialesFiltrados.length === 0">
+                    <td colspan="7" class="sin-datos">No hay materiales registrados</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Paginación -->
+        <div class="paginacion" *ngIf="totalPaginas > 1">
+            <button class="btn-pag" (click)="paginaAnterior()" [disabled]="page === 1">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <span class="pag-info">Página {{ page }} de {{ totalPaginas }}</span>
+            <button class="btn-pag" (click)="paginaSiguiente()" [disabled]="page === totalPaginas">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+
+<!-- =========================================== -->
+<!-- TAB 2: ASEO POR AULAS                        -->
+<!-- =========================================== -->
+<div *ngIf="tabActivo === 'aseo'" class="tab-content">
+
+    <!-- Selector de aula -->
+    <div class="tab-selector-aula">
+        <label><i class="fa-solid fa-chalkboard"></i> Seleccionar Aula:</label>
+        <select [(ngModel)]="aulaIdAseo" (ngModelChange)="onAulaAseoChange()">
+            <option [ngValue]="null">-- Seleccione un aula --</option>
+            <option *ngFor="let aula of aulasLista" [ngValue]="aula.aula_id">
+                {{ aula.nivel }} - {{ aula.grado }} {{ aula.seccion }}
+            </option>
+        </select>
+    </div>
+
+    <div *ngIf="aulaIdAseo">
+        <!-- Materiales de aseo asignados -->
+        <div class="seccion-tab">
+            <div class="seccion-header">
+                <h3><i class="fa-solid fa-broom"></i> Materiales de Aseo Asignados</h3>
+                <span class="seccion-badge">{{ materialesAseoAula.length }}</span>
+            </div>
+
+            <div class="cont-tabla" *ngIf="!cargandoAseo">
+                <table class="tabla-datos" *ngIf="materialesAseoAula.length > 0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>MATERIAL</th>
+                            <th>CATEGORÍA</th>
+                            <th>CANTIDAD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let mat of materialesAseoAula; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ mat.nombre }}</td>
+                            <td>{{ mat.categoria }}</td>
+                            <td>{{ mat.cantidad_asignada }} uds.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="empty-state" *ngIf="materialesAseoAula.length === 0">
+                    <i class="fa-solid fa-broom"></i>
+                    <p>Sin materiales de aseo asignados a esta aula</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario para asignar -->
+        <div class="seccion-tab">
+            <div class="seccion-header">
+                <h3><i class="fa-solid fa-plus-circle"></i> Asignar Material de Aseo</h3>
+            </div>
+            <div class="sub-form">
+                <div class="sub-form-row">
+                    <div class="sub-form-field flex-2">
+                        <select [(ngModel)]="aseoMaterialId">
+                            <option [ngValue]="null">-- Seleccione material --</option>
+                            <option *ngFor="let mat of materialesAseoDisponibles" [ngValue]="mat.material_id">
+                                {{ mat.nombre }} (Disp: {{ mat.cantidad_disponible }})
+                            </option>
+                        </select>
+                    </div>
+                    <div class="sub-form-field">
+                        <input type="number" placeholder="Cantidad" [(ngModel)]="aseoCantidad" min="1" style="width: 100px;">
+                    </div>
+                    <button class="btn-sub-asignar" (click)="asignarAseoAAula()"
+                        [disabled]="!aseoMaterialId || aseoCantidad < 1">
+                        <i class="fa-solid fa-plus"></i> Asignar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!aulaIdAseo" class="empty-state-tab">
+        <i class="fa-solid fa-chalkboard"></i>
+        <p>Seleccione un aula para ver y gestionar sus materiales de aseo</p>
+    </div>
+</div>
+
+
+<!-- =========================================== -->
+<!-- TAB 3: TRABAJO POR AULAS                     -->
+<!-- =========================================== -->
+<div *ngIf="tabActivo === 'trabajo'" class="tab-content">
+
+    <!-- Selector de aula -->
+    <div class="tab-selector-aula">
+        <label><i class="fa-solid fa-chalkboard"></i> Seleccionar Aula:</label>
+        <select [(ngModel)]="aulaIdTrabajo" (ngModelChange)="onAulaTrabajoChange()">
+            <option [ngValue]="null">-- Seleccione un aula --</option>
+            <option *ngFor="let aula of aulasLista" [ngValue]="aula.aula_id">
+                {{ aula.nivel }} - {{ aula.grado }} {{ aula.seccion }}
+            </option>
+        </select>
+    </div>
+
+    <div *ngIf="aulaIdTrabajo">
+
+        <!-- Materiales de trabajo asignados al aula -->
+        <div class="seccion-tab">
+            <div class="seccion-header">
+                <h3><i class="fa-solid fa-pencil-ruler"></i> Materiales de Trabajo Asignados al Aula</h3>
+                <span class="seccion-badge">{{ materialesTrabajoAula.length }}</span>
+            </div>
+
+            <div class="cont-tabla" *ngIf="!cargandoTrabajo">
+                <table class="tabla-datos" *ngIf="materialesTrabajoAula.length > 0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>MATERIAL</th>
+                            <th>CATEGORÍA</th>
+                            <th>CANTIDAD</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let mat of materialesTrabajoAula; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ mat.nombre }}</td>
+                            <td>{{ mat.categoria }}</td>
+                            <td>{{ mat.cantidad_asignada }} uds.</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="empty-state" *ngIf="materialesTrabajoAula.length === 0">
+                    <i class="fa-solid fa-pencil-ruler"></i>
+                    <p>Sin materiales de trabajo asignados a esta aula</p>
+                </div>
+            </div>
+
+            <!-- Formulario asignar material al aula -->
+            <div class="sub-form" style="margin-top: 1rem;">
+                <div class="sub-form-row">
+                    <div class="sub-form-field flex-2">
+                        <select [(ngModel)]="trabajoMaterialId">
+                            <option [ngValue]="null">-- Seleccione material --</option>
+                            <option *ngFor="let mat of materialesTrabajoDisponibles" [ngValue]="mat.material_id">
+                                {{ mat.nombre }} (Disp: {{ mat.cantidad_disponible }})
+                            </option>
+                        </select>
+                    </div>
+                    <div class="sub-form-field">
+                        <input type="number" placeholder="Cantidad" [(ngModel)]="trabajoCantidad" min="1" style="width: 100px;">
+                    </div>
+                    <button class="btn-sub-asignar" (click)="asignarTrabajoAAula()"
+                        [disabled]="!trabajoMaterialId || trabajoCantidad < 1">
+                        <i class="fa-solid fa-plus"></i> Asignar al Aula
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ======== SECCIÓN: Asignar a Estudiantes ======== -->
+        <div class="seccion-tab seccion-estudiantes-bulk">
+            <div class="seccion-header">
+                <h3><i class="fa-solid fa-user-graduate"></i> Asignar Material a Estudiantes del Aula</h3>
+            </div>
+
+            <!-- Selector de material -->
+            <div class="sub-form">
+                <div class="sub-form-row">
+                    <div class="sub-form-field flex-2">
+                        <label class="label-inline">Material:</label>
+                        <select [(ngModel)]="trabajoMaterialEstudiantesId" (ngModelChange)="onMaterialEstudiantesChange()">
+                            <option [ngValue]="null">-- Seleccione material asignado al aula --</option>
+                            <option *ngFor="let mat of materialesTrabajoAula" [ngValue]="mat.material_id">
+                                {{ mat.nombre }} ({{ mat.cantidad_asignada }} uds.)
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de estudiantes con checkboxes -->
+            <div *ngIf="trabajoMaterialEstudiantesId && !cargandoEstudiantes">
+
+                <!-- Control de cantidad general -->
+                <div class="cantidad-general-control">
+                    <label class="checkbox-label">
+                        <input type="checkbox" [(ngModel)]="usarCantidadGeneral" (ngModelChange)="onCantidadGeneralChange()">
+                        <span>Cantidad general para todos:</span>
+                    </label>
+                    <input type="number" [(ngModel)]="cantidadGeneral" min="1" style="width: 80px;"
+                        [disabled]="!usarCantidadGeneral" (ngModelChange)="onCantidadGeneralChange()">
+                    <button class="btn-sub-buscar btn-seleccionar-todos" (click)="toggleSeleccionarTodos()"
+                        *ngIf="estudiantesAula.length > 0">
+                        <i class="fa-solid fa-{{ todosSeleccionados ? 'square-minus' : 'square-check' }}"></i>
+                        {{ todosSeleccionados ? 'Deseleccionar' : 'Seleccionar' }} Todos
+                    </button>
+                </div>
+
+                <!-- Lista de estudiantes -->
+                <div class="lista-estudiantes-check" *ngIf="estudiantesAula.length > 0">
+                    <div class="estudiante-check-item" *ngFor="let est of estudiantesAula">
+                        <label class="checkbox-label estudiante-check-label">
+                            <input type="checkbox" [(ngModel)]="est.seleccionado">
+                            <span class="estudiante-check-nombre">
+                                {{ est.nombres }} {{ est.apellido_paterno }} {{ est.apellido_materno }}
+                            </span>
+                            <span class="estudiante-check-dni">DNI: {{ est.dni }}</span>
+                        </label>
+                        <div class="estudiante-check-cantidad">
+                            <input type="number" [(ngModel)]="est.cantidad" min="1"
+                                [disabled]="usarCantidadGeneral" style="width: 70px;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="empty-state" *ngIf="estudiantesAula.length === 0">
+                    <i class="fa-solid fa-user-graduate"></i>
+                    <p>No hay estudiantes pendientes de asignación para este material en esta aula</p>
+                </div>
+
+                <!-- Botón asignar -->
+                <div class="bulk-actions" *ngIf="estudiantesAula.length > 0">
+                    <span class="bulk-info">{{ cantidadSeleccionados }} estudiante(s) seleccionado(s)</span>
+                    <button class="btn-sub-asignar btn-bulk-asignar" (click)="asignarMaterialAEstudiantes()"
+                        [disabled]="!algunoSeleccionado || asignandoBulk">
+                        <i class="fa-solid fa-{{ asignandoBulk ? 'spinner fa-spin' : 'paper-plane' }}"></i>
+                        {{ asignandoBulk ? 'Asignando...' : 'Asignar Material' }}
+                    </button>
+                </div>
+            </div>
+
+            <div *ngIf="cargandoEstudiantes" class="empty-state">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <p>Cargando estudiantes...</p>
+            </div>
+
+            <div *ngIf="!trabajoMaterialEstudiantesId" class="empty-state">
+                <i class="fa-solid fa-hand-pointer"></i>
+                <p>Seleccione un material de trabajo para ver los estudiantes disponibles</p>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!aulaIdTrabajo" class="empty-state-tab">
+        <i class="fa-solid fa-chalkboard"></i>
+        <p>Seleccione un aula para ver y gestionar sus materiales de trabajo</p>
+    </div>
+</div>
+
+
+<!-- =========================================== -->
+<!-- MODAL CREAR / EDITAR                        -->
+<!-- =========================================== -->
+<div class="modal modal-form" *ngIf="modalFormAbierto">
+    <div class="modal-content">
+
+        <div class="modal-header">
+            <h2>
+                <i class="fa-solid fa-box{{ modoEditar ? '-open' : '' }}"></i>
+                {{ modoEditar ? 'Editar Material' : 'Agregar Material' }}
+            </h2>
+            <span class="close" (click)="cerrarModalForm()">&times;</span>
+        </div>
+
+        <div class="modal-body">
+            <div class="form-grid">
+
+                <div class="full-width">
+                    <label>Nombre del material *</label>
+                    <input type="text" placeholder="Ej: Papel bond A4" [(ngModel)]="nombre" name="nombre">
+                </div>
+
+                <div>
+                    <label>Tipo *</label>
+                    <select [(ngModel)]="tipo" name="tipo">
+                        <option value="">Seleccione el tipo</option>
+                        <option value="ASEO">ASEO</option>
+                        <option value="TRABAJO">TRABAJO</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Cantidad total *</label>
+                    <input type="number" placeholder="Ej: 100" [(ngModel)]="cantidad_total"
+                        name="cantidad_total" min="0">
+                </div>
+
+                <div class="full-width">
+                    <label>Categoría *</label>
+                    <input type="text" placeholder="Ej: Útiles de escritorio" [(ngModel)]="categoria" name="categoria">
+                </div>
+
+            </div>
+
+            <!-- Nota informativa sobre el tipo -->
+            <div class="tipo-hint" *ngIf="tipo">
+                <i class="fa-solid fa-circle-info"></i>
+                <span *ngIf="tipo === 'ASEO'">Los materiales de <strong>ASEO</strong> se asignan únicamente a <strong>aulas</strong>.</span>
+                <span *ngIf="tipo === 'TRABAJO'">Los materiales de <strong>TRABAJO</strong> se pueden asignar a <strong>aulas</strong> y a <strong>estudiantes</strong>.</span>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button class="btn-cancelar" (click)="cerrarModalForm()">
+                <i class="fa-solid fa-xmark"></i> Cancelar
+            </button>
+            <button class="btn-guardar" (click)="guardarMaterial()">
+                <i class="fa-solid fa-{{ modoEditar ? 'arrows-rotate' : 'floppy-disk' }}"></i>
+                {{ modoEditar ? 'Actualizar' : 'Guardar' }}
+            </button>
+        </div>
+
+    </div>
+</div>
+
+

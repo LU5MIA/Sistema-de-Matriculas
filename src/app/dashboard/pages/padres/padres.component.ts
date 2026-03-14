@@ -5,14 +5,6 @@ import { PadresService } from '../../../core/services/padres.service';
 import { Padres } from '../../../shared/interfaces/padres.interface';
 import { forkJoin } from 'rxjs';
 
-interface ApiError {
-  status?: number;
-  message?: string;
-  error?: {
-    message?: string;
-  };
-}
-
 @Component({
   selector: 'app-padres',
   standalone: false,
@@ -20,7 +12,6 @@ interface ApiError {
   styleUrl: './padres.component.css'
 })
 export class PadresComponent implements OnInit {
-
 
   padres: Padres[] = [];
 
@@ -38,7 +29,6 @@ export class PadresComponent implements OnInit {
     this.padresService.getPadres().subscribe({
       next: (response: any) => {
         this.padres = response.data;
-        console.log('Padres cargados:', this.padres);
       },
       error: (err) => {
         console.error('Error al cargar padres:', err);
@@ -46,58 +36,49 @@ export class PadresComponent implements OnInit {
     });
   }
 
+  // ============ MODAL ============
   modalAbierto: boolean = false;
   modoEditar: boolean = false;
   padreIdEditar: number | null = null;
-  buscandoDni: boolean = false;
 
-  // ✅ Método para buscar DNI en RENIEC
-  buscarDniReniec() {
-    // Convertir a string y limpiar espacios
-    const dniString = String(this.dni || '').trim();
+  // ============ MODO FORMULARIO (solo para crear) ============
+  modoFormulario: 'padre_madre' | 'tutor' = 'padre_madre';
 
-    console.log('DNI ingresado:', dniString); // ← Debug
-    console.log('Longitud:', dniString.length); // ← Debug
+  // ============ SECCIÓN PADRE ============
+  padreDni: string = '';
+  padreNombres: string = '';
+  padreApellidoPaterno: string = '';
+  padreApellidoMaterno: string = '';
+  padreTelefono: string = '';
+  padreEmail: string = '';
+  padreDireccion: string = '';
+  padreEsContactoPrincipal: boolean = false;
+  buscandoDniPadre: boolean = false;
 
-    // Validar que el DNI tenga 8 dígitos
-    if (!dniString || dniString.length !== 8 || !/^\d{8}$/.test(dniString)) {
-      alert('Por favor ingrese un DNI válido de 8 dígitos');
-      return;
-    }
+  // ============ SECCIÓN MADRE ============
+  madreDni: string = '';
+  madreNombres: string = '';
+  madreApellidoPaterno: string = '';
+  madreApellidoMaterno: string = '';
+  madreTelefono: string = '';
+  madreEmail: string = '';
+  madreDireccion: string = '';
+  madreEsContactoPrincipal: boolean = false;
+  buscandoDniMadre: boolean = false;
 
-    this.buscandoDni = true;
+  // ============ SECCIÓN TUTOR ============
+  tutorDni: string = '';
+  tutorNombres: string = '';
+  tutorApellidoPaterno: string = '';
+  tutorApellidoMaterno: string = '';
+  tutorTelefono: string = '';
+  tutorEmail: string = '';
+  tutorDireccion: string = '';
+  tutorDetallesRelacion: string = '';
+  tutorEsContactoPrincipal: boolean = false;
+  buscandoDniTutor: boolean = false;
 
-    this.padresService.buscarDniEnReniec(dniString).subscribe({
-      next: (response) => {
-        this.buscandoDni = false;
-
-        console.log('Respuesta de RENIEC:', response);
-
-        // Autocompletar campos con los datos de RENIEC
-        this.nombres = response.nombres;
-        this.apellido_paterno = response.apellidoPaterno;
-        this.apellido_materno = response.apellidoMaterno;
-
-        alert('✅ Datos encontrados en RENIEC. Complete los campos restantes.');
-      },
-      error: (err) => {
-        this.buscandoDni = false;
-        console.error('Error al buscar DNI:', err);
-
-        if (err.status === 404) {
-          alert('❌ DNI no encontrado en RENIEC');
-        } else if (err.status === 401) {
-          alert('❌ Error de autenticación con el servicio de RENIEC. Verifique el token.');
-        } else if (err.status === 400) {
-          alert('❌ DNI inválido. Debe tener 8 dígitos numéricos.');
-        } else {
-          alert('❌ Error al consultar DNI: ' + (err.error?.message || err.message));
-        }
-      }
-    });
-  }
-
-  // Variables del formulario
+  // ============ EDICIÓN (variables planas) ============
   nombres: string = '';
   apellido_paterno: string = '';
   apellido_materno: string = '';
@@ -105,48 +86,145 @@ export class PadresComponent implements OnInit {
   telefono: string = '';
   email: string = '';
   direccion: string = '';
-
   tipoRelacion: string = '';
   detallesRelacion: string = '';
   esApoderadoPrincipal: boolean = false;
+  buscandoDni: boolean = false;
 
-  // Variables para asignar estudiantes 
+  // ============ ESTUDIANTES ============
   dniEstudiante: string = '';
-  relacionEstudiante: string = '';
   estudiantesAsignados: any[] = [];
+  resultadosBusqueda: any[] = [];
+  buscandoEstudiante: boolean = false;
 
-  buscarEstudiante() {
-    if (this.dniEstudiante.length !== 8) {
-      alert('El DNI debe tener 8 dígitos');
+  // ============ ELIMINAR ============
+  padreIdEliminar: number | null = null;
+
+  // ============ BÚSQUEDA RENIEC GENÉRICA ============
+
+  buscarDniReniecGenerico(dni: string, target: 'padre' | 'madre' | 'tutor') {
+    const dniString = String(dni || '').trim();
+    if (!dniString || dniString.length !== 8 || !/^\d{8}$/.test(dniString)) {
+      alert('Por favor ingrese un DNI válido de 8 dígitos');
       return;
     }
 
-    this.padresService.getEstudianteByDni(this.dniEstudiante).subscribe({
-      next: (estudiante) => {
-        if (!estudiante) {
-          alert('Estudiante no encontrado');
-          return;
-        }
+    if (target === 'padre') this.buscandoDniPadre = true;
+    else if (target === 'madre') this.buscandoDniMadre = true;
+    else this.buscandoDniTutor = true;
 
-        // Verificar duplicados
-        const duplicado = this.estudiantesAsignados.find(e => e.dni === estudiante.dni);
-        if (duplicado) {
-          alert('El estudiante ya está en la lista');
-          return;
+    this.padresService.buscarDniEnReniec(dniString).subscribe({
+      next: (response) => {
+        if (target === 'padre') {
+          this.buscandoDniPadre = false;
+          this.padreNombres = response.nombres;
+          this.padreApellidoPaterno = response.apellidoPaterno;
+          this.padreApellidoMaterno = response.apellidoMaterno;
+        } else if (target === 'madre') {
+          this.buscandoDniMadre = false;
+          this.madreNombres = response.nombres;
+          this.madreApellidoPaterno = response.apellidoPaterno;
+          this.madreApellidoMaterno = response.apellidoMaterno;
+        } else {
+          this.buscandoDniTutor = false;
+          this.tutorNombres = response.nombres;
+          this.tutorApellidoPaterno = response.apellidoPaterno;
+          this.tutorApellidoMaterno = response.apellidoMaterno;
         }
-
-        this.estudiantesAsignados.push(estudiante);
-        this.dniEstudiante = ''; // Limpiar campo
+        alert('Datos encontrados en RENIEC. Complete los campos restantes.');
       },
       error: (err) => {
-        console.error('Error al buscar estudiante:', err);
-        alert('Error al buscar estudiante (ver consola)');
+        if (target === 'padre') this.buscandoDniPadre = false;
+        else if (target === 'madre') this.buscandoDniMadre = false;
+        else this.buscandoDniTutor = false;
+
+        if (err.status === 404) {
+          alert('DNI no encontrado en RENIEC');
+        } else if (err.status === 401) {
+          alert('Error de autenticación con el servicio de RENIEC');
+        } else {
+          alert('Error al consultar DNI: ' + (err.error?.message || err.message));
+        }
       }
     });
   }
 
+  // RENIEC para modo edición
+  buscarDniReniec() {
+    const dniString = String(this.dni || '').trim();
+    if (!dniString || dniString.length !== 8 || !/^\d{8}$/.test(dniString)) {
+      alert('Por favor ingrese un DNI válido de 8 dígitos');
+      return;
+    }
+
+    this.buscandoDni = true;
+    this.padresService.buscarDniEnReniec(dniString).subscribe({
+      next: (response) => {
+        this.buscandoDni = false;
+        this.nombres = response.nombres;
+        this.apellido_paterno = response.apellidoPaterno;
+        this.apellido_materno = response.apellidoMaterno;
+        alert('Datos encontrados en RENIEC. Complete los campos restantes.');
+      },
+      error: (err) => {
+        this.buscandoDni = false;
+        if (err.status === 404) {
+          alert('DNI no encontrado en RENIEC');
+        } else {
+          alert('Error al consultar DNI: ' + (err.error?.message || err.message));
+        }
+      }
+    });
+  }
+
+  // ============ BÚSQUEDA DE ESTUDIANTES ============
+
+  buscarEstudiante() {
+    const query = this.dniEstudiante.trim();
+    if (query.length < 3) {
+      alert('Ingrese al menos 3 dígitos para buscar');
+      return;
+    }
+
+    this.buscandoEstudiante = true;
+    this.resultadosBusqueda = [];
+    this.padresService.searchEstudiantesByDni(query).subscribe({
+      next: (estudiantes) => {
+        this.buscandoEstudiante = false;
+        const idsAsignados = new Set(this.estudiantesAsignados.map(e => e.estudiante_id || e.id));
+        this.resultadosBusqueda = estudiantes.filter(e => !idsAsignados.has(e.estudiante_id || e.id));
+      },
+      error: (err) => {
+        this.buscandoEstudiante = false;
+        console.error('Error al buscar estudiantes:', err);
+        alert('Error al buscar estudiantes');
+      }
+    });
+  }
+
+  agregarEstudianteDeBusqueda(estudiante: any) {
+    const id = estudiante.estudiante_id || estudiante.id;
+    const duplicado = this.estudiantesAsignados.find(e => (e.estudiante_id || e.id) === id);
+    if (duplicado) {
+      alert('El estudiante ya está en la lista');
+      return;
+    }
+    this.estudiantesAsignados.push(estudiante);
+    this.resultadosBusqueda = this.resultadosBusqueda.filter(e => (e.estudiante_id || e.id) !== id);
+  }
+
   eliminarEstudianteDeLista(index: number) {
     this.estudiantesAsignados.splice(index, 1);
+  }
+
+  // ============ MODAL ABRIR/CERRAR ============
+
+  abrirAgregar() {
+    this.modoEditar = false;
+    this.padreIdEditar = null;
+    this.limpiarFormulario();
+    this.modalAbierto = true;
+    this.cd.detectChanges();
   }
 
   abrirEditar(padre?: Padres) {
@@ -158,17 +236,49 @@ export class PadresComponent implements OnInit {
     }
   }
 
-  abrirAgregar() {
-    console.log('Abriendo modal agregar...');
-    this.modoEditar = false;
-    this.padreIdEditar = null;
-    this.limpiarFormulario();
-    this.modalAbierto = true;
-    console.log('modalAbierto set to true');
-    this.cd.detectChanges();
+  cerrarModal() {
+    const modal = document.querySelector('.modal-content');
+    if (modal) {
+      modal.classList.add('salir');
+      setTimeout(() => {
+        this.modalAbierto = false;
+        this.limpiarFormulario();
+        this.cd.detectChanges();
+      }, 250);
+    } else {
+      this.modalAbierto = false;
+      this.limpiarFormulario();
+      this.cd.detectChanges();
+    }
   }
 
   limpiarFormulario() {
+    this.modoFormulario = 'padre_madre';
+    this.padreDni = '';
+    this.padreNombres = '';
+    this.padreApellidoPaterno = '';
+    this.padreApellidoMaterno = '';
+    this.padreTelefono = '';
+    this.padreEmail = '';
+    this.padreDireccion = '';
+    this.padreEsContactoPrincipal = false;
+    this.madreDni = '';
+    this.madreNombres = '';
+    this.madreApellidoPaterno = '';
+    this.madreApellidoMaterno = '';
+    this.madreTelefono = '';
+    this.madreEmail = '';
+    this.madreDireccion = '';
+    this.madreEsContactoPrincipal = false;
+    this.tutorDni = '';
+    this.tutorNombres = '';
+    this.tutorApellidoPaterno = '';
+    this.tutorApellidoMaterno = '';
+    this.tutorTelefono = '';
+    this.tutorEmail = '';
+    this.tutorDireccion = '';
+    this.tutorDetallesRelacion = '';
+    this.tutorEsContactoPrincipal = false;
     this.nombres = '';
     this.apellido_paterno = '';
     this.apellido_materno = '';
@@ -180,6 +290,7 @@ export class PadresComponent implements OnInit {
     this.detallesRelacion = '';
     this.esApoderadoPrincipal = false;
     this.estudiantesAsignados = [];
+    this.resultadosBusqueda = [];
     this.dniEstudiante = '';
   }
 
@@ -206,9 +317,114 @@ export class PadresComponent implements OnInit {
     }
   }
 
-  // En padres.component.ts
+  // ============ GUARDAR ============
 
   async guardarPadre() {
+    if (this.modoEditar) {
+      await this.guardarEdicion();
+      return;
+    }
+
+    try {
+      const padresCreados: number[] = [];
+
+      if (this.modoFormulario === 'padre_madre') {
+        if (!this.padreDni || !this.padreNombres || !this.padreApellidoPaterno || !this.padreApellidoMaterno) {
+          alert('Complete al menos los datos del padre (DNI, nombres y apellidos)');
+          return;
+        }
+
+        if (this.madreDni && this.padreDni === this.madreDni) {
+          alert('El DNI del padre y la madre no pueden ser iguales');
+          return;
+        }
+
+        const padreData = {
+          dni: this.padreDni,
+          nombres: this.padreNombres,
+          apellido_paterno: this.padreApellidoPaterno,
+          apellido_materno: this.padreApellidoMaterno,
+          telefono: this.padreTelefono || undefined,
+          email: this.padreEmail || undefined,
+          direccion: this.padreDireccion || undefined,
+          tipo_relacion: 'Padre',
+          es_contacto_principal: this.padreEsContactoPrincipal
+        };
+
+        const nuevoPadre = await this.padresService.createPadre(padreData).toPromise();
+        if (nuevoPadre) {
+          padresCreados.push(nuevoPadre.padre_id || (nuevoPadre as any).id);
+        }
+
+        if (this.madreDni && this.madreNombres && this.madreApellidoPaterno && this.madreApellidoMaterno) {
+          const madreData = {
+            dni: this.madreDni,
+            nombres: this.madreNombres,
+            apellido_paterno: this.madreApellidoPaterno,
+            apellido_materno: this.madreApellidoMaterno,
+            telefono: this.madreTelefono || undefined,
+            email: this.madreEmail || undefined,
+            direccion: this.madreDireccion || undefined,
+            tipo_relacion: 'Madre',
+            es_contacto_principal: this.madreEsContactoPrincipal
+          };
+
+          try {
+            const nuevaMadre = await this.padresService.createPadre(madreData).toPromise();
+            if (nuevaMadre) {
+              padresCreados.push(nuevaMadre.padre_id || (nuevaMadre as any).id);
+            }
+          } catch (err: any) {
+            alert('Error al crear la madre: ' + (err?.error?.message || err?.message || 'Error desconocido') + '\nEl padre fue creado correctamente.');
+          }
+        }
+
+      } else {
+        if (!this.tutorDni || !this.tutorNombres || !this.tutorApellidoPaterno || !this.tutorApellidoMaterno) {
+          alert('Complete los datos del tutor (DNI, nombres y apellidos)');
+          return;
+        }
+
+        const tutorData = {
+          dni: this.tutorDni,
+          nombres: this.tutorNombres,
+          apellido_paterno: this.tutorApellidoPaterno,
+          apellido_materno: this.tutorApellidoMaterno,
+          telefono: this.tutorTelefono || undefined,
+          email: this.tutorEmail || undefined,
+          direccion: this.tutorDireccion || undefined,
+          tipo_relacion: 'Tutor',
+          detalles_relacion: this.tutorDetallesRelacion || undefined,
+          es_contacto_principal: this.tutorEsContactoPrincipal
+        };
+
+        const nuevoTutor = await this.padresService.createPadre(tutorData).toPromise();
+        if (nuevoTutor) {
+          padresCreados.push(nuevoTutor.padre_id || (nuevoTutor as any).id);
+        }
+      }
+
+      if (padresCreados.length > 0 && this.estudiantesAsignados.length > 0) {
+        const asignaciones: any[] = [];
+        for (const padreId of padresCreados) {
+          for (const est of this.estudiantesAsignados) {
+            asignaciones.push(
+              this.padresService.assignEstudiante(padreId, est.estudiante_id || est.id)
+            );
+          }
+        }
+        await forkJoin(asignaciones).toPromise();
+      }
+
+      this.mostrarExito('Registro guardado correctamente');
+
+    } catch (err: any) {
+      console.error('Error al guardar:', err);
+      alert('Error: ' + (err?.error?.message || err?.message || 'Error desconocido'));
+    }
+  }
+
+  async guardarEdicion() {
     if (!this.nombres || !this.apellido_paterno || !this.dni || !this.tipoRelacion) {
       alert('Por favor complete los campos obligatorios');
       return;
@@ -219,113 +435,54 @@ export class PadresComponent implements OnInit {
       apellido_paterno: this.apellido_paterno,
       apellido_materno: this.apellido_materno,
       dni: this.dni,
-      telefono: this.telefono,
-      email: this.email,
-      direccion: this.direccion,
+      telefono: this.telefono || undefined,
+      email: this.email || undefined,
+      direccion: this.direccion || undefined,
       tipo_relacion: this.tipoRelacion,
-      detalles_relacion: this.detallesRelacion,
+      detalles_relacion: this.detallesRelacion || undefined,
       es_contacto_principal: this.esApoderadoPrincipal
     };
 
     try {
-      if (this.modoEditar && this.padreIdEditar) {
-        // 1. Actualizar datos del padre
+      if (this.padreIdEditar) {
         await this.padresService.updatePadre(this.padreIdEditar, padreData).toPromise();
-
-        // 2. Sincronizar estudiantes asignados
         await this.sincronizarEstudiantesAsignados(this.padreIdEditar);
-
-        this.mostrarExito('Padre actualizado correctamente');
-      } else {
-        // 1. Crear nuevo padre
-        const nuevoPadre = await this.padresService.createPadre(padreData).toPromise();
-
-        if (!nuevoPadre) {
-          throw new Error('No se recibió respuesta del servidor al crear el padre');
-        }
-
-        const id = nuevoPadre.padre_id || nuevoPadre.id;
-
-        if (id && this.estudiantesAsignados.length > 0) {
-          // 2. Asignar estudiantes (en creación no hay que eliminar)
-          const asignaciones = this.estudiantesAsignados.map(est =>
-            this.padresService.assignEstudiante(id, est.estudiante_id || est.id)
-          );
-
-          await forkJoin(asignaciones).toPromise();
-        }
-
-        this.mostrarExito('Padre registrado correctamente');
+        this.mostrarExito('Registro actualizado correctamente');
       }
-
-      this.cerrarModal();
-      this.cargarPadres();
-
-    } catch (err: unknown) {
-      console.error('Error al guardar:', err);
-      let errorMessage = 'Error desconocido';
-
-      if (err && typeof err === 'object') {
-        if ('error' in err && err.error && typeof err.error === 'object' && 'message' in err.error) {
-          errorMessage = (err.error as { message: string }).message;
-        } else if ('message' in err) {
-          errorMessage = (err as { message: string }).message;
-        }
-      } else if (typeof err === 'string') {
-        errorMessage = err;
-      }
-
-      alert('Error: ' + errorMessage);
+    } catch (err: any) {
+      console.error('Error al actualizar:', err);
+      alert('Error: ' + (err?.error?.message || err?.message || 'Error desconocido'));
     }
   }
 
   async sincronizarEstudiantesAsignados(padreId: number) {
     try {
-      // Obtener estudiantes actualmente asignados
       const asignacionesActuales = await this.padresService
         .getEstudiantesAsignados(padreId)
         .toPromise();
 
-      // Verificar que asignacionesActuales no sea undefined
-      if (!asignacionesActuales) {
-        console.warn('No se pudieron obtener las asignaciones actuales');
-        return;
-      }
+      if (!asignacionesActuales) return;
 
-      // Crear mapas para comparación
       const mapaActual = new Map();
-      asignacionesActuales.forEach(a => {
-        mapaActual.set(a.estudiante_id, a);
-      });
+      asignacionesActuales.forEach(a => mapaActual.set(a.estudiante_id, a));
 
       const mapaNuevo = new Map();
-      this.estudiantesAsignados.forEach(e => {
-        mapaNuevo.set(e.estudiante_id || e.id, e);
-      });
+      this.estudiantesAsignados.forEach(e => mapaNuevo.set(e.estudiante_id || e.id, e));
 
-      // Eliminar relaciones que ya no están
-      for (const [id, estudiante] of mapaActual) {
+      for (const [id] of mapaActual) {
         if (!mapaNuevo.has(id)) {
           await this.padresService.removeEstudiante(padreId, id).toPromise();
         }
       }
 
-      // Agregar nuevas relaciones
-      for (const [id, estudiante] of mapaNuevo) {
+      for (const [id] of mapaNuevo) {
         if (!mapaActual.has(id)) {
-          await this.padresService
-            .assignEstudiante(padreId, id)
-            .toPromise();
+          await this.padresService.assignEstudiante(padreId, id).toPromise();
         }
       }
-
-    } catch (err: unknown) {
+    } catch (err: any) {
       console.error('Error sincronizando estudiantes:', err);
-      if (err && typeof err === 'object' && 'message' in err) {
-        throw new Error((err as { message: string }).message);
-      } else {
-        throw new Error('Error desconocido al sincronizar estudiantes');
-      }
+      throw new Error(err?.message || 'Error al sincronizar estudiantes');
     }
   }
 
@@ -335,26 +492,23 @@ export class PadresComponent implements OnInit {
     this.cargarPadres();
   }
 
-  padreIdEliminar: number | null = null;
+  // ============ ELIMINAR ============
 
   confirmarEliminar(padre?: Padres) {
     if (padre) {
       this.padreIdEliminar = padre.padre_id || padre.id || null;
     }
-
-    // Si no se pasa padre, asumimos que se llamó desde el modal viejo? No, siempre pasamos padre ahora.
     if (!this.padreIdEliminar) return;
 
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '350px',
       data: {
         title: 'Confirmación',
-        message: '¿Está seguro de eliminar este padre?',
+        message: '¿Está seguro de eliminar este registro?',
         icon: 'fa-solid fa-triangle-exclamation',
         confirmText: 'Eliminar',
         cancelText: 'Cancelar'
       }
-
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -369,32 +523,12 @@ export class PadresComponent implements OnInit {
       this.padresService.deletePadre(this.padreIdEliminar).subscribe({
         next: () => {
           this.padreIdEliminar = null;
-          this.mostrarExito('Padre eliminado');
+          this.mostrarExito('Registro eliminado');
         },
         error: (err: any) => {
-          console.error('Error al eliminar:', err);
-          alert('Error al eliminar: ' + (err.message || 'Error desconocido'));
+          alert('Error al eliminar: ' + (err?.error?.message || err.message));
         }
       });
     }
   }
-
-  cerrarModal() {
-    const modal = document.querySelector('.modal-content');
-
-    if (modal) {
-      modal.classList.add('salir');
-
-      setTimeout(() => {
-        this.modalAbierto = false;
-        this.limpiarFormulario();
-        this.cd.detectChanges();
-      }, 250);
-    } else {
-      this.modalAbierto = false;
-      this.limpiarFormulario();
-      this.cd.detectChanges();
-    }
-  }
-
 }

@@ -747,3 +747,136 @@ input:checked+.slider:before {
     /* Verde cuando está activo */
     font-weight: 600;
 }
+
+/* ============ SELECTOR DE MODO (Padre y Madre / Tutor) ============ */
+.modo-selector {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.5rem;
+    border: 2px solid #1f7a4b;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.modo-btn {
+    flex: 1;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    background: #fff;
+    color: #1f7a4b;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.25s ease;
+}
+
+.modo-btn:first-child {
+    border-right: 2px solid #1f7a4b;
+}
+
+.modo-btn:hover {
+    background: rgba(31, 122, 75, 0.08);
+}
+
+.modo-btn.active {
+    background: #1f7a4b;
+    color: #fff;
+}
+
+/* ============ SECCIÓN PERSONA (Padre / Madre / Tutor) ============ */
+.seccion-persona {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed #d1d5db;
+}
+
+.seccion-persona:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* ============ BADGE OPCIONAL ============ */
+.opcional-badge {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #9ca3af;
+    background: #f3f4f6;
+    padding: 0.15rem 0.6rem;
+    border-radius: 10px;
+    margin-left: 0.5rem;
+}
+
+/* ============ RESULTADOS DE BÚSQUEDA DE ESTUDIANTES ============ */
+.resultados-busqueda-est {
+    margin-bottom: 1.2rem;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.resultados-busqueda-est h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #166534;
+    margin: 0 0 0.8rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.resultados-busqueda-est .tabla-estudiantes {
+    background: #fff;
+}
+
+/* ============ BOTÓN AGREGAR PEQUEÑO ============ */
+.btn-agregar-small {
+    background: #1f7a4b;
+    color: #fff;
+    border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: all 0.2s ease;
+}
+
+.btn-agregar-small:hover {
+    background: #16603b;
+    transform: scale(1.05);
+}
+
+.btn-agregar-small i {
+    font-size: 0.75rem;
+}
+
+/* ============ SIN RESULTADOS ============ */
+.no-resultados {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.8rem 1rem;
+    margin-bottom: 1rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    color: #991b1b;
+    font-size: 0.9rem;
+}
+
+.no-resultados i {
+    font-size: 1.1rem;
+    color: #dc2626;
+}
+
+.no-resultados p {
+    margin: 0;
+}

@@ -31,5 +31,10 @@ export const navbarData: INavbarData[] = [
         icon: 'fa fa-users',
         label: 'Padres'
     },
+    {
+        routeLink: 'materiales',
+        icon: 'fa fa-box',
+        label: 'Materiales'
+    },
 
 ]

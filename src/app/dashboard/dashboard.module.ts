@@ -15,6 +15,7 @@ import { BodyComponent } from './layout/body/body.component';
 import { PagosComponent } from './pages/pagos/pagos.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MaterialesComponent } from './pages/materiales/materiales.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     PanelControlComponent,
     BodyComponent,
     PagosComponent,
-    NavbarComponent
+    NavbarComponent,
+    MaterialesComponent
 
   ],
   imports: [
