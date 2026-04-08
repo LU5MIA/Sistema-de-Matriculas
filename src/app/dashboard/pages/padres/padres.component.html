@@ -3,7 +3,7 @@
         <p class="titulo">PADRES</p>
         <button class="btn-es" (click)="abrirAgregar()">
             <i class="fa-solid fa-plus"></i>
-            Agregar Padre
+            Agregar Padre / Madre
         </button>
     </div>
     <div class="acciones-tabla">
@@ -75,121 +75,200 @@
         <!-- Header -->
         <div class="modal-header">
             <h2>
-                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-user-pen' : 'fa-user-plus'">
-                </i>
-                {{ modoEditar ? 'Editar Padre' : 'Agregar Padre' }}
+                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-user-pen' : 'fa-users-line'"></i>
+                {{ modoEditar ? 'Editar Apoderado' : 'Registro de Apoderados' }}
             </h2>
             <span class="close" (click)="cerrarModal()">&times;</span>
         </div>
 
+        <!-- TABS HEADERS -->
+        <aside class="tabs-header">
+            <!-- Si estamos editando y NO era madre, mostramos esta pestaña como la única "Parent" info. Si agregamos, vemos 1 -->
+            <button class="tab-btn" [class.active]="activeTab === 1" (click)="activeTab = 1" [hidden]="modoEditar && formMadre.dni">
+                <i class="fa-solid fa-user-tie"></i> Padre / Tutor 1
+            </button>
+
+            <!-- Si estamos editando y NO era padre, mostramos la 2 como la unica "Parent" info. Si agregamos, vemos 2 -->
+            <button class="tab-btn" [class.active]="activeTab === 2" (click)="activeTab = 2" [hidden]="modoEditar && formPadre.dni">
+                <i class="fa-solid fa-person-dress"></i> Madre / Tutor 2
+            </button>
+
+            <button class="tab-btn" [class.active]="activeTab === 3" (click)="activeTab = 3">
+                <i class="fa-solid fa-children"></i> Hijos Asignados
+            </button>
+        </aside>
+
         <!-- Body -->
         <div class="modal-body">
-            <div class="form-grid">
-
-                <!-- DNI con botón buscar -->
-                <div class="dni-container">
-                    <div class="dni-input">
-                        <label>DNI</label>
-                        <input type="text" placeholder="Ingrese el DNI (8 dígitos)" [(ngModel)]="dni" name="dni"
-                            [disabled]="modoEditar" maxlength="8" oninput="this.value = this.value.slice(0,8)">
+            
+            <!-- CONTENIDO TAB 1: PADRE / TUTOR 1 -->
+            <div class="tab-content" [class.active]="activeTab === 1">
+                <div class="info-opcional" *ngIf="!modoEditar">
+                    <i class="fa-solid fa-circle-info"></i> Puedes dejar esta pestaña vacía si solo vas a registrar a la madre.
+                </div>
+                <div class="form-grid mt-3">
+                    <!-- DNI -->
+                    <div class="dni-container">
+                        <div class="dni-input">
+                            <label>DNI *</label>
+                            <input type="text" placeholder="Ingrese DNI" [(ngModel)]="formPadre.dni" name="dniP"
+                                [disabled]="modoEditar" maxlength="8" oninput="this.value = this.value.slice(0,8)">
+                        </div>
+                        <button *ngIf="!modoEditar" class="btn-buscar-dni" (click)="buscarDniReniec('padre')" [disabled]="buscandoDni">
+                            <i class="fa-solid" [ngClass]="buscandoDni ? 'fa-spinner fa-spin' : 'fa-magnifying-glass'"></i>
+                        </button>
                     </div>
 
-                    <button *ngIf="!modoEditar" class="btn-buscar-dni" (click)="buscarDniReniec()"
-                        [disabled]="buscandoDni">
-                        <i class="fa-solid" [ngClass]="buscandoDni ? 'fa-spinner fa-spin' : 'fa-magnifying-glass'"></i>
-                        {{ buscandoDni ? 'Buscando...' : 'Buscar' }}
-                    </button>
-                </div>
+                    <!-- Nombres -->
+                    <div>
+                        <label>Nombres *</label>
+                        <input type="text" placeholder="Nombres" [(ngModel)]="formPadre.nombres" name="nomP">
+                    </div>
 
-                <!-- Nombres -->
-                <div>
-                    <label>Nombres</label>
-                    <input type="text" placeholder="Ingrese los nombres" [(ngModel)]="nombres" name="nombres">
-                </div>
+                    <!-- Apellidos -->
+                    <div>
+                        <label>Apellido Paterno *</label>
+                        <input type="text" placeholder="A. Paterno" [(ngModel)]="formPadre.apellido_paterno" name="apP">
+                    </div>
+                    <div>
+                        <label>Apellido Materno *</label>
+                        <input type="text" placeholder="A. Materno" [(ngModel)]="formPadre.apellido_materno" name="amP">
+                    </div>
 
-                <!-- Apellido Paterno -->
-                <div>
-                    <label>Apellido Paterno</label>
-                    <input type="text" placeholder="Ingrese el apellido paterno" [(ngModel)]="apellido_paterno"
-                        name="apellido_paterno">
-                </div>
+                    <!-- Contacto -->
+                    <div>
+                        <label>Teléfono</label>
+                        <input type="tel" placeholder="Teléfono" maxlength="9" [(ngModel)]="formPadre.telefono" name="telP" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,9)">
+                    </div>
+                    <div>
+                        <label>Email</label>
+                        <input type="email" placeholder="ejemplo@correo.com" [(ngModel)]="formPadre.email" name="emP">
+                    </div>
 
-                <!-- Apellido Materno -->
-                <div>
-                    <label>Apellido Materno</label>
-                    <input type="text" placeholder="Ingrese el apellido materno" [(ngModel)]="apellido_materno"
-                        name="apellido_materno">
-                </div>
-
-                <!-- Teléfono -->
-                <div>
-                    <label>Teléfono</label>
-                    <input type="tel" placeholder="Ingrese el teléfono (9 dígitos)" maxlength="9" [(ngModel)]="telefono"
-                        name="telefono" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,9)">
-                </div>
-
-                <!-- Email -->
-                <div>
-                    <label>Email</label>
-                    <input type="email" placeholder="ejemplo@correo.com" [(ngModel)]="email" name="email">
-                </div>
-
-                <!-- Dirección -->
-                <div class="full-width">
-                    <label>Dirección</label>
-                    <input type="text" placeholder="Ingrese la dirección completa" [(ngModel)]="direccion"
-                        name="direccion">
-                </div>
-
-                <!-- Tipo de Relación y Apoderado Principal -->
-                <div class="relacion-container">
                     <div class="full-width">
-                        <label>Tipo de Relación</label>
-                        <select [(ngModel)]="tipoRelacion" name="tipoRelacion">
-                            <option value="">Seleccione el tipo de relación</option>
-                            <option value="Padre">Padre</option>
-                            <option value="Madre">Madre</option>
-                            <option value="Tutor">Tutor</option>
-                        </select>
+                        <label>Dirección</label>
+                        <input type="text" placeholder="Dirección completa" [(ngModel)]="formPadre.direccion" name="dirP">
                     </div>
 
-                    <div class="apoderado-principal-check">
-                        <label class="toggle-switch">
-                            <input type="checkbox" [(ngModel)]="esApoderadoPrincipal" name="esApoderadoPrincipal">
-                            <span class="slider round"></span>
-                        </label>
-                        <span class="toggle-label" [class.active]="esApoderadoPrincipal">
-                            {{ esApoderadoPrincipal ? 'Sí, es contacto principal' : 'No es contacto principal' }}
-                        </span>
+                    <!-- Tipo Relación & Apoderado -->
+                    <div class="relacion-container">
+                        <div class="full-width">
+                            <label>Tipo de Relación *</label>
+                            <select [(ngModel)]="formPadre.tipo_relacion" name="trP">
+                                <option value="Padre">Padre</option>
+                                <option value="Tutor">Tutor / Familiar</option>
+                            </select>
+                        </div>
+
+                        <div class="apoderado-principal-check flex-1">
+                            <label class="toggle-switch">
+                                <input type="checkbox" [(ngModel)]="formPadre.es_contacto_principal" name="ecpP">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="toggle-label" [class.active]="formPadre.es_contacto_principal">
+                                {{ formPadre.es_contacto_principal ? 'Cont. Principal' : 'No es Cont. Principal' }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Especificar -> Tutor -->
+                    <div class="full-width" *ngIf="formPadre.tipo_relacion === 'Tutor'">
+                        <label>Especifique el parentesco (Ej: Abuelo, Tío)</label>
+                        <input type="text" placeholder="Ej: Abuelo paterno" [(ngModel)]="formPadre.detalles_relacion" name="drP">
                     </div>
                 </div>
-
-                <!-- Detalles de Relación (condicional) -->
-                <div class="full-width" *ngIf="tipoRelacion === 'Tutor'">
-                    <label>Especifique el parentesco</label>
-                    <input type="text" placeholder="Ej: Abuelo, Tío, Hermano mayor, etc." [(ngModel)]="detallesRelacion"
-                        name="detallesRelacion">
-                </div>
-
             </div>
 
-            <!-- Sección de Asignar Estudiantes -->
-            <div class="asignar-estudiantes-section">
-                <h3 class="section-title">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                    ASIGNAR ESTUDIANTES
-                </h3>
+            <!-- CONTENIDO TAB 2: MADRE / TUTOR 2 -->
+            <div class="tab-content" [class.active]="activeTab === 2">
+                <div class="info-opcional" *ngIf="!modoEditar">
+                    <i class="fa-solid fa-circle-info"></i> Puedes dejar esta pestaña vacía si solo vas a registrar al padre.
+                </div>
+                <div class="form-grid mt-3">
+                    <!-- DNI -->
+                    <div class="dni-container">
+                        <div class="dni-input">
+                            <label>DNI *</label>
+                            <input type="text" placeholder="Ingrese DNI" [(ngModel)]="formMadre.dni" name="dniM"
+                                [disabled]="modoEditar" maxlength="8" oninput="this.value = this.value.slice(0,8)">
+                        </div>
+                        <button *ngIf="!modoEditar" class="btn-buscar-dni" (click)="buscarDniReniec('madre')" [disabled]="buscandoDni">
+                            <i class="fa-solid" [ngClass]="buscandoDni ? 'fa-spinner fa-spin' : 'fa-magnifying-glass'"></i>
+                        </button>
+                    </div>
 
+                    <!-- Nombres -->
+                    <div>
+                        <label>Nombres *</label>
+                        <input type="text" placeholder="Nombres" [(ngModel)]="formMadre.nombres" name="nomM">
+                    </div>
+
+                    <!-- Apellidos -->
+                    <div>
+                        <label>Apellido Paterno *</label>
+                        <input type="text" placeholder="A. Paterno" [(ngModel)]="formMadre.apellido_paterno" name="apM">
+                    </div>
+                    <div>
+                        <label>Apellido Materno *</label>
+                        <input type="text" placeholder="A. Materno" [(ngModel)]="formMadre.apellido_materno" name="amM">
+                    </div>
+
+                    <!-- Contacto -->
+                    <div>
+                        <label>Teléfono</label>
+                        <input type="tel" placeholder="Teléfono" maxlength="9" [(ngModel)]="formMadre.telefono" name="telM" oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0,9)">
+                    </div>
+                    <div>
+                        <label>Email</label>
+                        <input type="email" placeholder="ejemplo@correo.com" [(ngModel)]="formMadre.email" name="emM">
+                    </div>
+
+                    <div class="full-width">
+                        <label>Dirección</label>
+                        <input type="text" placeholder="Dirección completa" [(ngModel)]="formMadre.direccion" name="dirM">
+                    </div>
+
+                    <!-- Tipo Relación & Apoderado -->
+                    <div class="relacion-container">
+                        <div class="full-width">
+                            <label>Tipo de Relación *</label>
+                            <select [(ngModel)]="formMadre.tipo_relacion" name="trM">
+                                <option value="Madre">Madre</option>
+                                <option value="Tutora">Tutora / Familiar</option>
+                            </select>
+                        </div>
+
+                        <div class="apoderado-principal-check flex-1">
+                            <label class="toggle-switch">
+                                <input type="checkbox" [(ngModel)]="formMadre.es_contacto_principal" name="ecpM">
+                                <span class="slider round"></span>
+                            </label>
+                            <span class="toggle-label" [class.active]="formMadre.es_contacto_principal">
+                                {{ formMadre.es_contacto_principal ? 'Cont. Principal' : 'No es Cont. Principal' }}
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Especificar -> Tutor -->
+                    <div class="full-width" *ngIf="formMadre.tipo_relacion === 'Tutora'">
+                        <label>Especifique el parentesco (Ej: Abuela, Tía)</label>
+                        <input type="text" placeholder="Ej: Abuela materna" [(ngModel)]="formMadre.detalles_relacion" name="drM">
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTENIDO TAB 3: HIJOS / ESTUDIANTES ASIGNADOS -->
+            <div class="tab-content asignar-estudiantes-section" [class.active]="activeTab === 3" style="margin-top: 0; border-top: none;">
                 <div class="estudiante-search">
                     <div class="search-group">
-                        <label>DNI del Estudiante</label>
+                        <label>DNI del Estudiante a enlazar</label>
                         <div class="search-input-group">
                             <input type="text" placeholder="Ingrese el DNI del estudiante (8 dígitos)"
                                 [(ngModel)]="dniEstudiante" name="dniEstudiante" maxlength="8"
                                 oninput="this.value = this.value.slice(0,8)">
                             <button class="btn-buscar-estudiante" (click)="buscarEstudiante()">
                                 <i class="fa-solid fa-plus"></i>
-                                Agregar
+                                Agregar Hija/o
                             </button>
                         </div>
                     </div>
@@ -200,7 +279,7 @@
                     <div class="empty-state" *ngIf="estudiantesAsignados.length === 0">
                         <i class="fa-solid fa-user-graduate"></i>
                         <p>No hay estudiantes asignados</p>
-                        <small>Busque un estudiante por DNI para asignarlo a este padre</small>
+                        <small>Busque un estudiante por su DNI para enlazar a sus padres</small>
                     </div>
 
                     <!-- Tabla de estudiantes asignados -->
@@ -226,6 +305,7 @@
                     </table>
                 </div>
             </div>
+
         </div>
 
         <!-- Footer -->
@@ -234,10 +314,11 @@
                 <i class="fa-solid fa-xmark"></i> Cancelar
             </button>
 
+            <!-- Solo podemos guardar si estamos en la ultima tab, o siempre? 
+                 Dejemos siempre disponible el boton de guardar -->
             <button class="btn-guardar" (click)="guardarPadre()">
-                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'">
-                </i>
-                {{ modoEditar ? 'Actualizar' : 'Guardar' }}
+                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'"></i>
+                {{ modoEditar ? 'Actualizar' : 'Guardar y Finalizar' }}
             </button>
 
         </div>

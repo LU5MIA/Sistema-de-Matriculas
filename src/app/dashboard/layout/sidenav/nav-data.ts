@@ -31,5 +31,9 @@ export const navbarData: INavbarData[] = [
         icon: 'fa fa-users',
         label: 'Padres'
     },
-
-]
+    {
+        routeLink: 'salud',
+        icon: 'fa fa-heart-pulse',
+        label: 'Salud Estudiantil'
+    },
+]

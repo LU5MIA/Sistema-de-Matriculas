@@ -7,6 +7,7 @@ import { EstudiantesComponent } from "./pages/estudiantes/estudiantes.component"
 import { MatriculasComponent } from "./pages/matriculas/matriculas.component";
 import { PadresComponent } from "./pages/padres/padres.component";
 import { PagosComponent } from "./pages/pagos/pagos.component";
+import { SaludComponent } from "./pages/salud/salud.component";
 
 const routes: Routes = [
   {
@@ -37,6 +38,10 @@ const routes: Routes = [
       {
         path: "pagos",
         component: PagosComponent,
+      },
+      {
+        path: "salud",
+        component: SaludComponent,
       }
     ]
   }
@@ -46,4 +51,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class DashboardRoutingModule {}
+export class DashboardRoutingModule {}

@@ -747,3 +747,89 @@ input:checked+.slider:before {
     /* Verde cuando está activo */
     font-weight: 600;
 }
+
+/* ============================================
+   TABS HEADERS
+   ============================================ */
+.tabs-header {
+  display: flex;
+  background: #f8fafc;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 0;
+  margin: 0;
+}
+
+.tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tab-btn:focus {
+  outline: none;
+}
+
+.tab-btn:hover {
+  color: #3b82f6;
+  background: #f1f5f9;
+}
+
+.tab-btn.active {
+  color: #142b44;
+  font-weight: 600;
+  background: #fff;
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #142b44;
+  border-radius: 3px 3px 0 0;
+}
+
+/* ============================================
+   TAB CONTENT
+   ============================================ */
+.tab-content {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.info-opcional {
+  margin-top: 0.5rem;
+  padding: 0.8rem;
+  background-color: #f8fafc;
+  border-left: 4px solid #94a3b8;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.info-opcional i {
+  color: #64748b;
+  margin-right: 0.4rem;
+}

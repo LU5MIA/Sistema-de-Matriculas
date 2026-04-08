@@ -1,0 +1,191 @@
+<!-- CABECERA -->
+<div class="cont-header">
+  <div class="header-titulo">
+    <i class="fa-solid fa-heart-pulse icono-salud"></i>
+    <p class="titulo">SALUD ESTUDIANTIL</p>
+  </div>
+  <button class="btn-nuevo" (click)="abrirAgregar()">
+    <i class="fa-solid fa-plus"></i>
+    Nuevo Registro
+  </button>
+</div>
+
+<!-- FILTROS -->
+<div class="acciones-tabla">
+  <div class="mostrar-registros">
+    <span>Mostrar</span>
+    <select (change)="cambiarCantidad($event)">
+      <option value="0">Todos</option>
+      <option value="10" selected>10</option>
+      <option value="25">25</option>
+      <option value="50">50</option>
+    </select>
+    <span>registros</span>
+  </div>
+
+  <div class="buscar-seccion">
+    <label>Buscar:</label>
+    <div class="input-icono">
+      <i class="fa-solid fa-magnifying-glass icono-input"></i>
+      <input
+        type="text"
+        placeholder="Nombre, DNI o condición..."
+        [(ngModel)]="busqueda"
+        (ngModelChange)="onBusquedaChange($event)"
+      />
+    </div>
+  </div>
+</div>
+
+<!-- TABLA -->
+<div class="cont-tabla tabla-scroll">
+  <div *ngIf="cargando" class="cargando">
+    <i class="fa-solid fa-spinner fa-spin"></i> Cargando registros...
+  </div>
+
+  <table class="tabla-datos" *ngIf="!cargando">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nombre del Estudiante</th>
+        <th>DNI</th>
+        <th>Condición Médica</th>
+        <th>Tipo</th>
+        <th>Gravedad</th>
+        <th>Descripción</th>
+        <th>Contacto Padre/Madre</th>
+        <th>Teléfono</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let r of registros; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td class="td-nombre">{{ getNombreCompleto(r) }}</td>
+        <td>{{ r.estudiante.dni }}</td>
+        <td class="td-condicion">{{ r.condicion ?? '—' }}</td>
+        <td>
+          <span [ngClass]="getTipoClass(r.tipo_condicion)" class="badge-tipo">
+            {{ r.tipo_condicion ?? '—' }}
+          </span>
+        </td>
+        <td>
+          <span [ngClass]="getGravedadClass(r.gravedad)" class="badge-gravedad">
+            {{ r.gravedad ?? '—' }}
+          </span>
+        </td>
+        <td class="td-descripcion" [title]="r.descripcion">
+          {{ r.descripcion && r.descripcion.length > 40 ? (r.descripcion | slice:0:40) + '...' : (r.descripcion ?? '—') }}
+        </td>
+        <td>{{ getNombrePadre(r) }}</td>
+        <td>{{ getTelefonoPadre(r) }}</td>
+        <td class="td-acciones">
+          <button class="btn-icon btn-edit" (click)="abrirEditar(r)" title="Editar registro">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button class="btn-icon btn-eliminar" (click)="eliminar(r.informacion_medica_id)" title="Eliminar registro">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p class="sin-resultados" *ngIf="!cargando && registros.length === 0">
+    <i class="fa-solid fa-circle-info"></i>
+    No se encontraron registros médicos.
+  </p>
+</div>
+
+<!-- MODAL -->
+<div class="modal" *ngIf="modalAbierto">
+  <div class="modal-content">
+
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>
+        <i class="fa-solid" [ngClass]="modoEditar ? 'fa-heart-circle-plus' : 'fa-file-medical'"></i>
+        {{ modoEditar ? 'Editar Registro Médico' : 'Nuevo Registro Médico' }}
+      </h2>
+      <span class="close" (click)="cerrarModal()">&times;</span>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <div class="form-grid">
+
+        <!-- Estudiante -->
+        <div class="full-col">
+          <label>Estudiante <span class="requerido">*</span></label>
+          <select [(ngModel)]="form.estudiante_id" name="estudiante_id" [disabled]="modoEditar">
+            <option [value]="0">— Seleccione un estudiante —</option>
+            <option *ngFor="let est of estudiantesDisponibles" [value]="est.estudiante_id">
+              {{ est.nombres }} {{ est.apellido_paterno }} {{ est.apellido_materno }} — {{ est.dni }}
+            </option>
+          </select>
+        </div>
+
+        <!-- Condición Médica -->
+        <div>
+          <label>Condición Médica <span class="requerido">*</span></label>
+          <input
+            type="text"
+            placeholder="Ej: Asma, Alergia al maní..."
+            [(ngModel)]="form.condicion"
+            name="condicion"
+          />
+        </div>
+
+        <!-- Tipo de condición -->
+        <div>
+          <label>Tipo de Condición</label>
+          <select [(ngModel)]="form.tipo_condicion" name="tipo_condicion">
+            <option value="">— Seleccione —</option>
+            <option *ngFor="let t of tiposCondicion" [value]="t">{{ t }}</option>
+          </select>
+        </div>
+
+        <!-- Gravedad -->
+        <div>
+          <label>Gravedad <span class="requerido">*</span></label>
+          <select [(ngModel)]="form.gravedad" name="gravedad">
+            <option value="">— Seleccione —</option>
+            <option *ngFor="let g of gravedades" [value]="g">{{ g }}</option>
+          </select>
+        </div>
+
+        <!-- Descripción -->
+        <div class="full-col">
+          <label>Descripción / Observaciones</label>
+          <textarea
+            rows="3"
+            placeholder="Ingrese detalles relevantes sobre la condición del estudiante..."
+            [(ngModel)]="form.descripcion"
+            name="descripcion"
+          ></textarea>
+        </div>
+
+      </div>
+
+      <!-- Info de contacto (solo lectura, visible al editar) -->
+      <div class="info-contacto" *ngIf="modoEditar">
+        <i class="fa-solid fa-circle-info"></i>
+        Los datos de contacto del padre/madre se gestionan desde el módulo <strong>Padres</strong>.
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cerrarModal()">
+        <i class="fa-solid fa-xmark"></i> Cancelar
+      </button>
+      <form (ngSubmit)="guardar()">
+        <button class="btn-guardar" type="submit">
+          <i class="fa-solid" [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'"></i>
+          {{ modoEditar ? 'Actualizar' : 'Guardar' }}
+        </button>
+      </form>
+    </div>
+
+  </div>
+</div>
