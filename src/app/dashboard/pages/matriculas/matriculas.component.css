@@ -169,29 +169,51 @@ select:hover {
 }
 
 .tabla-datos {
-  margin-top: 1.5rem;
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  border-radius: 0.5rem;
-  overflow: hidden;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 0.5rem;
 }
 
 .tabla-datos th,
 .tabla-datos td {
-  /*border: 1px solid #ddd;*/
-  padding: 0.8rem;
-  text-align: center;
+    /*border: 1px solid #ddd;*/
+    padding: 0.8rem;
+    text-align: center;
 }
 
 .tabla-datos thead {
-  background-color: #142b44;
-  color: #ffffff;
-  height: 3.2rem;
+    background-color: #142b44;
+    /* azul */
+    color: #ffffff;
+    height: 3.2rem;
 }
 
 .tabla-datos tbody tr:nth-child(even) {
-  background-color: #f5f5f5;
+    background-color: #f5f5f5;
+}
+
+.tabla-scroll {
+  margin-top: 2.5rem;
+  max-height: 450px;
+  overflow-y: auto;
+  border-radius: 0.5rem;
+  /* Ocultar scrollbar */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  
+}
+
+.tabla-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+
+.tabla-datos thead th {
+  position: sticky;
+  top: 0;
+  background-color: #142b44;
 }
 
 .btn-icon {

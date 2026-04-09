@@ -26,6 +26,11 @@ export class PadresService {
     return this.http.get<Padres>(`${this.apiUrl}/${padre_id}`)
   }
 
+  // Obtener padres por estudiante
+  getPadresByEstudiante(estudianteId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/estudiante/${estudianteId}`);
+  }
+
   // ✅ Buscar DNI en RENIEC (usa el módulo común api-peru)
   buscarDniEnReniec(dni: string): Observable<any> {
     return this.http.get<any>(`${this.apiPeruUrl}/dni/${dni}`);
