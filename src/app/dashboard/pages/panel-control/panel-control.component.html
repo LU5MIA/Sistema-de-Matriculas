@@ -10,36 +10,36 @@
   </div>
 
   <ul class="box-info">
-
+ 
     <!-- MATRÍCULAS -->
     <li class="item">
       <div class="item-content">
         <i class="fas fa-users"></i>
 
         <div class="text">
-          <h3 id="totalMatriculas">58</h3>
+          <h3 id="totalMatriculas">{{ totalMatriculas }}</h3>
           <p>Matrículas</p>
         </div>
-      </div>
+      </div> 
 
-      <button class="btn btn-primary">
-        Matrícula
+      <button class="btn btn-primary" routerLink="/dashboard/matriculas">
+        Matrículas
       </button>
     </li>
 
-    <!-- PAGOS -->
+    <!-- ESTUDIANTES -->
     <li class="item">
       <div class="item-content">
-        <i class="fas fa-dollar-sign"></i>
+        <i class="fas fa-user-graduate"></i>
 
         <div class="text">
-          <h3 id="totalPagos">S/. 500.00</h3>
-          <p>Pagos</p>
+          <h3 id="totalEstudiantes">{{totalEstudiantes}}</h3>
+          <p>Estudiantes</p>
         </div>
       </div>
 
-      <button class="btn btn-warning">
-        Pagos
+      <button class="btn btn-warning" routerLink="/dashboard/estudiantes">
+        Estudiantes
       </button>
     </li>
 

@@ -1020,30 +1020,33 @@ export class PagosComponent {
 
     let letras = '';
 
-    if (entero === 100) return 'CIEN';
-
-    if (entero > 99) {
-      letras += centenas[Math.floor(entero / 100)] + ' ';
-    }
-
-    const resto = entero % 100;
-
-    if (resto <= 15) {
-      letras += unidades[resto];
-    } else if (resto < 20) {
-      letras += 'DIECI' + unidades[resto - 10].toLowerCase();
-    } else if (resto === 20) {
-      letras += 'VEINTE';
-    } else if (resto < 30) {
-      letras += 'VEINTI' + unidades[resto - 20].toLowerCase();
+    if (entero === 100) {
+      letras = 'CIEN';
     } else {
-      letras += decenas[Math.floor(resto / 10)];
-      if (resto % 10 !== 0) {
-        letras += ' Y ' + unidades[resto % 10];
+      
+      if (entero > 99) {
+        letras += centenas[Math.floor(entero / 100)] + ' ';
+      }
+
+      const resto = entero % 100;
+     
+      if (resto <= 15) {
+        letras += unidades[resto];
+      } else if (resto < 20) {
+        letras += 'DIECI' + unidades[resto - 10]; 
+      } else if (resto === 20) {
+        letras += 'VEINTE';
+      } else if (resto < 30) {
+        letras += 'VEINTI' + unidades[resto - 20];
+      } else {
+        letras += decenas[Math.floor(resto / 10)];
+        if (resto % 10 !== 0) {
+          letras += ' Y ' + unidades[resto % 10];
+        }
       }
     }
 
-    return `${letras.toUpperCase()} CON ${decimal.toString().padStart(2, '0')}/100 SOLES`;
+    return `${letras.trim().toUpperCase()} CON ${decimal.toString().padStart(2, '0')}/100 SOLES`;
   }
 
 
