@@ -8,7 +8,6 @@ import { MatriculasComponent } from "./pages/matriculas/matriculas.component";
 import { PadresComponent } from "./pages/padres/padres.component";
 import { PagosComponent } from "./pages/pagos/pagos.component";
 import { SaludComponent } from "./pages/salud/salud.component";
-import { MaterialesComponent } from './pages/materiales/materiales.component';
 
 const routes: Routes = [
   {
@@ -43,10 +42,6 @@ const routes: Routes = [
       {
         path: "salud",
         component: SaludComponent,
-      },
-      {
-        path: "materiales",
-        component: MaterialesComponent,
       }
     ]
   }

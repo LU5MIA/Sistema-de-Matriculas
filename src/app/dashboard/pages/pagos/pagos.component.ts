@@ -7,7 +7,7 @@ import { Padres } from '../../../shared/interfaces/padres.interface';
 import { PadresService } from '../../../core/services/padres.service';
 import { DetallePagoCreate, DetallesPago } from '../../../shared/interfaces/detalles-pago.interface';
 import { forkJoin } from 'rxjs';
-// import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 @Component({
   selector: 'app-pagos',
@@ -848,7 +848,6 @@ export class PagosComponent {
 
   async imprimirReciboPDF(detalle: DetallesPago) {
 
-    /*
     const existingPdfBytes = await fetch('assets/HOSANNA RECIBO.pdf')
       .then(res => res.arrayBuffer());
 
@@ -868,9 +867,7 @@ export class PagosComponent {
     const numeroRecibo = this.generarNumeroRecibo(detalle.detalle_id);
 
     const colorAzul = rgb(0, 0, 0);
-    */
 
-    /*
     let marcarEfectivo = '';
     let marcarDeposito = '';
     let marcarOtros = '';
@@ -994,7 +991,6 @@ export class PagosComponent {
     const url = URL.createObjectURL(blob);
 
     window.open(url);
-    */
   }
 
   generarNumeroRecibo(numero: number): string {
