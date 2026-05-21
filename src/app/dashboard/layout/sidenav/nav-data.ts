@@ -33,8 +33,7 @@ export const navbarData: INavbarData[] = [
     },
     {
         routeLink: 'materiales',
-        icon: 'fa fa-box',
+        icon: 'fa-solid fa-boxes-stacked',
         label: 'Materiales'
-    },
-
+    }
 ]

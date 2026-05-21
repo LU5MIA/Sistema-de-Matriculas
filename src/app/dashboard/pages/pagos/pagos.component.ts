@@ -6,6 +6,8 @@ import { PagosService } from '../../../core/services/pagos.service';
 import { Padres } from '../../../shared/interfaces/padres.interface';
 import { PadresService } from '../../../core/services/padres.service';
 import { DetallesPago } from '../../../shared/interfaces/detalles-pago.interface';
+import { forkJoin } from 'rxjs';
+// import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 @Component({
   selector: 'app-pagos',
@@ -410,7 +412,215 @@ export class PagosComponent {
     window.open(url, '_blank');
   }
 
-  pagoEstudiante() {
+  async imprimirReciboPDF(detalle: DetallesPago) {
+
+    /*
+    const existingPdfBytes = await fetch('assets/HOSANNA RECIBO.pdf')
+      .then(res => res.arrayBuffer());
+
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+    const page = pdfDoc.getPages()[0];
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+    // DATOS
+    const nombre = `${detalle.pagador.nombres} ${detalle.pagador.apellido_materno}  ${detalle.pagador.apellido_paterno}`.toUpperCase();
+    const montoNumero = Number(detalle.monto);
+    const montoTexto = this.numeroALetras(montoNumero);
+    const concepto = detalle.pago.concepto.toUpperCase(); // o concepto real
+    const fecha = new Date(detalle.fecha_pago);
+    const dia = fecha.getDate().toString().padStart(2, '0');
+    const mes = fecha.toLocaleString('es-PE', { month: 'long' }).toUpperCase();
+    const canal_pago = detalle.canal_pago.toUpperCase(); // ej: "EFECTIVO"
+    const numeroRecibo = this.generarNumeroRecibo(detalle.detalle_id);
+
+    const colorAzul = rgb(0, 0, 0);
+    */
+
+    /*
+    let marcarEfectivo = '';
+    let marcarDeposito = '';
+    let marcarOtros = '';
+    let detalleOtros = '';
+
+    if (canal_pago === 'EFECTIVO') {
+      marcarEfectivo = 'X';
+
+    } else if (['BCP', 'BBVA'].includes(canal_pago)) {
+      marcarDeposito = 'X';
+
+    } else if (['YAPE', 'PLIN', 'TUNKI'].includes(canal_pago)) {
+      marcarOtros = 'X';
+      detalleOtros = canal_pago;
+    }
+
+    // RECIBI DE:
+    page.drawText(nombre, {
+      x: 200,
+      y: 490,
+      size: 10,
+      font,
+      color: colorAzul,
+    });
+
+    // LA CANTIDAD DE:
+    page.drawText(`${montoTexto}`, {
+      x: 200,
+      y: 460,
+      size: 10,
+      font,
+      color: colorAzul,
+    });
+
+    // EL MONTO DE:
+    page.drawText(`S/ ${detalle.monto}`, {
+      x: 485,
+      y: 530,
+      size: 10,
+      font,
+      color: colorAzul,
+    });
+
+    // POR CONCEPTO DE:
+    page.drawText(concepto, {
+      x: 200,
+      y: 430,
+      size: 10,
+      font,
+      color: colorAzul,
+    });
+
+    // Día
+    page.drawText(dia.toString(), {
+      x: 160,
+      y: 380,
+      size: 10,
+      font,
+      color: colorAzul,
+    });
+
+    // Mes
+    page.drawText(mes, {
+      x: 240, //más a la derecha
+      y: 380,
+      size: 10,
+      font,
+      color: colorAzul,
+    });
+
+    //Efectivo
+    page.drawText(marcarEfectivo, {
+      x: 175, // ajusta según tu recibo
+      y: 335,
+      size: 12,
+      font,
+      color: colorAzul,
+    });
+
+    // Depósito
+    page.drawText(marcarDeposito, {
+      x: 175,
+      y: 315,
+      size: 12,
+      font,
+      color: colorAzul,
+    });
+
+    // Otros
+    page.drawText(marcarOtros, {
+      x: 175,
+      y: 295,
+      size: 12,
+      font,
+      color: colorAzul,
+    });
+
+    // Detalle para otros (YAPE, PLIN, etc)
+
+    page.drawText(detalleOtros, {
+      x: 320,
+      y: 300,
+      size: 10,
+      font,
+      color: colorAzul,
+    });
+
+    // Número de recibo
+    page.drawText(numeroRecibo, {
+      x: 490,
+      y: 555,
+      size: 10,
+      font,
+      color: colorAzul,
+
+    });
+
+    const pdfBytes = await pdfDoc.save();
+
+    const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+
+    window.open(url);
+    */
+  }
+
+  generarNumeroRecibo(numero: number): string {
+    return `${numero.toString().padStart(5, '0')}`;
+  }
+
+  numeroALetras(monto: number): string {
+    const unidades = [
+      '', 'UNO', 'DOS', 'TRES', 'CUATRO', 'CINCO',
+      'SEIS', 'SIETE', 'OCHO', 'NUEVE', 'DIEZ',
+      'ONCE', 'DOCE', 'TRECE', 'CATORCE', 'QUINCE'
+    ];
+
+    const decenas = [
+      '', '', 'VEINTE', 'TREINTA', 'CUARENTA',
+      'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA'
+    ];
+
+    const centenas = [
+      '', 'CIENTO', 'DOSCIENTOS', 'TRESCIENTOS',
+      'CUATROCIENTOS', 'QUINIENTOS', 'SEISCIENTOS',
+      'SETECIENTOS', 'OCHOCIENTOS', 'NOVECIENTOS'
+    ];
+
+    const entero = Math.floor(monto);
+    const decimal = Math.round((monto - entero) * 100);
+
+    let letras = '';
+
+    if (entero === 100) {
+      letras = 'CIEN';
+    } else {
+      
+      if (entero > 99) {
+        letras += centenas[Math.floor(entero / 100)] + ' ';
+      }
+
+      const resto = entero % 100;
+     
+      if (resto <= 15) {
+        letras += unidades[resto];
+      } else if (resto < 20) {
+        letras += 'DIECI' + unidades[resto - 10]; 
+      } else if (resto === 20) {
+        letras += 'VEINTE';
+      } else if (resto < 30) {
+        letras += 'VEINTI' + unidades[resto - 20];
+      } else {
+        letras += decenas[Math.floor(resto / 10)];
+        if (resto % 10 !== 0) {
+          letras += ' Y ' + unidades[resto % 10];
+        }
+      }
+    }
+
+    return `${letras.trim().toUpperCase()} CON ${decimal.toString().padStart(2, '0')}/100 SOLES`;
+  }
+
+
+  pagoEstudiante(id: number) {
     this.modalPagoEstudiante = true;
     this.modalAbierto = false;
   }

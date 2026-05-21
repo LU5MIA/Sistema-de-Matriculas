@@ -31,7 +31,6 @@ import { MaterialesComponent } from './pages/materiales/materiales.component';
     PagosComponent,
     NavbarComponent,
     MaterialesComponent
-
   ],
   imports: [
     FormsModule,

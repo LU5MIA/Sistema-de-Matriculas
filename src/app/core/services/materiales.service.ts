@@ -1,93 +1,112 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Materiales, MaterialAula, MaterialEstudiante, AulaResultado, EstudianteResultado, AulaConMateriales } from '../../shared/interfaces/materiales.interface';
+import {
+  Material,
+  CreateMaterial,
+  UpdateMaterial,
+  PaginatedMateriales,
+  MaterialAulaAsignada,
+  AsignarAulaPayload,
+  MaterialEstudianteAsignado,
+  AsignarEstudiantePayload,
+  BulkAsignarPayload,
+  BulkAsignarResult,
+  AulaBusqueda,
+  EstudianteBusqueda,
+  EstudianteAula,
+  MaterialTipo,
+} from '../../shared/interfaces/material.interface';
+
+// Interfaz simplificada para listado de aulas del selector
+export interface AulaSelect {
+  aula_id: number;
+  nivel: string;
+  grado: string;
+  seccion: string;
+}
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class MaterialesService {
+  private apiUrl = 'http://localhost:3000/api/materiales';
 
-    private apiUrl = 'http://localhost:3000/api/materiales';
+  constructor(private http: HttpClient) { }
 
-    constructor(private http: HttpClient) {}
+  // ============ CRUD BÁSICO ============
 
-    // ============ CRUD BÁSICO ============
+  getMateriales(page = 1, limit = 10): Observable<PaginatedMateriales> {
+    return this.http.get<PaginatedMateriales>(`${this.apiUrl}?page=${page}&limit=${limit}`);
+  }
 
-    getMateriales(page: number = 1, limit: number = 10): Observable<any> {
-        return this.http.get<any>(`${this.apiUrl}?page=${page}&limit=${limit}`);
-    }
+  getMaterialById(id: number): Observable<Material> {
+    return this.http.get<Material>(`${this.apiUrl}/${id}`);
+  }
 
-    getMaterialById(id: number): Observable<Materiales> {
-        return this.http.get<Materiales>(`${this.apiUrl}/${id}`);
-    }
+  getMaterialesByTipo(tipo: MaterialTipo): Observable<Material[]> {
+    return this.http.get<Material[]>(`${this.apiUrl}/tipo/${tipo}`);
+  }
 
-    createMaterial(material: any): Observable<Materiales> {
-        return this.http.post<Materiales>(this.apiUrl, material);
-    }
+  createMaterial(material: CreateMaterial): Observable<Material> {
+    return this.http.post<Material>(this.apiUrl, material);
+  }
 
-    updateMaterial(id: number, material: any): Observable<Materiales> {
-        return this.http.patch<Materiales>(`${this.apiUrl}/${id}`, material);
-    }
+  updateMaterial(id: number, material: UpdateMaterial): Observable<Material> {
+    return this.http.patch<Material>(`${this.apiUrl}/${id}`, material);
+  }
 
-    deleteMaterial(id: number): Observable<any> {
-        return this.http.delete<any>(`${this.apiUrl}/${id}`);
-    }
+  deleteMaterial(id: number): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.apiUrl}/${id}`);
+  }
 
-    // ============ MÉTODOS PARA AULAS ============
+  // ============ AULAS ============
 
-    getAulasAsignadas(materialId: number): Observable<MaterialAula[]> {
-        return this.http.get<MaterialAula[]>(`${this.apiUrl}/${materialId}/aulas`);
-    }
+  getAulasAsignadas(materialId: number): Observable<MaterialAulaAsignada[]> {
+    return this.http.get<MaterialAulaAsignada[]>(`${this.apiUrl}/${materialId}/aulas`);
+  }
 
-    assignAula(materialId: number, aulaId: number, cantidad: number): Observable<any> {
-        return this.http.post(`${this.apiUrl}/${materialId}/aulas`, {
-            aula_id: aulaId,
-            cantidad_asignada: cantidad
-        });
-    }
+  asignarAula(materialId: number, payload: AsignarAulaPayload): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${materialId}/aulas`, payload);
+  }
 
-    removeAula(materialId: number, aulaId: number): Observable<any> {
-        return this.http.delete(`${this.apiUrl}/${materialId}/aulas/${aulaId}`);
-    }
+  quitarAula(materialId: number, aulaId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${materialId}/aulas/${aulaId}`);
+  }
 
-    // ============ MÉTODOS PARA ESTUDIANTES ============
+  // ============ ESTUDIANTES ============
 
-    getEstudiantesAsignados(materialId: number): Observable<MaterialEstudiante[]> {
-        return this.http.get<MaterialEstudiante[]>(`${this.apiUrl}/${materialId}/estudiantes`);
-    }
+  getEstudiantesAsignados(materialId: number): Observable<MaterialEstudianteAsignado[]> {
+    return this.http.get<MaterialEstudianteAsignado[]>(`${this.apiUrl}/${materialId}/estudiantes`);
+  }
 
-    assignEstudiante(materialId: number, estudianteId: number, cantidad: number, estado: string = 'Asignado'): Observable<any> {
-        return this.http.post(`${this.apiUrl}/${materialId}/estudiantes`, {
-            estudiante_id: estudianteId,
-            cantidad_asignada: cantidad,
-            estado
-        });
-    }
+  asignarEstudiante(materialId: number, payload: AsignarEstudiantePayload): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${materialId}/estudiantes`, payload);
+  }
 
-    removeEstudiante(materialId: number, estudianteId: number): Observable<any> {
-        return this.http.delete(`${this.apiUrl}/${materialId}/estudiantes/${estudianteId}`);
-    }
+  asignarEstudiantesMasivo(materialId: number, payload: BulkAsignarPayload): Observable<BulkAsignarResult> {
+    return this.http.post<BulkAsignarResult>(`${this.apiUrl}/${materialId}/estudiantes/bulk`, payload);
+  }
 
-    // ============ MÉTODOS DE BÚSQUEDA ============
+  quitarEstudiante(materialId: number, estudianteId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${materialId}/estudiantes/${estudianteId}`);
+  }
 
-    buscarAula(query: string): Observable<AulaResultado[]> {
-        return this.http.get<AulaResultado[]>(`${this.apiUrl}/buscar-aula/${query}`);
-    }
+  // ============ BÚSQUEDAS ============
 
-    buscarEstudiantePorDni(dni: string): Observable<EstudianteResultado> {
-        return this.http.get<EstudianteResultado>(`${this.apiUrl}/buscar-estudiante/${dni}`);
-    }
+  getTodasLasAulas(): Observable<AulaSelect[]> {
+    return this.http.get<AulaSelect[]>('http://localhost:3000/api/aulas');
+  }
 
-    // ============ MÉTODOS POR TIPO ============
+  getEstudiantesPorAula(aulaId: number, materialId: number): Observable<EstudianteAula[]> {
+    return this.http.get<EstudianteAula[]>(`http://localhost:3000/api/aulas/${aulaId}/estudiantes?material_id=${materialId}`);
+  }
 
-    getMaterialesPorTipo(tipo: string): Observable<Materiales[]> {
-        return this.http.get<Materiales[]>(`${this.apiUrl}/tipo/${tipo}`);
-    }
+  buscarAula(query: string): Observable<AulaBusqueda[]> {
+    return this.http.get<AulaBusqueda[]>(`${this.apiUrl}/buscar-aula/${encodeURIComponent(query)}`);
+  }
 
-    // ============ ASIGNACIÓN MASIVA ============
-
-    bulkAssignEstudiantes(materialId: number, asignaciones: { estudiante_id: number; cantidad_asignada: number }[]): Observable<any> {
-        return this.http.post(`${this.apiUrl}/${materialId}/estudiantes/bulk`, { asignaciones });
-    }
+  buscarEstudiantePorDni(dni: string): Observable<EstudianteBusqueda> {
+    return this.http.get<EstudianteBusqueda>(`${this.apiUrl}/buscar-estudiante/${dni}`);
+  }
 }
