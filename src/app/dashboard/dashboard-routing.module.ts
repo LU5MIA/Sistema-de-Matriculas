@@ -7,17 +7,17 @@ import { EstudiantesComponent } from "./pages/estudiantes/estudiantes.component"
 import { MatriculasComponent } from "./pages/matriculas/matriculas.component";
 import { PadresComponent } from "./pages/padres/padres.component";
 import { PagosComponent } from "./pages/pagos/pagos.component";
-import { MaterialesComponent } from "./pages/materiales/materiales.component";
+import { SaludComponent } from "./pages/salud/salud.component";
 
 const routes: Routes = [
   {
     path: '',
     component: DashboardLayoutComponent,
     children: [
-      { path: "", redirectTo: "panel-control", pathMatch: "full" },
+      {path:"", redirectTo: "panel-control", pathMatch: "full"},
       {
         path: "panel-control",
-        component: PanelControlComponent,
+        component: PanelControlComponent, 
       },
       {
         path: "bancos",
@@ -40,8 +40,8 @@ const routes: Routes = [
         component: PagosComponent,
       },
       {
-        path: "materiales",
-        component: MaterialesComponent,
+        path: "salud",
+        component: SaludComponent,
       }
     ]
   }
@@ -51,4 +51,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class DashboardRoutingModule { }
+export class DashboardRoutingModule {}

@@ -135,13 +135,10 @@ select:hover {
 }
 
 .tabla-datos {
-    margin-top: 2.5rem;
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
     border-radius: 0.5rem;
-    overflow: hidden;
-    /* recorta el thead */
 }
 
 .tabla-datos th,
@@ -160,6 +157,29 @@ select:hover {
 
 .tabla-datos tbody tr:nth-child(even) {
     background-color: #f5f5f5;
+}
+
+.tabla-scroll {
+  margin-top: 2.5rem;
+  max-height: 450px;
+  overflow-y: auto;
+  border-radius: 0.5rem;
+  /* Ocultar scrollbar */
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  
+}
+
+.tabla-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+
+.tabla-datos thead th {
+  position: sticky;
+  top: 0;
+  background-color: #142b44;
 }
 
 .estado-pagado {
@@ -271,7 +291,7 @@ select:hover {
     align-items: center;
 }
 
-.detalle-pago h2{
+.detalle-pago h2 {
     font-size: 1.2rem;
     margin: 0;
     display: flex;
@@ -296,10 +316,14 @@ select:hover {
     transition: all 0.2s ease;
 }
 
-.autocomplete-container input:focus {
-    border-color: #2e7d32;
-    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
-    outline: none;
+.input-deuda {
+    border: 1.5px solid #2e7d32 !important;
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.2) !important;
+}
+
+tr.seleccionado {
+    background-color: #f0f8ff;
+    /* azul clarito */
 }
 
 /* LISTA */
@@ -528,12 +552,14 @@ select:hover {
 
 .form-pago-grid.dos-columnas {
     grid-template-columns: repeat(2, 1fr);
-    margin-bottom: 15px;
+    /* margin-bottom: 15px; */
+    margin-top: 15px;
+
 }
 
 .form-pago-grid.tres-columnas {
     grid-template-columns: repeat(3, 1fr);
-    margin-bottom: 8px;
+    margin-top: 15px;
 
     /* margin-top: 15px; */
 }
@@ -706,6 +732,11 @@ select:hover {
     background-color: #cfd4de;
     margin: 30px 0;
 }
+
+
+/* .mt-pago-completo{
+  margin-top: 40px;
+} */
 
 /* ANIMACIÓN */
 @keyframes modalFade {
@@ -892,7 +923,7 @@ select:focus {
     box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
 }
 
-/* TABLA DE ESTUDIANTES */
+/* TABLA DE DETALLES */
 .tabla-detalles {
     margin-top: 15px;
     width: 100%;
@@ -910,20 +941,7 @@ select:focus {
 .tabla-detalles th,
 .tabla-detalles td {
     padding: 0.8rem;
-    /* text-align: left; */
     vertical-align: middle;
-}
-
-/* .tabla-detalles th:nth-child(3),
-.tabla-detalles td:nth-child(3) {
-    text-align: center;
-} */
-
-.tabla-detalles input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
-    accent-color: #1f7a4b;
 }
 
 .tabla-detalles th {
@@ -933,6 +951,7 @@ select:focus {
 }
 
 .tabla-detalles td {
+    text-align: center;
     font-size: 0.9rem;
     border-bottom: 1px solid #e5e7eb;
 }

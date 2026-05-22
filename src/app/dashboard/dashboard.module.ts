@@ -15,7 +15,7 @@ import { BodyComponent } from './layout/body/body.component';
 import { PagosComponent } from './pages/pagos/pagos.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MaterialesComponent } from './pages/materiales/materiales.component';
+import { SaludComponent } from './pages/salud/salud.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { MaterialesComponent } from './pages/materiales/materiales.component';
     BodyComponent,
     PagosComponent,
     NavbarComponent,
-    MaterialesComponent
+    SaludComponent
   ],
   imports: [
     FormsModule,
@@ -42,3 +42,4 @@ import { MaterialesComponent } from './pages/materiales/materiales.component';
   exports: []
 })
 export class DashboardModule { }
+

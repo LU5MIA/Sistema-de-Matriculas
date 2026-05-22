@@ -32,8 +32,8 @@ export const navbarData: INavbarData[] = [
         label: 'Padres'
     },
     {
-        routeLink: 'materiales',
-        icon: 'fa-solid fa-boxes-stacked',
-        label: 'Materiales'
-    }
+        routeLink: 'salud',
+        icon: 'fa fa-heart-pulse',
+        label: 'Salud Estudiantil'
+    },
 ]
