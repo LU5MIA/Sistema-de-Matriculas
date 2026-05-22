@@ -73,7 +73,7 @@
             <span [class]="m.tipo === 'ASEO' ? 'badge-aseo' : 'badge-trabajo'">
               {{ m.tipo === 'ASEO' ? '🧹 Aseo' : '📚 Trabajo' }}
             </span>
-          </td>
+           </td>
           <td>{{ m.categoria }}</td>
           <td class="cantidad-td">{{ m.cantidad_total }}</td>
           <td>{{ m.creado_en | date:'dd/MM/yyyy' }}</td>
@@ -93,8 +93,8 @@
             <button class="btn-icon btn-delete" (click)="eliminarMaterial(m)" title="Eliminar">
               <i class="fa-solid fa-trash"></i>
             </button>
-          </td>
-        </tr>
+           </td>
+         </tr>
       </tbody>
     </table>
 
@@ -128,6 +128,9 @@
       <button *ngIf="materialSeleccionado.tipo === 'TRABAJO'"
         [class.tab-activo]="panelActivo === 'estudiantes'" (click)="cambiarPanel('estudiantes')">
         <i class="fa-solid fa-user-graduate"></i> Estudiantes
+      </button>
+      <button [class.tab-activo]="panelActivo === 'prestamos'" (click)="cambiarPanel('prestamos')">
+        <i class="fa-solid fa-box-open"></i> Préstamos
       </button>
     </div>
 
@@ -188,6 +191,86 @@
         <button class="btn-quitar" (click)="quitarEstudiante(e)" title="Quitar asignación">
           <i class="fa-solid fa-trash-can"></i>
         </button>
+      </div>
+    </div>
+
+    <!-- Panel Préstamos -->
+    <div *ngIf="panelActivo === 'prestamos'" class="panel-body">
+      <div class="sub-pestanas-prestamo">
+        <button [class.activo]="subPestanaPrestamo === 'realizados'"
+          (click)="cambiarSubPestanaPrestamo('realizados')">
+          Realizados
+        </button>
+        <button [class.activo]="subPestanaPrestamo === 'recibidos'"
+          (click)="cambiarSubPestanaPrestamo('recibidos')">
+          Recibidos
+        </button>
+      </div>
+
+      <div class="panel-actions">
+        <button class="btn-asignar" (click)="abrirCrearPrestamo()" style="width: 100%; justify-content: center;">
+          <i class="fa-solid fa-gift"></i> Crear Préstamo
+        </button>
+      </div>
+
+      <div *ngIf="cargandoPrestamos" class="panel-cargando">
+        <i class="fa-solid fa-spinner fa-spin"></i>
+      </div>
+
+      <div *ngIf="!cargandoPrestamos && subPestanaPrestamo === 'realizados' && prestamosRealizados.length === 0" class="panel-vacio">
+        <i class="fa-solid fa-inbox"></i>
+        <p>Sin préstamos realizados</p>
+      </div>
+
+      <div *ngIf="!cargandoPrestamos && subPestanaPrestamo === 'recibidos' && prestamosRecibidos.length === 0" class="panel-vacio">
+        <i class="fa-solid fa-inbox"></i>
+        <p>Sin préstamos recibidos</p>
+      </div>
+
+      <!-- Préstamos Realizados -->
+      <div *ngIf="subPestanaPrestamo === 'realizados'" class="prestamos-list">
+        <div class="prestamo-card" *ngFor="let p of prestamosRealizados" [class.vencido]="estaVencido(p)">
+          <div class="prestamo-header">
+            <div class="prestamo-info">
+              <span class="prestamo-material"><i class="fa-solid fa-box"></i> {{ p.material.nombre }}</span>
+              <span class="prestamo-aula"><i class="fa-solid fa-arrow-right-to-bracket"></i> {{  getNombreAula(p.aula_destino) }}</span>
+            </div>
+            <span [class]="'badge-' + p.estado.toLowerCase()">{{ p.estado }}</span>
+          </div>
+          <div class="prestamo-detalle">
+            <span><strong>Cantidad:</strong> {{ p.cantidad }} ud.</span>
+            <span><strong>Prestado:</strong> {{ formatearFecha(p.fecha_prestamo) }}</span>
+            <span *ngIf="p.fecha_devolucion_esperada" [class.vencido-texto]="estaVencido(p)">
+              <strong>Esperado:</strong> {{ formatearFecha(p.fecha_devolucion_esperada) }}
+            </span>
+          </div>
+          <button *ngIf="p.estado === 'Activo'" class="btn-devolver" (click)="devolverPrestamo(p.prestamo_id)">
+            <i class="fa-solid fa-check"></i> Marcar Devuelto
+          </button>
+        </div>
+      </div>
+
+      <!-- Préstamos Recibidos -->
+      <div *ngIf="subPestanaPrestamo === 'recibidos'" class="prestamos-list">
+        <div class="prestamo-card" *ngFor="let p of prestamosRecibidos" [class.vencido]="estaVencido(p)">
+          <div class="prestamo-header">
+            <div class="prestamo-info">
+              <span class="prestamo-material"><i class="fa-solid fa-box"></i> {{ p.material.nombre }}</span>
+              <span class="prestamo-aula"><i class="fa-solid fa-arrow-left-from-bracket"></i> {{ getNombreAula(p.aula_origen) }}</span>
+            </div>
+            <span [class]="'badge-' + p.estado.toLowerCase()">{{ p.estado }}</span>
+          </div>
+          <div class="prestamo-detalle">
+            <span><strong>Cantidad:</strong> {{ p.cantidad }} ud.</span>
+            <span><strong>Prestado:</strong> {{ formatearFecha(p.fecha_prestamo) }}</span>
+            <span *ngIf="p.fecha_devolucion_esperada" [class.vencido-texto]="estaVencido(p)">
+              <strong>Esperado:</strong> {{ formatearFecha(p.fecha_devolucion_esperada) }}
+            </span>
+          </div>
+          <button *ngIf="p.estado === 'Activo'" class="btn-devolver" (click)="devolverPrestamo(p.prestamo_id)">
+            <i class="fa-solid fa-check"></i> Marcar Devuelto
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -355,6 +438,54 @@
       <button class="btn-guardar" (click)="confirmarAsignarEstudiantesAula()" [disabled]="asignandoEstudiantesAula || !aulaSeleccionadaEstudiantesId || estudiantesAula.length === 0">
         <i class="fa-solid" [ngClass]="asignandoEstudiantesAula ? 'fa-spinner fa-spin' : 'fa-floppy-disk'"></i>
         {{ asignandoEstudiantesAula ? 'Asignando...' : 'Asignar Selección' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL CREAR PRÉSTAMO -->
+<!-- ============================================================ -->
+<div class="modal" *ngIf="modalActivo === 'crearPrestamo'">
+  <div class="modal-content modal-md">
+    <div class="modal-header header-prestamo">
+      <h2><i class="fa-solid fa-gift"></i> Crear Préstamo</h2>
+      <span class="close" (click)="cerrarModal()">&times;</span>
+    </div>
+    <div class="modal-body">
+      <p class="modal-sub">
+        <strong>Material:</strong> {{ materialSeleccionado?.nombre }}<br>
+        <strong>De Aula:</strong> {{ getNombreAula(aulasAsignadas[0]) }}
+      </p>
+
+      <div class="form-campo">
+        <label>Aula Destino</label>
+        <div *ngIf="cargandoAulasDestino" style="font-size: 0.9rem; color: #666;">
+          <i class="fa-solid fa-spinner fa-spin"></i> Cargando aulas...
+        </div>
+        <select *ngIf="!cargandoAulasDestino" [(ngModel)]="aulaDestinoSeleccionadaId">
+          <option [ngValue]="null" disabled selected>-- Elige un aula --</option>
+          <option *ngFor="let a of aulasDisponibles" [ngValue]="a.aula_id">
+            {{ a.nivel }} - {{ a.grado }} "{{ a.seccion }}"
+          </option>
+        </select>
+      </div>
+
+      <div class="form-campo">
+        <label>Cantidad</label>
+        <input type="number" min="1" [(ngModel)]="crearPrestamoForm.cantidad" />
+      </div>
+
+      <div class="form-campo">
+        <label>Fecha de Devolución Esperada (Opcional)</label>
+        <input type="date" [(ngModel)]="crearPrestamoForm.fecha_devolucion_esperada" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cerrarModal()"><i class="fa-solid fa-xmark"></i> Cancelar</button>
+      <button class="btn-guardar" (click)="confirmarCrearPrestamo()" [disabled]="creandoPrestamo">
+        <i class="fa-solid" [ngClass]="creandoPrestamo ? 'fa-spinner fa-spin' : 'fa-plus'"></i>
+        {{ creandoPrestamo ? 'Creando...' : 'Crear Préstamo' }} 
       </button>
     </div>
   </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MaterialesService, AulaSelect } from '../../../core/services/materiales.service';
+import { PrestamosService } from '../../../core/services/prestamos.service';
 import {
   Material,
   CreateMaterial,
@@ -12,10 +13,12 @@ import {
   EstadoMaterialEstudiante,
   EstudianteAula,
 } from '../../../shared/interfaces/material.interface';
+import { Prestamo, CreatePrestamoDto } from '../../../shared/interfaces/prestamo.interface';
 
-type ModalTipo = 'crear' | 'editar' | 'asignarAula' | 'asignarEstudiante' | 'bulkEstudiante' | null;
+type ModalTipo = 'crear' | 'editar' | 'asignarAula' | 'asignarEstudiante' | 'bulkEstudiante' | 'crearPrestamo' | null;
 type FiltroTipo = 'TODOS' | 'ASEO' | 'TRABAJO';
-type PanelTipo = 'aulas' | 'estudiantes';
+type PanelTipo = 'aulas' | 'estudiantes' | 'prestamos';
+type SubPestanaPrestamo = 'realizados' | 'recibidos';
 
 @Component({
   selector: 'app-materiales',
@@ -25,7 +28,10 @@ type PanelTipo = 'aulas' | 'estudiantes';
 })
 export class MaterialesComponent implements OnInit {
 
-  constructor(private materialesService: MaterialesService) {}
+  constructor(
+    private materialesService: MaterialesService,
+    private prestamosService: PrestamosService
+  ) {}
 
   // ============ ESTADO GENERAL ============
   materiales: Material[] = [];
@@ -67,6 +73,22 @@ export class MaterialesComponent implements OnInit {
   estudiantesAula: EstudianteAula[] = [];
   cargandoEstudiantesAula = false;
   asignandoEstudiantesAula = false;
+
+  // ============ PRESTAMOS ============
+  prestamosRealizados: Prestamo[] = [];
+  prestamosRecibidos: Prestamo[] = [];
+  subPestanaPrestamo: SubPestanaPrestamo = 'realizados';
+  crearPrestamoForm: CreatePrestamoDto = {
+    material_id: 0,
+    aula_origen_id: 0,
+    aula_destino_id: 0,
+    cantidad: 1,
+  };
+  aulasDisponibles: AulaSelect[] = [];
+  aulaDestinoSeleccionadaId: number | null = null;
+  cargandoPrestamos = false;
+  cargandoAulasDestino = false;
+  creandoPrestamo = false;
 
   // ============ LIFECYCLE ============
 
@@ -265,7 +287,8 @@ export class MaterialesComponent implements OnInit {
   cambiarPanel(panel: PanelTipo): void {
     this.panelActivo = panel;
     if (panel === 'aulas') this.cargarAulas();
-    else this.cargarEstudiantes();
+    else if (panel === 'estudiantes') this.cargarEstudiantes();
+    else if (panel === 'prestamos') this.cargarPrestamos();
   }
 
   cerrarPanel(): void {
@@ -403,6 +426,111 @@ export class MaterialesComponent implements OnInit {
     });
   }
 
+  // ============ PRÉSTAMOS ============
+
+  cargarPrestamos(): void {
+    if (!this.materialSeleccionado) return;
+
+    const aulasAsignadas = this.aulasAsignadas.map(a => a.aula_id);
+    if (aulasAsignadas.length === 0) {
+      alert('Este material no tiene aulas asignadas. Primero debes asignarlo a un aula para prestar.');
+      return;
+    }
+
+    this.cargandoPrestamos = true;
+
+    const aulaOrigen = aulasAsignadas[0];
+    this.crearPrestamoForm.material_id = this.materialSeleccionado.material_id;
+    this.crearPrestamoForm.aula_origen_id = aulaOrigen;
+
+    if (this.subPestanaPrestamo === 'realizados') {
+      this.prestamosService.getPrestamosRealizados(aulaOrigen).subscribe({
+        next: (data) => {
+          this.prestamosRealizados = data;
+          this.cargandoPrestamos = false;
+        },
+        error: () => { this.cargandoPrestamos = false; },
+      });
+    } else {
+      this.prestamosService.getPrestamosRecibidos(aulaOrigen).subscribe({
+        next: (data) => {
+          this.prestamosRecibidos = data;
+          this.cargandoPrestamos = false;
+        },
+        error: () => { this.cargandoPrestamos = false; },
+      });
+    }
+  }
+
+  cambiarSubPestanaPrestamo(tipo: SubPestanaPrestamo): void {
+    this.subPestanaPrestamo = tipo;
+    this.cargarPrestamos();
+  }
+
+  abrirCrearPrestamo(): void {
+    if (this.aulasAsignadas.length === 0) {
+      alert('Este material no tiene aulas asignadas.');
+      return;
+    }
+
+    this.cargandoAulasDestino = true;
+    this.materialesService.getTodasLasAulas().subscribe({
+      next: (aulas) => {
+        this.aulasDisponibles = aulas.filter(a => a.aula_id !== this.crearPrestamoForm.aula_origen_id);
+        this.cargandoAulasDestino = false;
+        this.abrirModal('crearPrestamo');
+      },
+      error: () => {
+        this.cargandoAulasDestino = false;
+        alert('Error al cargar aulas');
+      }
+    });
+  }
+
+  confirmarCrearPrestamo(): void {
+    if (!this.crearPrestamoForm.aula_origen_id || !this.aulaDestinoSeleccionadaId || this.crearPrestamoForm.cantidad <= 0) {
+      alert('Completa todos los campos correctamente.');
+      return;
+    }
+
+    const prestamoDto: CreatePrestamoDto = {
+      material_id: this.crearPrestamoForm.material_id,
+      aula_origen_id: this.crearPrestamoForm.aula_origen_id,
+      aula_destino_id: this.aulaDestinoSeleccionadaId,
+      cantidad: this.crearPrestamoForm.cantidad,
+      fecha_devolucion_esperada: this.crearPrestamoForm.fecha_devolucion_esperada,
+    };
+
+    this.creandoPrestamo = true;
+    this.prestamosService.create(prestamoDto).subscribe({
+      next: () => {
+        this.creandoPrestamo = false;
+        this.cerrarModal();
+        this.cargarPrestamos();
+        this.aulaDestinoSeleccionadaId = null;
+        this.crearPrestamoForm.cantidad = 1;
+        this.crearPrestamoForm.fecha_devolucion_esperada = undefined;
+        alert('Préstamo creado exitosamente');
+      },
+      error: (err) => {
+        this.creandoPrestamo = false;
+        alert(err.error?.message || 'Error al crear préstamo');
+      },
+    });
+  }
+
+  devolverPrestamo(prestamoId: number): void {
+    if (!confirm('¿Marcar este préstamo como devuelto?')) return;
+
+    this.prestamosService.devolverPrestamo(prestamoId).subscribe({
+      next: () => {
+        alert('Préstamo devuelto exitosamente');
+        this.cargarPrestamos();
+      },
+      error: (err) => alert(err.error?.message || 'Error al devolver préstamo'),
+    });
+  }
+
   // ============ HELPERS ============
 
   getTipoLabel(tipo: MaterialTipo): string {
@@ -416,5 +544,19 @@ export class MaterialesComponent implements OnInit {
       case 'Perdido': return 'badge-perdido';
       default: return '';
     }
+  }
+
+  estaVencido(prestamo: Prestamo): boolean {
+    if (!prestamo.fecha_devolucion_esperada || prestamo.estado === 'Devuelto') return false;
+    return new Date(prestamo.fecha_devolucion_esperada) < new Date();
+  }
+
+  formatearFecha(fecha: string | null): string {
+    if (!fecha) return 'N/A';
+    return new Date(fecha).toLocaleDateString('es-PE', { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  getNombreAula(aula: any): string {
+    return `${aula.grado} ${aula.seccion}`;
   }
 }
