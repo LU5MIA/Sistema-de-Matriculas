@@ -108,6 +108,11 @@ export class PadresComponent implements OnInit {
 
   // ============ BÚSQUEDA RENIEC (modo agregar, por tipo padre/madre) ============
 
+  buscarDniReniec(tipo: 'padre' | 'madre'): void {
+    this.buscarDniReniecPorTipo(tipo);
+  }
+
+
   buscarDniReniecPorTipo(tipo: 'padre' | 'madre'): void {
     const formTarget = tipo === 'padre' ? this.formPadre : this.formMadre;
     const dniString = String(formTarget.dni || '').trim();
