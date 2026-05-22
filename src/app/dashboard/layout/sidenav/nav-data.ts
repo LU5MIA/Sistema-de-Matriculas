@@ -36,4 +36,4 @@ export const navbarData: INavbarData[] = [
         icon: 'fa fa-heart-pulse',
         label: 'Salud Estudiantil'
     },
-]
+]

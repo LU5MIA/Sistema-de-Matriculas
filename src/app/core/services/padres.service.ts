@@ -36,9 +36,14 @@ export class PadresService {
     return this.http.get<any>(`${this.apiPeruUrl}/dni/${dni}`);
   }
 
-  // Buscar estudiante por DNI
+  // Buscar estudiante por DNI (exacto)
   getEstudianteByDni(dni: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/search-estudiante/${dni}`);
+  }
+
+  // Buscar estudiantes por DNI parcial
+  searchEstudiantesByDni(dni: string): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/search-estudiantes?dni=${dni}`);
   }
 
   // Crear nuevo padre
