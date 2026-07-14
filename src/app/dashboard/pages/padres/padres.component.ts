@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { PadresService } from '../../../core/services/padres.service';
 import { Padres } from '../../../shared/interfaces/padres.interface';
-import { forkJoin } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 interface ApiError {
   status?: number;
@@ -33,16 +33,44 @@ interface ParentForm {
   styleUrl: './padres.component.css',
 })
 export class PadresComponent implements OnInit {
-
+  // ============ PROPIEDADES DE ESTADO ============
   padres: Padres[] = [];
+
+  mensaje: string = '';
+  tipoMensaje: 'exito' | 'error' | 'advertencia' | '' = '';
+  ocultando: boolean = false;
+  cargando: boolean = false;
+
+  // Formularios para Padre y Madre
+  formPadre!: ParentForm;
+  formMadre!: ParentForm;
+
+  // Estados de carga (Spinners)
+  buscandoDniPadre: boolean = false;
+  buscandoDniMadre: boolean = false;
+  buscandoDni: boolean = false;
+  buscandoEstudiante: boolean = false;
+
+  // Modales, pestañas y edición
+  modalAbierto: boolean = false;
+  modoEditar: boolean = false;
+  padreIdEditar: number | null = null;
+  padreIdEliminar: number | null = null;
+  activeTab: number = 1;
+
+  // Gestión de estudiantes (Hijos)
+  dniEstudiante: string = '';
+  resultadosBusqueda: any[] = [];
+  estudiantesAsignados: any[] = [];
 
   constructor(
     private dialog: MatDialog,
     private padresService: PadresService,
     private cd: ChangeDetectorRef,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+    this.limpiarFormulario();
     this.cargarPadres();
   }
 
@@ -51,7 +79,7 @@ export class PadresComponent implements OnInit {
   cargarPadres(): void {
     this.padresService.getPadres().subscribe({
       next: (response: any) => {
-        this.padres = response.data;
+        this.padres = response.data || response;
       },
       error: (err: any) => {
         console.error('Error al cargar padres:', err);
@@ -76,7 +104,7 @@ export class PadresComponent implements OnInit {
     };
   }
 
-  // ============ BÚSQUEDA RENIEC (modo agregar, por tipo padre/madre) ============
+  // ============ BÚSQUEDA RENIEC (Modo agregar, por tipo padre/madre) ============
 
   buscarDniReniecPorTipo(tipo: 'padre' | 'madre'): void {
     const formTarget = tipo === 'padre' ? this.formPadre : this.formMadre;
@@ -129,18 +157,14 @@ export class PadresComponent implements OnInit {
       return;
     }
 
-    this.padresService.getEstudianteByDni(this.dniEstudiante).subscribe({
-      next: (estudiante) => {
-        if (!estudiante) {
-          alert('Estudiante no encontrado');
-          return;
-        }
-
-        const duplicado = this.estudiantesAsignados.find(e => e.dni === estudiante.dni);
-        if (duplicado) {
-          alert('El estudiante ya está en la lista');
-          return;
-        }
+    let formTarget: ParentForm;
+    if (target === 'padre') {
+      formTarget = this.formPadre;
+    } else if (target === 'madre') {
+      formTarget = this.formMadre;
+    } else {
+      formTarget = this.activeTab === 2 ? this.formMadre : this.formPadre;
+    }
 
     this.buscandoDni = true;
     this.padresService.buscarDniEnReniec(dniString).subscribe({
@@ -180,6 +204,7 @@ export class PadresComponent implements OnInit {
         this.resultadosBusqueda = estudiantes.filter((e: any) => !idsAsignados.has(e.estudiante_id || e.id));
       },
       error: (err) => {
+        this.buscandoEstudiante = false;
         console.error('Error al buscar estudiante:', err);
         alert('Error al buscar estudiante (ver consola)');
       }
@@ -284,9 +309,7 @@ export class PadresComponent implements OnInit {
       }
 
       try {
-        await this.padresService
-          .updatePadre(this.padreIdEditar, formData)
-          .toPromise();
+        await firstValueFrom(this.padresService.updatePadre(this.padreIdEditar, formData));
         await this.sincronizarEstudiantesAsignados(this.padreIdEditar);
         this.mostrarExito('Registro actualizado correctamente');
       } catch (err: unknown) {
@@ -328,34 +351,28 @@ export class PadresComponent implements OnInit {
         let idMadreFinal: number | undefined = undefined;
 
         if (savePadre) {
-          const respPadre = await this.padresService
-            .createPadre(this.formPadre)
-            .toPromise();
+          const respPadre = await firstValueFrom(this.padresService.createPadre(this.formPadre));
           idPadreFinal = respPadre?.padre_id || respPadre?.id;
         }
 
         if (saveMadre) {
-          const respMadre = await this.padresService
-            .createPadre(this.formMadre)
-            .toPromise();
+          const respMadre = await firstValueFrom(this.padresService.createPadre(this.formMadre));
           idMadreFinal = respMadre?.padre_id || respMadre?.id;
         }
 
         const asignacionesPromises: Promise<any>[] = [];
         for (const est of this.estudiantesAsignados) {
           const estId = est.estudiante_id || est.id;
-          if (idPadreFinal)
+          if (idPadreFinal) {
             asignacionesPromises.push(
-              this.padresService
-                .assignEstudiante(idPadreFinal, estId)
-                .toPromise(),
+              firstValueFrom(this.padresService.assignEstudiante(idPadreFinal, estId))
             );
-          if (idMadreFinal)
+          }
+          if (idMadreFinal) {
             asignacionesPromises.push(
-              this.padresService
-                .assignEstudiante(idMadreFinal, estId)
-                .toPromise(),
+              firstValueFrom(this.padresService.assignEstudiante(idMadreFinal, estId))
             );
+          }
         }
 
         if (asignacionesPromises.length > 0) {
@@ -373,26 +390,24 @@ export class PadresComponent implements OnInit {
 
   async sincronizarEstudiantesAsignados(padreId: number): Promise<void> {
     try {
-      const asignacionesActuales = await this.padresService
-        .getEstudiantesAsignados(padreId)
-        .toPromise();
+      const asignacionesActuales = await firstValueFrom(this.padresService.getEstudiantesAsignados(padreId));
       if (!asignacionesActuales) return;
 
       const mapaActual = new Map();
-      asignacionesActuales.forEach(a => mapaActual.set(a.estudiante_id, a));
+      asignacionesActuales.forEach((a: any) => mapaActual.set(a.estudiante_id || a.id, a));
 
       const mapaNuevo = new Map();
       this.estudiantesAsignados.forEach(e => mapaNuevo.set(e.estudiante_id || e.id, e));
 
       for (const [id] of mapaActual) {
         if (!mapaNuevo.has(id)) {
-          await this.padresService.removeEstudiante(padreId, id).toPromise();
+          await firstValueFrom(this.padresService.removeEstudiante(padreId, id));
         }
       }
 
       for (const [id] of mapaNuevo) {
         if (!mapaActual.has(id)) {
-          await this.padresService.assignEstudiante(padreId, id).toPromise();
+          await firstValueFrom(this.padresService.assignEstudiante(padreId, id));
         }
       }
     } catch (err: unknown) {
@@ -424,7 +439,25 @@ export class PadresComponent implements OnInit {
     alert('Error: ' + errorMessage);
   }
 
-  padreIdEliminar: number | null = null;
+  mostrarAlerta(texto: string, tipo: 'exito' | 'error' | 'advertencia') {
+    this.mensaje = texto;
+    this.tipoMensaje = tipo;
+    this.ocultando = false;
+
+    // Autocerrar después de 5 segundos
+    setTimeout(() => {
+      this.cerrarAlerta();
+    }, 5000);
+  }
+
+  cerrarAlerta() {
+    this.ocultando = true;
+    setTimeout(() => {
+      this.mensaje = '';
+      this.tipoMensaje = '';
+    }, 300); // Espera a que termine la animación "hide" de CSS
+  }
+
   confirmarEliminar(padre?: Padres) {
     if (padre) {
       this.padreIdEliminar = padre.padre_id || padre.id || null;
