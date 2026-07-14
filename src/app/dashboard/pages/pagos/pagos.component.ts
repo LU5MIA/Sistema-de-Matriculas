@@ -966,7 +966,6 @@ export class PagosComponent {
     const numeroRecibo = this.generarNumeroRecibo(detalle.detalle_id);
 
     const colorAzul = rgb(0, 0, 0);
-
     let marcarEfectivo = '';
     let marcarDeposito = '';
     let marcarOtros = '';
