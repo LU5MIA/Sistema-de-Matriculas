@@ -10,12 +10,9 @@ export interface Pagos {
   meses: string
   monto_total: number
   monto_pagado: string
+  fecha_vencimiento?: string
   estado: string
-
-  //relaciones
   matricula: Matriculas | null
-
-  //relacion inversa
   detalles?: DetallesPago[];
 }
 
@@ -29,7 +26,7 @@ export interface PagosCreatePayload {
   concepto: string;
   monto_total: number;
   monto_pagado: number;
-  meses?: string; // opcional
+  meses?: string;
 }
 
 export interface PagoUpdatePayload {
@@ -37,4 +34,3 @@ export interface PagoUpdatePayload {
   estado?: string;
 }
 
-// export type PagosUpdatePayload = Partial<PagosCreatePayload>

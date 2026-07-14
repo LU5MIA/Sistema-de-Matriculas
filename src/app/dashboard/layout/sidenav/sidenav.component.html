@@ -1,42 +1,86 @@
-<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed': '' ">
-    <div class="logo-container">
-        <button class="logo-image" (click)="toggleCollapse()">
-            <img src="assets/images/logo.png" alt="" style="width: 70px;">
-        </button>
-        <div class="logo-colegio">
-            <div class="logo-text" @fadeInOut *ngIf="collapsed">INSTITUCION EDUCATIVA PRIVADA</div>
-            <div class="logo-img" @fadeInOut *ngIf="collapsed">
-                <img src="assets/images/MARCA HOSANNA blanco.png" alt="HOSANNA" style="max-width: 150px; height: auto; margin-left: 30px;">
-            </div>
-        </div>
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : ''">
+  <div class="logo-container">
+    <button class="logo-image" (click)="toggleCollapse()">
+      <img src="assets/images/logo-prin.png" alt="" style="width: 70px" />
+    </button>
+    <div class="logo-colegio">
+      <div class="logo-text" @fadeInOut *ngIf="collapsed">
+        INSTITUCION EDUCATIVA PRIVADA
+      </div>
+      <div class="logo-img" @fadeInOut *ngIf="collapsed">
+        <img
+          src="assets/images/marca-colegio.png"
+          alt="HOSANNA"
+          style="max-width: 150px; height: auto; margin-left: 30px"
+        />
+      </div>
     </div>
-    <div class="scrollwrap scrollwrap_delayed">
-        <ul class="sidenav-nav">
-            <li class="sidenav-nav-item" *ngFor="let data of navData">
-                <a class="sidenav-nav-link" (click)="handleClick(data)" *ngIf="data.items && data.items.length > 0"
-                    [ngClass]="getActiveClass(data)">
-                    <i class="sidenav-link-icon" [class]="data.icon"></i>
-                    <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
-                        {{data.label}}
-                    </span>
-                    <i *ngIf="data.items && collapsed" class="menu-collapse-icon"
-                        [ngClass]="!data.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down' "></i>
+  </div>
+  <div class="scrollwrap scrollwrap_delayed">
+    <ul class="sidenav-nav">
+      <li class="sidenav-nav-item" *ngFor="let data of menuFiltrado">
+        <a
+          class="sidenav-nav-link"
+          (click)="handleClick(data)"
+          *ngIf="data.items && data.items.length > 0"
+          [ngClass]="getActiveClass(data)"
+        >
+          <i class="sidenav-link-icon" [class]="data.icon"></i>
+          <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
+            {{ data.label }}
+          </span>
+          <i
+            *ngIf="data.items && collapsed"
+            class="menu-collapse-icon"
+            [ngClass]="
+              !data.expanded ? 'fal fa-angle-right' : 'fal fa-angle-down'
+            "
+          ></i>
+        </a>
+        <!-- OPCIÓN NORMAL (rutas) -->
+        <a
+          class="sidenav-nav-link"
+          *ngIf="(!data.items || data.items.length === 0) && !data.action"
+          [routerLink]="[data.routeLink]"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="shrinkItems(data)"
+        >
+          <i class="sidenav-link-icon" [class]="data.icon"></i>
+          <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
+            {{ data.label }}
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
 
-                </a>
-                <a class="sidenav-nav-link" *ngIf="!data.items || (data.items && data.items.length === 0)"
-                    [routerLink]="[data.routeLink]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-                    (click)="shrinkItems(data)">
-                    <i class="sidenav-link-icon" [class]="data.icon"></i>
-                    <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
-                        {{data.label}}
-                    </span>
-                </a>
-                <div *ngIf="collapsed && data.items && data.items.length > 0 ">
-                    <app-sublevel-menu [data]="data" [collapsed]="collapsed" [multiple]="multiple"
-                        [expanded]="data.expanded"></app-sublevel-menu>
-                </div>
-            </li>
-        </ul>
+  <div class="sidenav-footer">
+    <a class="sidenav-nav-link logout-btn" (click)="logout()">
+      <i class="sidenav-link-icon fas fa-right-from-bracket"></i>
+      <span class="sidenav-link-text" @fadeInOut *ngIf="collapsed">
+        Cerrar sesión
+      </span>
+    </a>
+  </div>
+</div>
+
+<div *ngIf="mostrarLogout" class="overlay">
+  <div class="modal-confirm">
+    <div class="icono logout-icono">
+      <i class="fa-solid fa-right-from-bracket"></i>
     </div>
 
+    <h2>¿Cerrar sesión?</h2>
+
+    <p>Tu sesión actual se cerrará.</p>
+
+    <div class="acciones">
+      <button class="btn cancelar" (click)="cancelarLogout()">Cancelar</button>
+
+      <button class="btn cerrar-sesion" (click)="confirmarLogout()">
+        Cerrar sesión
+      </button>
+    </div>
+  </div>
 </div>

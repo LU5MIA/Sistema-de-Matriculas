@@ -54,8 +54,13 @@ export class MatriculasService {
     return this.http.patch(`${this.apiUrl}/${id}`, matricula)
   }
 
-  //Cambiar estado de una matricula
-  cambiarEstado(id: number, nuevoEstado: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/estado/${id}`, { estado: nuevoEstado })
+  //Eliminar una matricula
+  deleteMatricula(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${id}`)
   }
+
+  // //Cambiar estado de una matricula
+  // cambiarEstado(id: number, nuevoEstado: string): Observable<any> {
+  //   return this.http.put(`${this.apiUrl}/estado/${id}`, { estado: nuevoEstado })
+  // }
 }

@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { PadresService } from '../../../core/services/padres.service';
 import { Padres } from '../../../shared/interfaces/padres.interface';
-import { forkJoin } from 'rxjs';
+import Swal from 'sweetalert2';
 
 interface ApiError {
   status?: number;
@@ -30,17 +30,17 @@ interface ParentForm {
   selector: 'app-padres',
   standalone: false,
   templateUrl: './padres.component.html',
-  styleUrl: './padres.component.css'
+  styleUrl: './padres.component.css',
 })
 export class PadresComponent implements OnInit {
-
   padres: Padres[] = [];
+  cargando: boolean = false;
 
   constructor(
     private dialog: MatDialog,
     private padresService: PadresService,
-    private cd: ChangeDetectorRef
-  ) { }
+    private cd: ChangeDetectorRef,
+  ) {}
 
   ngOnInit(): void {
     this.cargarPadres();
@@ -53,7 +53,7 @@ export class PadresComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar padres:', err);
-      }
+      },
     });
   }
 
@@ -80,7 +80,7 @@ export class PadresComponent implements OnInit {
       direccion: '',
       tipo_relacion: tipoRelacion,
       detalles_relacion: '',
-      es_contacto_principal: false
+      es_contacto_principal: false,
     };
   }
 
@@ -115,9 +115,11 @@ export class PadresComponent implements OnInit {
         } else if (err.status === 400) {
           alert('❌ DNI inválido. Debe tener 8 dígitos.');
         } else {
-          alert('❌ Error al consultar DNI: ' + (err.error?.message || err.message));
+          alert(
+            '❌ Error al consultar DNI: ' + (err.error?.message || err.message),
+          );
         }
-      }
+      },
     });
   }
 
@@ -138,7 +140,9 @@ export class PadresComponent implements OnInit {
           return;
         }
 
-        const duplicado = this.estudiantesAsignados.find(e => e.dni === estudiante.dni);
+        const duplicado = this.estudiantesAsignados.find(
+          (e) => e.dni === estudiante.dni,
+        );
         if (duplicado) {
           alert('El estudiante ya está en la lista');
           return;
@@ -150,7 +154,7 @@ export class PadresComponent implements OnInit {
       error: (err) => {
         console.error('Error al buscar estudiante:', err);
         alert('Error al buscar estudiante (ver consola)');
-      }
+      },
     });
   }
 
@@ -196,10 +200,13 @@ export class PadresComponent implements OnInit {
       direccion: padre.direccion || '',
       tipo_relacion: padre.tipo_relacion,
       detalles_relacion: padre.detalles_relacion || '',
-      es_contacto_principal: padre.es_contacto_principal || false
+      es_contacto_principal: padre.es_contacto_principal || false,
     };
 
-    if (padre.tipo_relacion?.toLowerCase() === 'madre' || padre.tipo_relacion?.toLowerCase() === 'tutora') {
+    if (
+      padre.tipo_relacion?.toLowerCase() === 'madre' ||
+      padre.tipo_relacion?.toLowerCase() === 'tutora'
+    ) {
       this.formMadre = parentData;
       this.activeTab = 2;
     } else {
@@ -213,7 +220,7 @@ export class PadresComponent implements OnInit {
           this.estudiantesAsignados = data;
           this.cd.detectChanges();
         },
-        error: (err) => console.error(err)
+        error: (err) => console.error(err),
       });
     }
   }
@@ -223,13 +230,20 @@ export class PadresComponent implements OnInit {
       // Editar solo la pestaña activa / padre correspondiente
       const formData = this.activeTab === 2 ? this.formMadre : this.formPadre;
 
-      if (!formData.nombres || !formData.apellido_paterno || !formData.dni || !formData.tipo_relacion) {
+      if (
+        !formData.nombres ||
+        !formData.apellido_paterno ||
+        !formData.dni ||
+        !formData.tipo_relacion
+      ) {
         alert('Por favor complete los campos obligatorios del padre editado');
         return;
       }
 
       try {
-        await this.padresService.updatePadre(this.padreIdEditar, formData).toPromise();
+        await this.padresService
+          .updatePadre(this.padreIdEditar, formData)
+          .toPromise();
         await this.sincronizarEstudiantesAsignados(this.padreIdEditar);
         this.mostrarExito('Registro actualizado correctamente');
       } catch (err) {
@@ -241,16 +255,30 @@ export class PadresComponent implements OnInit {
       const saveMadre = !!(this.formMadre.dni && this.formMadre.nombres);
 
       if (!savePadre && !saveMadre) {
-        alert('Debe rellenar al menos los datos de un apoderado (o Padre o Madre)');
+        alert(
+          'Debe rellenar al menos los datos de un apoderado (o Padre o Madre)',
+        );
         return;
       }
 
-      if (savePadre && (!this.formPadre.nombres || !this.formPadre.apellido_paterno || !this.formPadre.dni || !this.formPadre.tipo_relacion)) {
+      if (
+        savePadre &&
+        (!this.formPadre.nombres ||
+          !this.formPadre.apellido_paterno ||
+          !this.formPadre.dni ||
+          !this.formPadre.tipo_relacion)
+      ) {
         alert('Faltan campos obligatorios en la pestaña Padre/Tutor 1');
         return;
       }
 
-      if (saveMadre && (!this.formMadre.nombres || !this.formMadre.apellido_paterno || !this.formMadre.dni || !this.formMadre.tipo_relacion)) {
+      if (
+        saveMadre &&
+        (!this.formMadre.nombres ||
+          !this.formMadre.apellido_paterno ||
+          !this.formMadre.dni ||
+          !this.formMadre.tipo_relacion)
+      ) {
         alert('Faltan campos obligatorios en la pestaña Madre/Tutor 2');
         return;
       }
@@ -262,13 +290,17 @@ export class PadresComponent implements OnInit {
 
         // 1. Guardar Padre
         if (savePadre) {
-          const respPadre = await this.padresService.createPadre(this.formPadre).toPromise();
+          const respPadre = await this.padresService
+            .createPadre(this.formPadre)
+            .toPromise();
           idPadreFinal = respPadre?.padre_id || respPadre?.id;
         }
 
         // 2. Guardar Madre
         if (saveMadre) {
-          const respMadre = await this.padresService.createPadre(this.formMadre).toPromise();
+          const respMadre = await this.padresService
+            .createPadre(this.formMadre)
+            .toPromise();
           idMadreFinal = respMadre?.padre_id || respMadre?.id;
         }
 
@@ -276,8 +308,18 @@ export class PadresComponent implements OnInit {
         const asignacionesPromises = [];
         for (const est of this.estudiantesAsignados) {
           const estId = est.estudiante_id || est.id;
-          if (idPadreFinal) asignacionesPromises.push(this.padresService.assignEstudiante(idPadreFinal, estId).toPromise());
-          if (idMadreFinal) asignacionesPromises.push(this.padresService.assignEstudiante(idMadreFinal, estId).toPromise());
+          if (idPadreFinal)
+            asignacionesPromises.push(
+              this.padresService
+                .assignEstudiante(idPadreFinal, estId)
+                .toPromise(),
+            );
+          if (idMadreFinal)
+            asignacionesPromises.push(
+              this.padresService
+                .assignEstudiante(idMadreFinal, estId)
+                .toPromise(),
+            );
         }
 
         if (asignacionesPromises.length > 0) {
@@ -293,14 +335,18 @@ export class PadresComponent implements OnInit {
 
   async sincronizarEstudiantesAsignados(padreId: number) {
     try {
-      const asignacionesActuales = await this.padresService.getEstudiantesAsignados(padreId).toPromise();
+      const asignacionesActuales = await this.padresService
+        .getEstudiantesAsignados(padreId)
+        .toPromise();
       if (!asignacionesActuales) return;
 
       const mapaActual = new Map();
-      asignacionesActuales.forEach(a => mapaActual.set(a.estudiante_id, a));
+      asignacionesActuales.forEach((a) => mapaActual.set(a.estudiante_id, a));
 
       const mapaNuevo = new Map();
-      this.estudiantesAsignados.forEach(e => mapaNuevo.set(e.estudiante_id || e.id, e));
+      this.estudiantesAsignados.forEach((e) =>
+        mapaNuevo.set(e.estudiante_id || e.id, e),
+      );
 
       for (const [id, _] of mapaActual) {
         if (!mapaNuevo.has(id)) {
@@ -329,7 +375,12 @@ export class PadresComponent implements OnInit {
     console.error('Error:', err);
     let errorMessage = 'Error desconocido';
     if (err && typeof err === 'object') {
-      if ('error' in err && err.error && typeof err.error === 'object' && 'message' in err.error) {
+      if (
+        'error' in err &&
+        err.error &&
+        typeof err.error === 'object' &&
+        'message' in err.error
+      ) {
         errorMessage = (err.error as { message: string }).message;
       } else if ('message' in err) {
         errorMessage = (err as { message: string }).message;
@@ -341,41 +392,62 @@ export class PadresComponent implements OnInit {
   }
 
   padreIdEliminar: number | null = null;
-  confirmarEliminar(padre?: Padres) {
-    if (padre) {
-      this.padreIdEliminar = padre.padre_id || padre.id || null;
-    }
-    if (!this.padreIdEliminar) return;
 
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '350px',
-      data: {
-        title: 'Confirmación',
-        message: '¿Está seguro de eliminar este padre?',
-        icon: 'fa-solid fa-triangle-exclamation',
-        confirmText: 'Eliminar',
-        cancelText: 'Cancelar'
-      }
-    });
+  eliminarPadre(padre: Padres) {
+    this.padreAEliminar = padre;
+    this.mostrarConfirmacion = true;
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) this.eliminarPadre();
+  mostrarConfirmacion = false;
+  padreAEliminar: Padres | null = null;
+
+  cancelarEliminacion() {
+    this.mostrarConfirmacion = false;
+    this.padreAEliminar = null;
+  }
+
+  confirmarEliminacion() {
+    const id = this.padreAEliminar?.padre_id || this.padreAEliminar?.id;
+
+    if (!id) return;
+
+    this.padresService.deletePadre(id).subscribe({
+      next: () => {
+        this.mostrarConfirmacion = false;
+        this.padreAEliminar = null;
+        this.mostrarMensaje('Registro eliminado correctamente', 'success');
+        this.cargarPadres();
+      },
+      error: (err: any) => {
+        console.error('Error al eliminar:', err);
+        this.mostrarMensaje('Error al eliminar', 'error');
+      },
     });
   }
 
-  eliminarPadre() {
-    if (this.padreIdEliminar) {
-      this.padresService.deletePadre(this.padreIdEliminar).subscribe({
-        next: () => {
-          this.padreIdEliminar = null;
-          this.mostrarExito('Padre eliminado');
-        },
-        error: (err: any) => {
-          console.error('Error al eliminar:', err);
-          alert('Error al eliminar: ' + (err.message || 'Error desconocido'));
-        }
-      });
-    }
+  // Variables para mostrar mensajes de éxito/error
+
+  mensaje: string = '';
+  tipoMensaje: 'success' | 'error' = 'success';
+
+  mostrarMensaje(texto: string, tipo: 'success' | 'error') {
+    this.mensaje = texto;
+    this.tipoMensaje = tipo;
+
+    setTimeout(() => {
+      this.mensaje = '';
+    }, 3000);
+  }
+
+  ocultando = false;
+
+  cerrarAlerta() {
+    this.ocultando = true;
+
+    setTimeout(() => {
+      this.mensaje = '';
+      this.ocultando = false;
+    }, 400); // mismo tiempo que la animación
   }
 
   cerrarModal() {
@@ -393,5 +465,4 @@ export class PadresComponent implements OnInit {
       this.cd.detectChanges();
     }
   }
-
 }

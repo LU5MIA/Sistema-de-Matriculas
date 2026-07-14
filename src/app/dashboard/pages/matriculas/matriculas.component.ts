@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Matriculas, MatriculasVista, MatriculaUpdatePayload } from '../../../shared/interfaces/matriculas.interface';
+import {
+  Matriculas,
+  MatriculasVista,
+  MatriculaUpdatePayload,
+} from '../../../shared/interfaces/matriculas.interface';
 import { MatriculasService } from '../../../core/services/matriculas.service';
 import { forkJoin } from 'rxjs';
 import { AulasService } from '../../../core/services/aulas.service';
@@ -9,21 +13,22 @@ import { PadresService } from '../../../core/services/padres.service';
 import { Aulas } from '../../../shared/interfaces/aula.interface';
 import { Estudiantes } from '../../../shared/interfaces/estudiantes.interface';
 import { EstudiantesService } from '../../../core/services/estudiantes.service';
+import { AlertaService } from '../../../core/services/alerta.service';
 
 @Component({
   selector: 'app-matriculas',
   standalone: false,
   templateUrl: './matriculas.component.html',
-  styleUrl: './matriculas.component.css'
+  styleUrl: './matriculas.component.css',
 })
 export class MatriculasComponent {
-
   constructor(
-    //private dialog: MatDialog,
     private matriculasService: MatriculasService,
-    //private estudiantesService: EstudiantesService,
     private aulasService: AulasService,
-  ) { }
+    private alertaService: AlertaService,
+  ) {}
+
+  cargando: boolean = false;
 
   modalMatriculaAbierto: boolean = false;
   modalEditarMatricula: boolean = false;
@@ -34,8 +39,8 @@ export class MatriculasComponent {
   //procedenciaSeleccionado: string = '';
 
   //filtros
-  codigoBusqueda: string = ''
-  cantidad_Mostrar: number = 10
+  codigoBusqueda: string = '';
+  cantidad_Mostrar: number = 10;
 
   //busqueda por dni estudiante
   dni_estudiante: string = '';
@@ -53,8 +58,8 @@ export class MatriculasComponent {
   secciones: string[] = [];
 
   //matriculas
-  matriculaOriginal?: Matriculas
-  matriculasOriginales: Matriculas[] = []
+  matriculaOriginal?: Matriculas;
+  matriculasOriginales: Matriculas[] = [];
   matriculasVista: MatriculasVista[] = [];
   matriculasVistaOriginal: MatriculasVista[] = [];
 
@@ -71,23 +76,21 @@ export class MatriculasComponent {
     fecha_matricula: '',
     estado: 'Activo',
     estudiante: null,
-    padre_responsable: null,
     aula: null,
-  }
+  };
 
   ngOnInit(): void {
     this.cargarMatriculas();
   }
 
   cargarMatriculas(): void {
-    this.matriculasService.getMatriculas().subscribe(data => {
-
-      const vista = data.map(m => ({
+    this.matriculasService.getMatriculas().subscribe((data) => {
+      const vista = data.map((m) => ({
         ...m,
         nivel: m.aula?.nivel ?? 'Desconocido',
         grado: m.aula?.grado ?? 'Desconocido',
         seccion: m.aula?.seccion ?? 'Desconocido',
-        dni: m.estudiante?.dni ?? 'Desconocido'
+        dni: m.estudiante?.dni ?? 'Desconocido',
       }));
 
       this.matriculasVistaOriginal = [...vista];
@@ -95,21 +98,22 @@ export class MatriculasComponent {
       this.aplicarFiltros();
     });
 
-    this.aulasService.getAulas().subscribe(data => {
+    this.aulasService.getAulas().subscribe((data) => {
       this.aulas = data;
-      this.niveles = [...new Set(data.map(a => a.nivel))];
+      this.niveles = [...new Set(data.map((a) => a.nivel))];
     });
   }
 
   buscarPorDni(): void {
     if (!this.dni_estudiante || this.dni_estudiante.length !== 8) {
-      alert('Ingrese un DNI válido de 8 dígitos');
+      this.alertaService.mostrar('Ingrese un DNI válido de 8 dígitos', 'info');
       return;
     }
 
     this.buscandoDni = true;
 
-    this.matriculasService.buscarEstudiantePorDni(this.dni_estudiante)
+    this.matriculasService
+      .buscarEstudiantePorDni(this.dni_estudiante)
       .subscribe({
         next: (estudiante) => {
           setTimeout(() => {
@@ -117,47 +121,28 @@ export class MatriculasComponent {
             this.estudiante = estudiante;
             this.matricula.estudiante = estudiante;
           }, 800);
+          this.alertaService.mostrar(
+            'Estudiante encontrado, puede continuar',
+            'success'
+          );
         },
 
         error: () => {
           this.buscandoDni = false;
-          alert('Estudiante no encontrado, puede registrarlo');
-
-        }
-      });
-  }
-
-  buscarPorDniPadre(): void {
-    if (!this.dni_padre || this.dni_padre.length !== 8) {
-      alert('Ingrese un DNI válido de 8 dígitos');
-      return;
-    }
-    this.buscandoDni = true;
-
-    this.matriculasService.buscarPadrePorDni(this.dni_padre)
-      .subscribe({
-        next: (padre) => {
-          setTimeout(() => {
-            this.buscandoDni = false;
-            this.padre = padre;
-            this.matricula.padre_responsable = padre;
-          }, 800)
+          this.alertaService.mostrar(
+            'Estudiante no encontrado, puede registrarlo',
+            'error'
+          );
         },
-        error: () => {
-          this.buscandoDni = false
-          alert('Padre no encontrado, puede registrarlo');
-
-        }
       });
   }
-
 
   //filtro para nivel, grado y sección en la tabla
 
   filtro = {
     nivel: 'todos',
     grado: 'todos',
-    seccion: 'todos'
+    seccion: 'todos',
   };
 
   onFiltroNivelChange(event: Event) {
@@ -174,9 +159,9 @@ export class MatriculasComponent {
     this.grados = [
       ...new Set(
         this.aulas
-          .filter(a => a.nivel === this.filtro.nivel)
-          .map(a => a.grado)
-      )
+          .filter((a) => a.nivel === this.filtro.nivel)
+          .map((a) => a.grado),
+      ),
     ];
 
     this.filtro.grado = 'todos';
@@ -195,20 +180,19 @@ export class MatriculasComponent {
     this.secciones = [
       ...new Set(
         this.aulas
-          .filter(a =>
-            a.nivel === this.filtro.nivel &&
-            a.grado === this.filtro.grado
+          .filter(
+            (a) =>
+              a.nivel === this.filtro.nivel && a.grado === this.filtro.grado,
           )
-          .map(a => a.seccion)
-      )
+          .map((a) => a.seccion),
+      ),
     ];
 
     this.filtro.seccion = 'todos';
   }
 
   aplicarFiltroTabla(): void {
-    this.matriculasVista = this.matriculasVistaOriginal.filter(m => {
-
+    this.matriculasVista = this.matriculasVistaOriginal.filter((m) => {
       if (this.filtro.nivel !== 'todos' && m.nivel !== this.filtro.nivel) {
         return false;
       }
@@ -217,7 +201,10 @@ export class MatriculasComponent {
         return false;
       }
 
-      if (this.filtro.seccion !== 'todos' && m.seccion !== this.filtro.seccion) {
+      if (
+        this.filtro.seccion !== 'todos' &&
+        m.seccion !== this.filtro.seccion
+      ) {
         return false;
       }
 
@@ -247,8 +234,8 @@ export class MatriculasComponent {
     let lista = [...this.matriculasVistaOriginal];
 
     if (this.codigoBusqueda.trim() !== '') {
-      lista = lista.filter(m =>
-        m.codigo_matricula?.includes(this.codigoBusqueda.trim())
+      lista = lista.filter((m) =>
+        m.codigo_matricula?.includes(this.codigoBusqueda.trim()),
       );
     }
 
@@ -260,42 +247,56 @@ export class MatriculasComponent {
   }
 
   addMatricula(): void {
-
     if (!this.matricula.estudiante?.estudiante_id) {
-      alert('Seleccione un estudiante válido');
+      this.alertaService.mostrar('Seleccione un estudiante válido', 'info');
       this.seccionActiva = 'estudiante';
       return;
     }
 
     if (!this.matricula.aula?.aula_id) {
-      alert('Seleccione un aula válida');
+      this.alertaService.mostrar('Seleccione un aula válida', 'info');
       this.seccionActiva = 'detalles';
       return;
     }
     if (!this.matricula.situacion || !this.matricula.procedencia) {
-      alert('Complete los datos de la matrícula');
+      this.alertaService.mostrar('Complete los datos de la matrícula', 'info');
       this.seccionActiva = 'detalles';
       return;
     }
 
-
-    if (!this.matricula.padre_responsable?.padre_id) {
-      alert('Seleccione un apoderado válido');
-      this.seccionActiva = 'apoderado';
+    // VALIDAR MONTOS VACÍOS
+    if (
+      this.matricula.inscripcion === '' ||
+      this.matricula.inscripcion == null ||
+      this.matricula.matricula === '' ||
+      this.matricula.matricula == null ||
+      this.matricula.mensualidad === '' ||
+      this.matricula.mensualidad == null
+    ) {
+      this.alertaService.mostrar('Complete todos los montos', 'info');
+      this.seccionActiva = 'detalles';
       return;
     }
 
-
+    // VALIDAR QUE SEAN NÚMEROS
+    if (
+      isNaN(Number(this.matricula.inscripcion)) ||
+      isNaN(Number(this.matricula.matricula)) ||
+      isNaN(Number(this.matricula.mensualidad))
+    ) {
+      this.alertaService.mostrar('Montos inválidos', 'error');
+      this.seccionActiva = 'detalles';
+      return;
+    }
     const payload = {
       estudiante_id: this.matricula.estudiante.estudiante_id,
       aula_id: this.matricula.aula.aula_id,
-      padre_responsable_id: this.matricula.padre_responsable.padre_id,
       situacion: this.matricula.situacion,
       procedencia: this.matricula.procedencia,
       ie_procedencia: this.matricula.ie_procedencia,
       inscripcion: Number(this.matricula.inscripcion),
       matricula: Number(this.matricula.matricula),
-      mensualidad: Number(this.matricula.mensualidad)
+      mensualidad: Number(this.matricula.mensualidad),
     };
 
     if (
@@ -303,15 +304,81 @@ export class MatriculasComponent {
       isNaN(Number(this.matricula.matricula)) ||
       isNaN(Number(this.matricula.mensualidad))
     ) {
-      alert('Montos inválidos');
+      this.alertaService.mostrar('Montos inválidos', 'error');
       return;
     }
 
-    this.matriculasService.addMatricula(payload).subscribe(() => {
-      alert('Matrícula registrada correctamente');
-      this.cerrarModal();
-      this.cargarMatriculas();
+    this.matriculasService.addMatricula(payload).subscribe({
+      next: () => {
+        this.mostrarMensajeSimple('Matrícula registrada con éxito', 'success');
+
+        this.cerrarModal();
+
+        this.cargarMatriculas();
+      },
+
+      error: (err) => {
+        console.error(err);
+
+        const mensaje = err?.error?.message || 'Error al registrar matrícula';
+
+        this.alertaService.mostrar(mensaje, 'error');
+      },
     });
+  }
+
+  /* ALERTA SIMPLE */
+  mensajeSimple: string = '';
+  tipoMensajeSimple: 'success' | 'error' = 'success';
+
+  /* ALERTA MODERNA */
+  mensajeModal: string = '';
+  tipoMensajeModal: 'success' | 'error' | 'info' = 'success';
+
+  mostrarModal: boolean = false;
+
+  ocultando = false;
+
+  mostrarMensajeSimple(texto: string, tipo: 'success' | 'error') {
+    this.mensajeSimple = texto;
+    this.tipoMensajeSimple = tipo;
+
+    setTimeout(() => {
+      this.mensajeSimple = '';
+    }, 3000);
+  }
+
+  mostrarMensajeModal(texto: string, tipo: 'success' | 'error' | 'info') {
+    this.ocultando = false;
+
+    this.mensajeModal = texto;
+    this.tipoMensajeModal = tipo;
+
+    this.mostrarModal = true;
+
+    setTimeout(() => {
+      // ACTIVAR ANIMACIÓN
+      this.ocultando = true;
+
+      // ESPERAR ANIMACIÓN
+      setTimeout(() => {
+        this.mostrarModal = false;
+        this.ocultando = false;
+      }, 300);
+    }, 3000);
+  }
+
+  cerrarAlertaSimple() {
+    this.mensajeSimple = '';
+  }
+  cerrarAlertaModal() {
+    this.ocultando = true;
+
+    setTimeout(() => {
+      this.mensajeModal = '';
+      this.mostrarModal = false;
+      this.ocultando = false;
+    }, 300);
   }
 
   onNivelChange(event: Event) {
@@ -319,10 +386,8 @@ export class MatriculasComponent {
 
     this.grados = [
       ...new Set(
-        this.aulas
-          .filter(a => a.nivel === nivel)
-          .map(a => a.grado)
-      )
+        this.aulas.filter((a) => a.nivel === nivel).map((a) => a.grado),
+      ),
     ];
 
     this.secciones = [];
@@ -338,12 +403,13 @@ export class MatriculasComponent {
     this.secciones = [
       ...new Set(
         this.aulas
-          .filter(a =>
-            a.nivel === this.matricula.aula?.nivel &&
-            a.grado === this.matricula.aula?.grado
+          .filter(
+            (a) =>
+              a.nivel === this.matricula.aula?.nivel &&
+              a.grado === this.matricula.aula?.grado,
           )
-          .map(a => a.seccion)
-      )
+          .map((a) => a.seccion),
+      ),
     ];
 
     if (this.matricula.aula) {
@@ -361,19 +427,21 @@ export class MatriculasComponent {
       return;
     }
 
-    this.matriculasService.buscarAula(
-      this.matricula.aula.nivel,
-      this.matricula.aula.grado,
-      this.matricula.aula.seccion
-    ).subscribe({
-      next: (aula) => {
-        this.matricula.aula = aula;
-      },
-      error: () => {
-        alert('Aula no encontrada');
-        this.matricula.aula = null;
-      }
-    });
+    this.matriculasService
+      .buscarAula(
+        this.matricula.aula.nivel,
+        this.matricula.aula.grado,
+        this.matricula.aula.seccion,
+      )
+      .subscribe({
+        next: (aula) => {
+          this.matricula.aula = aula;
+        },
+        error: () => {
+          alert('Aula no encontrada');
+          this.matricula.aula = null;
+        },
+      });
   }
 
   formatearDecimal(campo: 'inscripcion' | 'matricula' | 'mensualidad') {
@@ -383,7 +451,6 @@ export class MatriculasComponent {
     }
   }
 
-
   updateMatricula(): void {
     if (!this.matriculaOriginal) return;
 
@@ -392,11 +459,6 @@ export class MatriculasComponent {
     if (this.matricula.aula?.aula_id !== this.matriculaOriginal.aula?.aula_id) {
       cambios.aula_id = this.matricula.aula?.aula_id;
     }
-
-    if (this.matricula.padre_responsable?.padre_id !== this.matriculaOriginal.padre_responsable?.padre_id) {
-      cambios.padre_responsable_id = this.matricula.padre_responsable?.padre_id;
-    }
-
     if (this.matricula.situacion !== this.matriculaOriginal.situacion)
       cambios.situacion = this.matricula.situacion;
 
@@ -419,7 +481,7 @@ export class MatriculasComponent {
       cambios.mensualidad = Number(this.matricula.mensualidad);
 
     if (Object.keys(cambios).length === 0) {
-      alert('No se realizaron cambios');
+      this.alertaService.mostrar('No se realizaron cambios', 'info');
       return;
     }
 
@@ -429,15 +491,21 @@ export class MatriculasComponent {
         next: (res) => {
           this.cargarMatriculas();
           this.cerrarModal();
-          alert('Matrícula actualizada con éxito');
+          this.alertaService.mostrar(
+            'Matrícula actualizada con éxito',
+            'success',
+          );
         },
         error: (err) => {
           if (err.error?.message) {
             alert(err.error.message[0]); // mensaje del DTO
           } else {
-            alert('Error al actualizar la matrícula');
+            this.alertaService.mostrar(
+              'Error al actualizar la matrícula',
+              'error',
+            );
           }
-        }
+        },
       });
   }
 
@@ -470,17 +538,7 @@ export class MatriculasComponent {
         apellido_materno: '',
         genero: '',
         fecha_nacimiento: '',
-        estado: 'Activo'
-      },
-
-      padre_responsable: {
-        padre_id: 0,
-        dni: '',
-        nombres: '',
-        apellido_paterno: '',
-        apellido_materno: '',
-        tipo_relacion: '',
-        detalles_relacion: ''
+        estado: 'Activo',
       },
 
       aula: {
@@ -488,8 +546,8 @@ export class MatriculasComponent {
         nivel: '',
         grado: '',
         seccion: '',
-      }
-    }
+      },
+    };
     this.modoEditar = false;
     this.modalMatriculaAbierto = true;
   }
@@ -498,26 +556,26 @@ export class MatriculasComponent {
     this.matricula = JSON.parse(JSON.stringify(matricula));
     this.matriculaOriginal = JSON.parse(JSON.stringify(matricula));
     this.dni_estudiante = matricula.estudiante?.dni ?? '';
-    this.dni_padre = matricula.padre_responsable?.dni ?? '';
 
     if (this.matricula.aula) {
       this.grados = [
         ...new Set(
           this.aulas
-            .filter(a => a.nivel === this.matricula.aula!.nivel)
-            .map(a => a.grado)
-        )
+            .filter((a) => a.nivel === this.matricula.aula!.nivel)
+            .map((a) => a.grado),
+        ),
       ];
 
       this.secciones = [
         ...new Set(
           this.aulas
-            .filter(a =>
-              a.nivel === this.matricula.aula!.nivel &&
-              a.grado === this.matricula.aula!.grado
+            .filter(
+              (a) =>
+                a.nivel === this.matricula.aula!.nivel &&
+                a.grado === this.matricula.aula!.grado,
             )
-            .map(a => a.seccion)
-        )
+            .map((a) => a.seccion),
+        ),
       ];
     }
 
@@ -542,7 +600,6 @@ export class MatriculasComponent {
     }
   }
 
-
   getMatriculaVacia(): Matriculas {
     return {
       matricula_id: 0,
@@ -556,34 +613,44 @@ export class MatriculasComponent {
       fecha_matricula: '',
       estado: 'Activo',
       estudiante: null,
-      padre_responsable: null,
-      aula: null
+      aula: null,
     };
   }
 
+  mostrarConfirmacion = false;
+  MatriculaAEliminar: Matriculas | null = null;
 
-  // confirmarEliminar() {
-  //   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-  //     width: '350px',
-  //     data: {
-  //       title: 'Confirmación',
-  //       message: '¿Está seguro de eliminar esta matrícula?',
-  //       icon: 'fa-solid fa-triangle-exclamation',
-  //       confirmText: 'Eliminar',
-  //       cancelText: 'Cancelar'
-  //     }
+  cancelarEliminacion() {
+    this.mostrarConfirmacion = false;
+    this.MatriculaAEliminar = null;
+  }
 
-  //   });
+  confirmarEliminacion() {
+    const id =
+      this.MatriculaAEliminar?.matricula_id ||
+      this.MatriculaAEliminar?.matricula_id;
 
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result) {
-  //       this.eliminarEstudiante();
-  //     }
-  //   });
-  // }
+    if (!id) return;
 
-  // eliminarEstudiante() {
-  //   console.log('Estudiante eliminado');
-  // }
+    this.matriculasService.deleteMatricula(id).subscribe({
+      next: () => {
+        this.mostrarConfirmacion = false;
+        this.MatriculaAEliminar = null;
+        this.mostrarMensajeSimple(
+          'Matrícula eliminada correctamente',
+          'success',
+        );
+        this.cargarMatriculas();
+      },
+      error: (err: any) => {
+        console.error('Error al eliminar:', err);
+        this.mostrarMensajeSimple('Error al eliminar', 'error');
+      },
+    });
+  }
 
+  eliminarMatricula(matricula: Matriculas) {
+    this.MatriculaAEliminar = matricula;
+    this.mostrarConfirmacion = true;
+  }
 }

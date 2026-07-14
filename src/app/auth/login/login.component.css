@@ -27,21 +27,20 @@ html {
     border-radius: 50%;
 }
 
-
-
+/* círculo izquierdo */
 .geometric-bg::before {
-    width: 400px;
-    height: 400px;
-    top: 70%;
-    bottom: -10%;
-
+    width: 40vw;
+    height: 40vw;
+    bottom: -10vw;
+    left: -10vw;
 }
 
+/* círculo derecho */
 .geometric-bg::after {
-    width: 500px;
-    height: 500px;
-    bottom: -10%;
-    right: -10%;
+    width: 50vw;
+    height: 50vw;
+    bottom: -15vw;
+    right: -10vw;
 }
 
 .login-card {
@@ -190,4 +189,33 @@ input:focus {
 .login-button:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .geometric-bg::before {
+        width: 60vw;
+        height: 60vw;
+        bottom: -20vw;
+        left: -20vw;
+    }
+
+    .geometric-bg::after {
+        width: 70vw;
+        height: 70vw;
+        bottom: -25vw;
+        right: -20vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .login-card {
+        margin: 0 auto;
+        width: 100%;
+        max-width: 100%;
+        border-radius: 12px;
+    }
 }

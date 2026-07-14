@@ -1,173 +1,299 @@
 <div>
-    <div class="cont-es">
-        <p class="titulo">ESTUDIANTES</p>
-        <button class="btn-es" (click)="abrirAgregar()">
-            <i class="fa-solid fa-user-plus"></i>
-            Nuevo Estudiante
-        </button>
-    </div>
-    <div class="acciones-tabla">
-        <div class="mostrar-registros">
-            <span>Mostrar</span>
+  <div class="cont-es">
+    <p class="titulo">ESTUDIANTES</p>
+    <button class="btn-es" (click)="abrirAgregar()">
+      <i class="fa-solid fa-user-plus"></i>
+      Nuevo Estudiante
+    </button>
+  </div>
+  <div class="acciones-tabla">
+    <div class="mostrar-registros">
+      <span>Mostrar</span>
 
-            <select (change)="cambiarCantidad($event)">
-                <option value="0">Todos</option>
-                <option value="10" selected>10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-            </select>
+      <select (change)="cambiarCantidad($event)">
+        <option value="0">Todos</option>
+        <option value="10" selected>10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
 
-            <span>registros</span>
-        </div>
-        <div class="buscar-es">
-            <div class="input-busqueda">
-                <label>Buscar:</label>
-                <div class="input-icono">
-                    <input type="text" maxlength="8" [(ngModel)]="dniBusqueda" (ngModelChange)="onDniChange($event)"
-                        inputmode="numeric" placeholder="Ingrese Dni del Estudiante" />
-                </div>
-            </div>
-        </div>
+      <span>registros</span>
     </div>
+    <div class="buscar-es">
+      <label>Buscar:</label>
+      <div class="input-icono">
+        <i class="fa-solid fa-magnifying-glass icono-input"></i>
+        <input
+          type="text"
+          maxlength="8"
+          [(ngModel)]="dniBusqueda"
+          (ngModelChange)="onDniChange($event)"
+          inputmode="numeric"
+          placeholder="Ingrese Dni del Estudiante"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="mensaje"
+     class="alerta"
+     [ngClass]="[tipoMensaje, ocultando ? 'hide' : '']">
+
+  <span class="texto">{{ mensaje }}</span>
+
+  <button class="cerrar" (click)="cerrarAlerta()">✕</button>
 </div>
 
 <div class="cont-tabla tabla-scroll">
-    <table class="tabla-datos">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>DNI</th>
-                <th>NOMBRES</th>
-                <th>APELLIDO PATERNO</th>
-                <th>APELLIDO MATERNO</th>
-                <th>GENERO</th>
-                <th>FECHA DE NACIMIENTO</th>
-                <th>ESTADO</th>
-                <th>ACCIONES</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let estudiante of estudiantes; let i = index">
-                <td>{{i+1}}</td>
-                <td>{{ estudiante.dni }}</td>
-                <td>{{ estudiante.nombres }}</td>
-                <td>{{ estudiante.apellido_paterno }}</td>
-                <td>{{ estudiante.apellido_materno }}</td>
-                <td>{{ estudiante.genero }}</td>
-                <td>{{ estudiante.fecha_nacimiento | date:'dd/MM/yyyy' }}</td>
-                <td>
-                    <span [ngClass]="estudiante.estado === 'Activo' ? 'estado-activo' : 'estado-inactivo'">
-                        {{ estudiante.estado }}
-                    </span>
-                </td>
-                <td>
-                    <button class="btn-icon btn-edit" (click)="abrirEditar(estudiante)">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
+  <div *ngIf="cargando" class="cargando">
+    <i class="fa-solid fa-spinner fa-spin"></i> Cargando registros...
+  </div>
+  <table class="tabla-datos">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>DNI</th>
+        <th>NOMBRES</th>
+        <th>APELLIDO PATERNO</th>
+        <th>APELLIDO MATERNO</th>
+        <th>GENERO</th>
+        <th>FECHA DE NACIMIENTO</th>
+        <th>ESTADO</th>
+        <th>ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let estudiante of estudiantes; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ estudiante.dni }}</td>
+        <td>{{ estudiante.nombres }}</td>
+        <td>{{ estudiante.apellido_paterno }}</td>
+        <td>{{ estudiante.apellido_materno }}</td>
+        <td>{{ estudiante.genero }}</td>
+        <td>{{ estudiante.fecha_nacimiento | date: "dd/MM/yyyy" }}</td>
+        <td>
+          <span
+            [ngClass]="
+              estudiante.estado === 'Activo'
+                ? 'estado-activo'
+                : 'estado-inactivo'
+            "
+          >
+            {{ estudiante.estado }}
+          </span>
+        </td>
+        <td>
+          <button class="btn-icon btn-edit" (click)="abrirEditar(estudiante)">
+            <i class="fa-solid fa-pen"></i>
+          </button>
 
-                    <button class="btn-icon"
-                        [ngClass]="estudiante.estado === 'Activo' ? 'btn-desactivar' : 'btn-activar'"
-                        (click)="cambiarEstado(estudiante)"
-                        [title]="estudiante.estado === 'Activo' ? 'Desactivar estudiante' : 'Activar estudiante'">
-
-                        <i class="fa-solid"
-                            [ngClass]="estudiante.estado === 'Activo' ? 'fa-user-slash' : 'fa-user-check'">
-                        </i>
-                    </button>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <p class="sin-resultados" *ngIf="estudiantes.length === 0 && dniBusqueda.trim() !== ''">
-        No se encontraron estudiantes con ese DNI
-    </p>
+          <button
+            class="btn-icon"
+            [ngClass]="
+              estudiante.estado === 'Activo' ? 'btn-desactivar' : 'btn-activar'
+            "
+            (click)="cambiarEstado(estudiante)"
+            [title]="
+              estudiante.estado === 'Activo'
+                ? 'Desactivar estudiante'
+                : 'Activar estudiante'
+            "
+          >
+            <i
+              class="fa-solid"
+              [ngClass]="
+                estudiante.estado === 'Activo'
+                  ? 'fa-user-slash'
+                  : 'fa-user-check'
+              "
+            >
+            </i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="sin-resultados" *ngIf="!cargando && estudiantes.length === 0">
+    <i class="fa-solid fa-circle-info"></i>
+    No se encontraron estudiantes.
+  </p>
 </div>
 
 <!-- Modal -->
 <div class="modal" *ngIf="modalAbierto">
-    <div class="modal-content">
+  <div class="modal-content">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>
+        <i
+          class="fa-solid"
+          [ngClass]="modoEditar ? 'fa-user-pen' : 'fa-user-plus'"
+        >
+        </i>
+        {{ modoEditar ? "Editar estudiante" : "Nuevo Estudiante" }}
+      </h2>
+      <span class="close" (click)="cerrarModal()">&times;</span>
+    </div>
 
-        <!-- Header -->
-        <div class="modal-header">
-            <h2>
-                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-user-pen' : 'fa-user-plus'">
-                </i>
-                {{ modoEditar ? 'Editar estudiante' : 'Nuevo Estudiante' }}
-            </h2>
-            <span class="close" (click)="cerrarModal()">&times;</span>
+    <!-- Body -->
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="dni-container">
+          <div class="dni-input">
+            <label>DNI *</label>
+            <input
+              type="text"
+              placeholder="Ingrese el DNI (8 dígitos)"
+              [(ngModel)]="estudiante.dni"
+              name="dni"
+              [disabled]="modoEditar"
+              maxlength="8"
+              oninput="this.value = this.value.slice(0, 8)"
+            />
+          </div>
+
+          <button
+            *ngIf="!modoEditar"
+            class="btn-buscar-dni"
+            (click)="buscarDniReniec()"
+            [disabled]="buscandoDni"
+          >
+            <i
+              class="fa-solid"
+              [ngClass]="
+                buscandoDni ? 'fa-spinner fa-spin' : 'fa-magnifying-glass'
+              "
+            ></i>
+            {{ buscandoDni ? "Buscando..." : "Buscar" }}
+          </button>
         </div>
 
-        <!-- Body -->
-        <div class="modal-body">
-            <div class="form-grid">
-
-                <div class="dni-container">
-                    <div class="dni-input">
-                        <label>DNI</label>
-                        <input type="text" placeholder="Ingrese el DNI (8 dígitos)" [(ngModel)]="estudiante.dni"
-                            name="dni" [disabled]="modoEditar" maxlength="8"
-                            oninput="this.value = this.value.slice(0,8)">
-                    </div>
-
-                    <button *ngIf="!modoEditar" class="btn-buscar-dni" (click)="buscarDniReniec()"
-                        [disabled]="buscandoDni">
-                        <i class="fa-solid" [ngClass]="buscandoDni ? 'fa-spinner fa-spin' : 'fa-magnifying-glass'"></i>
-                        {{ buscandoDni ? 'Buscando...' : 'Buscar' }}
-                    </button>
-                </div>
-
-                <div>
-                    <label>Nombres</label>
-                    <input type="text" placeholder="Ingrese los nombres" [(ngModel)]="estudiante.nombres" name="nombres"
-                        required>
-                </div>
-
-                <div>
-                    <label>Apellido Paterno</label>
-                    <input type="text" placeholder="Ingrese el apellido paterno"
-                        [(ngModel)]="estudiante.apellido_paterno" name="apellido_paterno" required>
-                </div>
-
-                <div>
-                    <label>Apellido Materno</label>
-                    <input type="text" placeholder="Ingrese el apellido materno"
-                        [(ngModel)]="estudiante.apellido_materno" name="apellido_materno" required>
-                </div>
-
-                <div>
-                    <label>Género</label>
-                    <select [(ngModel)]="estudiante.genero" name="genero" required class="genero">
-                        <option value="">Seleccione</option>
-                        <option value="Masculino">Masculino</option>
-                        <option value="Femenino">Femenino</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label>Fecha de nacimiento</label>
-                    <input class="fecha" type="date" required [(ngModel)]="estudiante.fecha_nacimiento"
-                        name="fecha_nacimiento">
-                </div>
-
-            </div>
+        <div>
+          <label>Nombres *</label>
+          <input
+            type="text"
+            placeholder="Ingrese los nombres"
+            [(ngModel)]="estudiante.nombres"
+            name="nombres"
+            required
+          />
         </div>
 
-        <!-- Footer -->
-        <div class="modal-footer">
-            <button class="btn-cancelar" (click)="cerrarModal()">
-                <i class="fa-solid fa-xmark"></i> Cancelar
-            </button>
-
-            <form (ngSubmit)="guardar()">
-                <button class="btn-guardar" type="submit">
-                    <i class="fa-solid" [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'">
-                    </i>
-                    {{ modoEditar ? 'Actualizar' : 'Guardar' }}
-                </button>
-            </form>
-
+        <div>
+          <label>Apellido Paterno *</label>
+          <input
+            type="text"
+            placeholder="Ingrese el apellido paterno"
+            [(ngModel)]="estudiante.apellido_paterno"
+            name="apellido_paterno"
+            required
+          />
         </div>
+
+        <div>
+          <label>Apellido Materno *</label>
+          <input
+            type="text"
+            placeholder="Ingrese el apellido materno"
+            [(ngModel)]="estudiante.apellido_materno"
+            name="apellido_materno"
+            required
+          />
+        </div>
+
+        <div>
+          <label>Género *</label>
+          <select
+            [(ngModel)]="estudiante.genero"
+            name="genero"
+            required
+            class="genero"
+          >
+            <option value="">Seleccione</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Femenino">Femenino</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Fecha de nacimiento *</label>
+          <input
+            class="fecha"
+            type="date"
+            required
+            [(ngModel)]="estudiante.fecha_nacimiento"
+            name="fecha_nacimiento"
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cerrarModal()">
+        <i class="fa-solid fa-xmark"></i> Cancelar
+      </button>
+
+      <form (ngSubmit)="guardar()">
+        <button class="btn-guardar" type="submit">
+          <i
+            class="fa-solid"
+            [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'"
+          >
+          </i>
+          {{ modoEditar ? "Actualizar" : "Guardar" }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="mostrarConfirmacionEstado" class="overlay">
+
+  <div class="modal-confirm">
+
+    <div class="icono estado">
+
+      <i
+        class="fa-solid"
+        [ngClass]="
+          nuevoEstado === 'Activo'
+            ? 'fa-user-check'
+            : 'fa-user-slash'
+        "
+      ></i>
 
     </div>
+
+    <h2>
+      ¿{{ nuevoEstado === 'Activo' ? 'Activar' : 'Desactivar' }}
+      Estudiante?
+    </h2>
+
+    <p>
+      El estado del estudiante será cambiado a
+      <strong>{{ nuevoEstado }}</strong>
+    </p>
+
+    <div class="acciones">
+
+      <button
+        class="btn cancelar"
+        (click)="cancelarCambioEstado()"
+      >
+        Cancelar
+      </button>
+
+      <button
+        class="btn eliminar"
+        (click)="confirmarCambioEstado()"
+      >
+        {{ nuevoEstado === 'Activo' ? 'Activar' : 'Desactivar' }}
+      </button>
+
+    </div>
+
+  </div>
+
 </div>

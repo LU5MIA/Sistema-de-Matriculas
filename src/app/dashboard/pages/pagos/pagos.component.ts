@@ -1,26 +1,36 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { Pagos, PagosCreatePayload, PagosVista } from '../../../shared/interfaces/pagos.intreface';
+import {
+  Pagos,
+  PagosCreatePayload,
+  PagosVista,
+} from '../../../shared/interfaces/pagos.intreface';
 import { PagosService } from '../../../core/services/pagos.service';
 import { Padres } from '../../../shared/interfaces/padres.interface';
 import { PadresService } from '../../../core/services/padres.service';
-import { DetallePagoCreate, DetallesPago } from '../../../shared/interfaces/detalles-pago.interface';
-import { forkJoin } from 'rxjs';
+import {
+  DetallePagoCreate,
+  DetallesPago,
+} from '../../../shared/interfaces/detalles-pago.interface';
+import { catchError, forkJoin, of } from 'rxjs';
 import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { AlertaService } from '../../../core/services/alerta.service';
 
 @Component({
   selector: 'app-pagos',
   standalone: false,
   templateUrl: './pagos.component.html',
-  styleUrl: './pagos.component.css'
+  styleUrl: './pagos.component.css',
 })
 export class PagosComponent {
   constructor(
     private dialog: MatDialog,
     private pagosService: PagosService,
-    private padresService: PadresService
-  ) { }
+    private padresService: PadresService,
+    private alertaService: AlertaService,
+  ) {}
+
+  cargando: boolean = false;
 
   // Variables para controlar los modales
   modoEdicion: boolean = false;
@@ -40,6 +50,11 @@ export class PagosComponent {
   pagos: Pagos[] = [];
   pagosVista: PagosVista[] = [];
   pagosVistaBase: PagosVista[] = [];
+
+  filtroConcepto: string = 'todos';
+  filtroAnio: string = 'todos';
+  conceptos: string[] = [];
+  anios: number[] = [];
 
   //detalles del pago
   detalles: DetallesPago[] = [];
@@ -62,7 +77,7 @@ export class PagosComponent {
       monto_total: 0,
       monto_pagado: '',
       estado: '',
-      matricula: null
+      matricula: null,
     },
 
     pagador: {
@@ -76,18 +91,18 @@ export class PagosComponent {
       direccion: '',
       tipo_relacion: '',
       detalles_relacion: '',
-      es_contacto_principal: false
-    }
+      es_contacto_principal: false,
+    },
   };
 
   nuevoDetalle: DetallePagoCreate = {
     canal_pago: '',
-    monto: ''
+    monto: '',
   };
 
   //fila seleccionada para editar detalle
   detalleOriginal: DetallesPago | null = null;
-  detalleEnEdicion: DetallesPago | null = null
+  detalleEnEdicion: DetallesPago | null = null;
   indiceEdicion: number = -1;
 
   //busqueda general
@@ -128,9 +143,8 @@ export class PagosComponent {
     { value: 'Septiembre', label: 'Septiembre' },
     { value: 'Octubre', label: 'Octubre' },
     { value: 'Noviembre', label: 'Noviembre' },
-    { value: 'Diciembre', label: 'Diciembre' }
+    { value: 'Diciembre', label: 'Diciembre' },
   ];
-
 
   //nuevo pago
   pago: Pagos = {
@@ -141,34 +155,49 @@ export class PagosComponent {
     estado: '',
     meses: '',
     matricula: null,
-  }
+  };
 
   // Método para inicializar el componente y cargar los pagos y padres
 
   ngOnInit(): void {
     this.cargarPagos();
-    this.cargarPadres();
+    // this.cargarPadresPorEstudiante();
   }
-
 
   aplicarFiltros(): void {
     let lista = [...this.pagosVistaBase];
 
-    // filtro por búsqueda (opcional, si quieres combinar)
     const texto = (this.textoBusqueda || '').toLowerCase().trim();
 
     if (texto) {
-      lista = lista.filter(p =>
-        p.estudianteNombre.toLowerCase().includes(texto)
+      lista = lista.filter((p) =>
+        p.estudianteNombre.toLowerCase().includes(texto),
       );
     }
-
-    // 🔥 AQUÍ ENTRA TU SELECT
+    if (this.filtroConcepto !== 'todos') {
+      lista = lista.filter((p) => p.concepto === this.filtroConcepto);
+    }
+    if (this.filtroAnio !== 'todos') {
+      lista = lista.filter((p) => {
+        const anio = Number(p.codigoMatricula?.split('-')[1]);
+        return anio === Number(this.filtroAnio);
+      });
+    }
     if (this.cantidadRegistros > 0) {
       lista = lista.slice(0, this.cantidadRegistros);
     }
 
     this.pagosVista = lista;
+  }
+
+  onFiltroConceptoChange(event: any) {
+    this.filtroConcepto = event.target.value;
+    this.aplicarFiltros();
+  }
+
+  onFiltroAnioChange(event: any) {
+    this.filtroAnio = event.target.value;
+    this.aplicarFiltros();
   }
 
   cambiarCantidad(event: Event): void {
@@ -180,10 +209,8 @@ export class PagosComponent {
   // Método para cargar los pagos desde el servicio y preparar la vista
 
   cargarPagos(): void {
-    this.pagosService.getPagos().subscribe(data => {
-
-      const vista = data.map(p => {
-
+    this.pagosService.getPagos().subscribe((data) => {
+      const vista: PagosVista[] = data.map((p) => {
         const codigo_matricula = p.matricula?.codigo_matricula ?? '';
 
         const nombres = p.matricula?.estudiante?.nombres ?? '';
@@ -192,94 +219,113 @@ export class PagosComponent {
 
         return {
           ...p,
+          detalles: p.detalles || [], // 👈 ASEGURA QUE SIEMPRE EXISTA
           codigoMatricula: codigo_matricula || 'Sin código',
           estudianteNombre: p.matricula?.estudiante
             ? `${nombres} ${apellidoP} ${apellidoM}`.trim()
-            : 'Estudiante no asignado'
+            : 'Estudiante no asignado',
         };
       });
 
       this.pagosVistaBase = [...vista];
-      this.aplicarFiltros(); // 👈 usa el filtro
+
+      this.conceptos = [
+        ...new Set(vista.map((p) => p.concepto).filter((c) => c)),
+      ];
+
+      this.anios = [
+        ...new Set(
+          vista
+            .map((m) => m.codigoMatricula?.split('-')[1])
+            .filter((anio) => anio)
+            .map((anio) => Number(anio)),
+        ),
+      ];
+
+      console.log(vista);
+
+      this.aplicarFiltros();
     });
+  }
+
+  pagoEstudiante(id: number) {
+    this.modalPagoEstudiante = true;
+    this.modalAbierto = false;
+    this.cargarDetallePago(id);
   }
 
   cargarDetallePago(id: number) {
+    forkJoin({
+      pago: this.pagosService.getPagoById(id),
+      detalles: this.pagosService
+        .getDetallesPago(id)
+        .pipe(catchError(() => of([]))),
+    }).subscribe(({ pago, detalles }) => {
+      this.pago = pago;
+      this.detalles = detalles;
 
-    this.pagosService.getDetallesPago(id).subscribe(resp => {
+      this.nuevoDetalle = { canal_pago: '', monto: '' };
+      this.onConceptoChange();
 
-      this.detalles = resp;
+      this.textoResponsable = '';
+      this.padreSeleccionado = null;
 
-      if (resp.length > 0) {
+      const estudianteId = pago?.matricula?.estudiante?.estudiante_id;
 
-        this.detalle_pago = resp[0];
-        this.pago = resp[0].pago;
 
-        // limpia los campos
-        this.nuevoDetalle = { canal_pago: '', monto: '' };
-        this.textoResponsable = '';
-        this.padreSeleccionado = null;
+      if (estudianteId) {
+        this.padresService
+          .getPadresByEstudiante(estudianteId)
+          .subscribe((resp: any[]) => {
 
-        // obtener estudiante
-        const estudianteId = resp[0]?.pago?.matricula?.estudiante?.estudiante_id;
-
-        if (estudianteId) {
-
-          this.padresService.getPadresByEstudiante(estudianteId)
-            .subscribe((padres: any[]) => {
-
-              this.padresAlumno = padres;
-              this.padresFiltrados = padres;
-
-            });
-
-        } else {
-
-          this.padresAlumno = [];
-          this.padresFiltrados = [];
-
-        }
-
+            this.padresAlumno = resp;
+            this.padresFiltrados = resp;
+          });
+      } else {
+        this.padresAlumno = [];
+        this.padresFiltrados = [];
       }
-
     });
   }
 
+  NuevoPago() {
+    this.modalPagoEstudiante = false;
+    this.modalAbierto = true;
+  }
+
   realizarPago() {
-
     if (!this.pago.pagos_id) {
-      alert('No hay pago seleccionado');
+      this.alertaService.mostrar('No se ha cargado un pago válido', 'error');
       return;
     }
 
-    const nuevos = this.detalles.filter(d => !d.detalle_id || d.detalle_id === 0);
+    const nuevos = this.detalles.filter(
+      (d) => !d.detalle_id || d.detalle_id === 0,
+    );
 
-    // 🔥 VALIDACIÓN CORRECTA
     if (nuevos.length === 0) {
-      alert('Debe agregar al menos un detalle nuevo');
+      this.alertaService.mostrar('Debe agregar un detalle', 'info');
       return;
     }
 
-    nuevos.forEach(det => {
-
+    nuevos.forEach((det) => {
       const payload = {
         pagos_id: this.pago.pagos_id,
         padre_id: det.padre_id,
         monto: det.monto,
-        canal_pago: det.canal_pago
+        canal_pago: det.canal_pago,
       };
 
       this.pagosService.addDetalle(this.pago.pagos_id, payload).subscribe({
         next: () => {
           this.cargarPagos();
-        }
+        },
       });
-
     });
 
     this.modalPagoEstudiante = false;
 
-    alert('✅ Pago registrado correctamente');
+    this.mostrarMensajeSimple('Pago registrado correctamente', 'success');
   }
 
   // Método para filtrar pagos por nombre del estudiante
@@ -291,12 +337,10 @@ export class PagosComponent {
   // Método para buscar matrícula por código
 
   buscarMatriculaPorCodigo() {
-
     const codigo = String(this.codigoBusqueda || '').trim();
 
     this.pagosService.getMatriculaByCodigo(codigo).subscribe({
       next: (response: any) => {
-
         console.log('Respuesta matrícula:', response);
         this.pago.matricula = response;
 
@@ -312,11 +356,14 @@ export class PagosComponent {
         this.mensualidad = response.mensualidad || 0;
         this.totalMatricula = response.matricula || 0;
 
-        alert('✅ Matrícula encontrada correctamente');
+        this.alertaService.mostrar(
+          'Matrícula encontrada correctamente',
+          'success',
+        );
+        console.log(this.padresAlumno);
       },
 
       error: (err) => {
-
         console.error('Error al buscar matrícula:', err);
 
         this.alumnoNombre = '';
@@ -327,8 +374,11 @@ export class PagosComponent {
         this.totalMatricula = 0;
         this.pago.matricula = null;
 
-        alert('❌ Código de matrícula no encontrado');
-      }
+        this.alertaService.mostrar(
+          'Código de matrícula no encontrado',
+          'error',
+        );
+      },
     });
   }
 
@@ -345,86 +395,95 @@ export class PagosComponent {
   }
 
   guardarPagoCompleto() {
-
     if (!this.pago.matricula?.matricula_id) {
-      alert('Debe seleccionar una matrícula válida');
+      this.alertaService.mostrar(
+        'Debe seleccionar una matrícula válida',
+        'error',
+      );
       return;
     }
 
     if (!this.detalle_pago.padre_id) {
-      alert('Debe seleccionar un responsable de pago');
+      this.alertaService.mostrar(
+        'Debe seleccionar un responsable de pago',
+        'error',
+      );
       return;
     }
 
     if (!this.pago.concepto) {
-      alert('Debe seleccionar un concepto');
+      this.alertaService.mostrar('Debe seleccionar un concepto', 'error');
       return;
     }
 
-    // 👉 Buscar si ya existe un pago de este concepto para este alumno
-    const pagoExistente = this.pagos.find(p =>
-      p.concepto?.trim().toLowerCase() === this.pago.concepto?.trim().toLowerCase() &&
-      p.matricula?.matricula_id === this.pago.matricula?.matricula_id
+    const pagoExistente = this.pagos.find(
+      (p) =>
+        p.concepto?.trim().toLowerCase() ===
+          this.pago.concepto?.trim().toLowerCase() &&
+        p.matricula?.matricula_id === this.pago.matricula?.matricula_id,
     );
 
-    // ===============================
-    // 🔴 VALIDACIONES IMPORTANTES
-    // ===============================
-
-    // ✅ INSCRIPCIÓN (solo una vez)
-
-    console.log('Concepto actual:', this.pago.concepto);
-    console.log('Pagos:', this.pagos);
-    // 🔍 DEBUG AQUÍ
-    console.log('Concepto actual:', this.pago.concepto);
-    console.log('Matrícula actual:', this.pago.matricula?.matricula_id);
-    console.log('Lista de pagos:', this.pagos);
-
-    this.pagos.forEach(p => {
-      console.log('Comparando -> concepto:', p.concepto, 'matricula:', p.matricula?.matricula_id);
+    this.pagos.forEach((p) => {
+      console.log(
+        'Comparando -> concepto:',
+        p.concepto,
+        'matricula:',
+        p.matricula?.matricula_id,
+      );
     });
 
     console.log('Pago encontrado:', pagoExistente);
 
     if (this.pago.concepto === 'Inscripción' && pagoExistente) {
-      alert('La inscripción ya fue registrada para este estudiante');
+      this.alertaService.mostrar(
+        'La inscripción ya fue registrada para este estudiante',
+        'error',
+      );
       return;
     }
 
-    // ✅ MATRÍCULA (una vez por año)
     if (this.pago.concepto === 'Matrícula' && pagoExistente) {
-
       const añoActual = new Date().getFullYear();
 
-      const yaPagoEsteAño = pagoExistente.detalles?.some(d =>
-        new Date(d.fecha_pago).getFullYear() === añoActual
+      const yaPagoEsteAño = pagoExistente.detalles?.some(
+        (d) => new Date(d.fecha_pago).getFullYear() === añoActual,
       );
 
       if (yaPagoEsteAño) {
-        alert('La matrícula ya fue pagada este año');
+        this.alertaService.mostrar(
+          'La matrícula ya fue pagada este año',
+          'error',
+        );
         return;
       }
     }
 
-    // ✅ MENSUALIDAD
     if (this.pago.concepto === 'Mensualidad' && !this.pago.meses) {
-      alert('Debe seleccionar el mes correspondiente');
+      this.alertaService.mostrar(
+        'Debe seleccionar el mes correspondiente',
+        'error',
+      );
       return;
     }
 
-    if (this.pago.concepto === 'Mensualidad' &&
-      this.detalle_pago.monto !== this.pago.monto_total.toString()) {
-      alert("La mensualidad debe pagarse completa.");
+    if (
+      this.pago.concepto === 'Mensualidad' &&
+      this.detalle_pago.monto !== this.pago.monto_total.toString()
+    ) {
+      this.alertaService.mostrar(
+        'La mensualidad debe pagarse completa.',
+        'error',
+      );
       return;
     }
 
     if (!this.detalle_pago.canal_pago) {
-      alert('Debe seleccionar un canal de pago');
+      this.alertaService.mostrar('Debe seleccionar un canal de pago', 'error');
       return;
     }
 
     if (!this.detalle_pago.monto || Number(this.detalle_pago.monto) <= 0) {
-      alert('El monto debe ser mayor a 0');
+      this.alertaService.mostrar('El monto debe ser mayor a 0', 'error');
       return;
     }
 
@@ -433,82 +492,82 @@ export class PagosComponent {
     const yaPagado = Number(this.pago.monto_pagado || 0);
 
     if (montoActual + yaPagado > total) {
-      alert('El monto excede el total pendiente');
+      this.alertaService.mostrar('El monto excede el total pendiente', 'error');
       return;
     }
 
-    // ===============================
-    // 🟢 SI YA EXISTE → SOLO DETALLE
-    // ===============================
     if (pagoExistente) {
-
       const payloadDetalle = {
         pagos_id: pagoExistente.pagos_id,
         padre_id: this.detalle_pago.padre_id,
         monto: montoActual.toString(),
-        canal_pago: this.detalle_pago.canal_pago
+        canal_pago: this.detalle_pago.canal_pago,
       };
 
-      this.pagosService.addDetalle(pagoExistente.pagos_id, payloadDetalle)
+      this.pagosService
+        .addDetalle(pagoExistente.pagos_id, payloadDetalle)
         .subscribe({
           next: () => {
-            alert('✅ Pago agregado al registro existente');
             this.cargarPagos();
             this.resetFormulario();
             this.modalAbierto = false;
           },
           error: (err) => {
             console.error(err);
-            alert('Error al registrar el detalle');
-          }
+            this.alertaService.mostrar(
+              'Error al registrar el detalle',
+              'error',
+            );
+          },
         });
 
       return;
     }
 
-    // ===============================
-    // 🔵 SI NO EXISTE → CREAR PAGO
-    // ===============================
     const payloadPago = {
       matricula_id: this.pago.matricula.matricula_id,
       concepto: this.pago.concepto,
       monto_total: total,
       monto_pagado: montoActual,
-      meses: this.pago.concepto === 'Mensualidad'
-        ? this.pago.meses
-        : undefined
+      meses: this.pago.concepto === 'Mensualidad' ? this.pago.meses : undefined,
     };
 
     this.pagosService.addPago(payloadPago).subscribe({
       next: (pagoCreado) => {
-
         const payloadDetalle = {
           pagos_id: pagoCreado.pagos_id,
           padre_id: this.detalle_pago.padre_id,
           monto: montoActual.toString(),
-          canal_pago: this.detalle_pago.canal_pago
+          canal_pago: this.detalle_pago.canal_pago,
         };
 
-        this.pagosService.addDetalle(pagoCreado.pagos_id, payloadDetalle)
+        this.pagosService
+          .addDetalle(pagoCreado.pagos_id, payloadDetalle)
           .subscribe({
             next: () => {
-              alert('✅ Pago registrado correctamente');
+              this.mostrarMensajeSimple(
+                'Pago registrado correctamente',
+                'success',
+              );
               this.cargarPagos();
               this.resetFormulario();
               this.modalAbierto = false;
             },
             error: (err) => {
               console.error(err);
-              alert('Error al registrar el detalle');
-            }
+              this.alertaService.mostrar(
+                'Error al registrar el detalle',
+                'error',
+              );
+            },
           });
       },
       error: (err) => {
         console.error(err);
 
         const mensaje = err?.error?.message || 'Error al crear el pago';
-        alert(mensaje);
-      }
+        this.alertaService.mostrar(mensaje, 'error');
+      },
     });
   }
 
@@ -519,20 +578,21 @@ export class PagosComponent {
   }
 
   agregarDetalle() {
-
-    // ✅ FORMATO Y VALIDACIÓN
-    this.formatearMonto(this.nuevoDetalle);
-    if (!this.validarMonto()) return;
-
-    // ✅ CAMPOS OBLIGATORIOS
-    if (!this.padreSeleccionado || !this.nuevoDetalle.canal_pago) {
-      alert("Complete todos los campos");
+    if (!this.padreSeleccionado) {
+      this.alertaService.mostrar('Seleccione un responsable de pago', 'info');
       return;
     }
 
+    if (!this.nuevoDetalle.canal_pago) {
+      this.alertaService.mostrar('Seleccione un canal de pago', 'info');
+      return;
+    }
+
+    this.formatearMonto(this.nuevoDetalle);
+    if (!this.validarMonto()) return;
+
     const montoIngresado = this.nuevoDetalle.monto.toString();
 
-    // 🔄 EDICIÓN
     if (this.detalleEnEdicion) {
       const indice = this.indiceEdicion;
       const original = this.detalles[indice];
@@ -543,7 +603,10 @@ export class PagosComponent {
         original.pagador.padre_id !== this.padreSeleccionado.padre_id;
 
       if (!haCambiado) {
-        alert("No se detectaron cambios para actualizar");
+        this.alertaService.mostrar(
+          'No se detectaron cambios para actualizar',
+          'info',
+        );
         this.finalizarEdicion();
         return;
       }
@@ -554,31 +617,33 @@ export class PagosComponent {
         pagador: this.padreSeleccionado,
         monto: montoIngresado,
         canal_pago: this.nuevoDetalle.canal_pago,
-        // fecha_pago: new Date().toISOString(),
       };
 
       if (detalleActualizado.detalle_id > 0) {
-        this.pagosService.updateDetalle(detalleActualizado.detalle_id, {
-          monto: detalleActualizado.monto,
-          canal_pago: detalleActualizado.canal_pago,
-          padre_id: detalleActualizado.padre_id,
-          // fecha_pago: detalleActualizado.fecha_pago
-        }).subscribe({
-          next: (resp) => {
-            this.detalles[indice] = { ...resp };
-            alert('✅ Detalle actualizado correctamente');
-            this.finalizarEdicion();
-          },
-          error: (err) => {
-            console.error(err);
-            alert('❌ Error al actualizar');
-          }
-        });
+        this.pagosService
+          .updateDetalle(detalleActualizado.detalle_id, {
+            monto: detalleActualizado.monto,
+            canal_pago: detalleActualizado.canal_pago,
+            padre_id: detalleActualizado.padre_id,
+          })
+          .subscribe({
+            next: (resp) => {
+              this.detalles[indice] = { ...resp };
+              this.alertaService.mostrar(
+                'Detalle actualizado correctamente',
+                'success',
+              );
+              this.finalizarEdicion();
+            },
+            error: (err) => {
+              console.error(err);
+              this.alertaService.mostrar('Error al actualizar', 'info');
+            },
+          });
       } else {
         this.detalles[indice] = { ...detalleActualizado };
         this.finalizarEdicion();
       }
-
     } else {
       // ➕ AGREGAR
       const detalle: DetallesPago = {
@@ -589,7 +654,7 @@ export class PagosComponent {
         monto: montoIngresado,
         fecha_pago: new Date().toISOString(),
         pago: this.pago,
-        pagador: this.padreSeleccionado
+        pagador: this.padreSeleccionado,
       };
 
       this.detalles.push(detalle);
@@ -602,12 +667,15 @@ export class PagosComponent {
     const restante = this.calcularSaldoRestante();
 
     if (isNaN(monto) || monto <= 0) {
-      alert('Ingrese un monto válido');
+      this.alertaService.mostrar('Ingrese un monto válido', 'info');
       return false;
     }
 
     if (monto > restante) {
-      alert(`Solo puedes pagar hasta ${restante.toFixed(2)}`);
+      this.alertaService.mostrar(
+        `Solo puedes pagar hasta ${restante.toFixed(2)}`,
+        'info',
+      );
       return false;
     }
 
@@ -632,6 +700,32 @@ export class PagosComponent {
     return pagado;
   }
 
+  obtenerClaseVencimiento(fecha?: string): string {
+    if (!fecha) return 'sin-vencimiento';
+
+    const hoy = new Date();
+
+    const vencimiento = new Date(fecha);
+
+    // quitar horas
+    hoy.setHours(0, 0, 0, 0);
+    vencimiento.setHours(0, 0, 0, 0);
+
+    const diferenciaDias = Math.ceil(
+      (vencimiento.getTime() - hoy.getTime()) / (1000 * 60 * 60 * 24),
+    );
+
+    if (diferenciaDias < 0) {
+      return 'vencido';
+    }
+
+    if (diferenciaDias <= 3) {
+      return 'proximo';
+    }
+
+    return 'normal';
+  }
+
   finalizarEdicion() {
     this.detalleEnEdicion = null;
     this.indiceEdicion = -1;
@@ -642,21 +736,16 @@ export class PagosComponent {
 
   seleccionarDetalle(detalle: DetallesPago, index: number) {
     if (this.indiceEdicion === index) {
-      // this.finalizarEdicion();
       return;
     }
 
     this.indiceEdicion = index;
-    // Creamos una copia para que el formulario no modifique la tabla "en vivo"
     this.detalleEnEdicion = JSON.parse(JSON.stringify(detalle));
-
     this.padreSeleccionado = detalle.pagador;
     this.textoResponsable = `${detalle.pagador.nombres} ${detalle.pagador.apellido_paterno}`;
-
-    // Sincronizamos el formulario
     this.nuevoDetalle = {
       monto: detalle.monto.toString(),
-      canal_pago: detalle.canal_pago
+      canal_pago: detalle.canal_pago,
     };
   }
 
@@ -664,47 +753,46 @@ export class PagosComponent {
     return detalles.reduce((sum, d) => sum + (Number(d.monto) || 0), 0);
   }
 
-
   eliminarDetalle(id: number, index: number) {
-    // ... validaciones previas ...
-
     const montoEliminado = this.detalles[index].monto;
 
     if (confirm('¿Seguro que deseas eliminar este detalle?')) {
       this.pagosService.deleteDetalle(id).subscribe(() => {
-        this.detalles = this.detalles.filter(d => d.detalle_id !== id);
-        this.cargarPagos(); // 🔥 sincroniza con backend
+        this.detalles = this.detalles.filter((d) => d.detalle_id !== id);
+        this.cargarPagos();
       });
     }
   }
 
-  // Método para filtrar padres por nombre dentro del modal de pago
-
   filtrarPadres() {
-    const texto = this.textoResponsable.toLowerCase().trim();
-
+    const texto = (this.textoResponsable || '').toLowerCase().trim();
 
     if (!texto) {
+      this.padresFiltrados = [];
       this.mostrarLista = false;
       return;
     }
 
-    this.padresFiltrados = this.padresAlumno.filter(p =>
-      p.nombre_completo.toLowerCase().includes(texto)
+    this.padresFiltrados = (this.padresAlumno || []).filter((p) =>
+      (p.nombre_completo || '').toLowerCase().includes(texto),
     );
 
-    this.mostrarLista = true;
-
+    this.mostrarLista = this.padresFiltrados.length > 0;
   }
 
-  // Método para cargar los padres desde el servicio
+  cargarPadresPorEstudiante(estudiante_id: number): void {
+    this.padresService
+      .getPadresByEstudiante(estudiante_id)
+      .subscribe((resp: any) => {
+        this.padresAlumno = resp;
+        this.padresFiltrados = resp;
+      });
+  }
 
-  cargarPadres(): void {
-    this.padresService.getPadres().subscribe((resp: any) => {
-      this.padres = resp.data;
-      this.padresFiltrados = resp.data;
+  onSeleccionarMatricula(matricula: any) {
+    const estudiante_id = matricula.estudiante.estudiante_id;
 
-    });
+    this.cargarPadresPorEstudiante(estudiante_id);
   }
 
   seleccionarPadre(padre: any) {
@@ -716,39 +804,24 @@ export class PagosComponent {
   }
 
   onConceptoChange() {
-
-    this.pago.monto_total = 0;
     this.esMatricula = false;
     this.dividirMatricula = false;
-    this.montoParte1 = 0;
-    this.montoParte2 = 0;
 
-    this.detalle_pago.monto = '0';
+    // 🔥 limpiar primero
+    this.nuevoDetalle.monto = '';
 
-    if (this.pago.concepto === 'Inscripción') {
-      this.pago.monto_total = this.incripcion;
-    }
-
+    // SOLO mensualidad
     if (this.pago.concepto === 'Mensualidad') {
-      this.pago.monto_total = this.mensualidad;
+      const total = Number(this.pago.monto_total || 0);
 
-      this.detalle_pago.monto = this.mensualidad.toString();
+      this.nuevoDetalle.monto = total.toFixed(2);
     }
 
+    // Solo lógica visual
     if (this.pago.concepto === 'Matrícula') {
       this.esMatricula = true;
-      this.pago.monto_total = this.totalMatricula;
     }
   }
-
-  // calcularSegundaParte() {
-
-  //   if (this.montoParte1 > this.totalMatricula) {
-  //     this.montoParte1 = this.totalMatricula;
-  //   }
-
-  //   this.montoParte2 = this.totalMatricula - this.montoParte1;
-  // }
 
   formatearMonto(obj: any) {
     if (!obj.monto) return;
@@ -770,7 +843,7 @@ export class PagosComponent {
       monto_pagado: '',
       estado: '',
       meses: '',
-      matricula: null
+      matricula: null,
     };
 
     this.detalle_pago = {
@@ -788,7 +861,7 @@ export class PagosComponent {
         monto_total: 0,
         monto_pagado: '',
         estado: '',
-        matricula: null
+        matricula: null,
       },
 
       pagador: {
@@ -802,14 +875,13 @@ export class PagosComponent {
         direccion: '',
         tipo_relacion: '',
         detalles_relacion: '',
-        es_contacto_principal: false
-      }
-
+        es_contacto_principal: false,
+      },
     };
     // 🔥 ESTA PARTE ERA CLAVE (ANTES solo limpiabas propiedades)
     this.nuevoDetalle = {
       canal_pago: '',
-      monto: ''
+      monto: '',
     };
 
     this.codigoBusqueda = '';
@@ -825,45 +897,72 @@ export class PagosComponent {
 
     this.detalleEnEdicion = null;
     this.indiceEdicion = -1;
+  }
 
-    // 🔥 MUY IMPORTANTE: regresar a la primera pestaña
-    // this.tabActual = 'datos'; // 👈 cambia según como controles tus tabs
+  /* ALERTA SIMPLE */
+  mensajeSimple: string = '';
+  tipoMensajeSimple: 'success' | 'error' = 'success';
+
+  /* ALERTA MODERNA */
+  mensajeModal: string = '';
+  tipoMensajeModal: 'success' | 'error' | 'info' = 'success';
+
+  mostrarModal: boolean = false;
+
+  ocultando = false;
+
+  mostrarMensajeSimple(texto: string, tipo: 'success' | 'error') {
+    this.mensajeSimple = texto;
+    this.tipoMensajeSimple = tipo;
+
+    setTimeout(() => {
+      this.mensajeSimple = '';
+    }, 3000);
+  }
+
+  cerrarAlertaSimple() {
+    this.mensajeSimple = '';
   }
 
   imprimirReciboDesdePago(pago: PagosVista) {
+    this.pagosService.getDetallesPago(pago.pagos_id).subscribe({
+      next: (detalles) => {
+        if (!detalles || detalles.length === 0) {
+          this.alertaService.mostrar('No hay detalles para este pago', 'info');
+          return;
+        }
 
-    this.pagosService.getDetallesPago(pago.pagos_id).subscribe(detalles => {
+        const detalle = detalles[0];
+        this.imprimirReciboPDF(detalle);
+      },
 
-      if (!detalles || detalles.length === 0) {
-        alert('No hay detalles para este pago');
-        return;
-      }
-
-      // 🔥 puedes elegir cuál imprimir
-      const detalle = detalles[0]; // o el último, o todos
-
-      this.imprimirReciboPDF(detalle);
+      error: (err) => {
+        if (err.status === 404) {
+          this.alertaService.mostrar('No se puede generar el recibo', 'info');
+        } else {
+          console.error(err);
+        }
+      },
     });
   }
 
   async imprimirReciboPDF(detalle: DetallesPago) {
-
-    const existingPdfBytes = await fetch('assets/HOSANNA RECIBO.pdf')
-      .then(res => res.arrayBuffer());
+    const existingPdfBytes = await fetch('assets/BOLETA DE PAGO.pdf').then(
+      (res) => res.arrayBuffer(),
+    );
 
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
     const page = pdfDoc.getPages()[0];
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
-
-    // DATOS
-    const nombre = `${detalle.pagador.nombres} ${detalle.pagador.apellido_materno}  ${detalle.pagador.apellido_paterno}`.toUpperCase();
+    const nombre =
+      `${detalle.pagador.nombres} ${detalle.pagador.apellido_materno}  ${detalle.pagador.apellido_paterno}`.toUpperCase();
     const montoNumero = Number(detalle.monto);
     const montoTexto = this.numeroALetras(montoNumero);
-    const concepto = detalle.pago.concepto.toUpperCase(); // o concepto real
+    const concepto = detalle.pago.concepto.toUpperCase(); 
     const fecha = new Date(detalle.fecha_pago);
     const dia = fecha.getDate().toString().padStart(2, '0');
     const mes = fecha.toLocaleString('es-PE', { month: 'long' }).toUpperCase();
-    const canal_pago = detalle.canal_pago.toUpperCase(); // ej: "EFECTIVO"
+    const canal_pago = detalle.canal_pago.toUpperCase(); 
     const numeroRecibo = this.generarNumeroRecibo(detalle.detalle_id);
 
     const colorAzul = rgb(0, 0, 0);
@@ -875,115 +974,47 @@ export class PagosComponent {
 
     if (canal_pago === 'EFECTIVO') {
       marcarEfectivo = 'X';
-
     } else if (['BCP', 'BBVA'].includes(canal_pago)) {
       marcarDeposito = 'X';
-
     } else if (['YAPE', 'PLIN', 'TUNKI'].includes(canal_pago)) {
       marcarOtros = 'X';
       detalleOtros = canal_pago;
     }
 
-    // RECIBI DE:
-    page.drawText(nombre, {
-      x: 200,
-      y: 490,
-      size: 10,
+    const data = {
+      nombre,
+      montoTexto,
+      monto: detalle.monto,
+      concepto,
+      dia,
+      mes,
+      marcarEfectivo,
+      marcarDeposito,
+      marcarOtros,
+      detalleOtros,
+      numeroRecibo,
       font,
       color: colorAzul,
-    });
+    };
 
-    // LA CANTIDAD DE:
-    page.drawText(`${montoTexto}`, {
-      x: 200,
-      y: 460,
-      size: 10,
+    const dataAbajo = {
+      nombre: '',
+      montoTexto,
+      monto: detalle.monto,
+      concepto,
+      dia,
+      mes,
+      marcarEfectivo,
+      marcarDeposito,
+      marcarOtros,
+      detalleOtros,
+      numeroRecibo,
       font,
       color: colorAzul,
-    });
+    };
 
-    // EL MONTO DE:
-    page.drawText(`S/ ${detalle.monto}`, {
-      x: 485,
-      y: 530,
-      size: 10,
-      font,
-      color: colorAzul,
-    });
-
-    // POR CONCEPTO DE:
-    page.drawText(concepto, {
-      x: 200,
-      y: 430,
-      size: 10,
-      font,
-      color: colorAzul,
-    });
-
-    // Día
-    page.drawText(dia.toString(), {
-      x: 160,
-      y: 380,
-      size: 10,
-      font,
-      color: colorAzul,
-    });
-
-    // Mes
-    page.drawText(mes, {
-      x: 240, //más a la derecha
-      y: 380,
-      size: 10,
-      font,
-      color: colorAzul,
-    });
-
-    //Efectivo
-    page.drawText(marcarEfectivo, {
-      x: 175, // ajusta según tu recibo
-      y: 335,
-      size: 12,
-      font,
-      color: colorAzul,
-    });
-
-    // Depósito
-    page.drawText(marcarDeposito, {
-      x: 175,
-      y: 315,
-      size: 12,
-      font,
-      color: colorAzul,
-    });
-
-    // Otros
-    page.drawText(marcarOtros, {
-      x: 175,
-      y: 295,
-      size: 12,
-      font,
-      color: colorAzul,
-    });
-
-    // Detalle para otros (YAPE, PLIN, etc)
-
-    page.drawText(detalleOtros, {
-      x: 320,
-      y: 300,
-      size: 10,
-      font,
-      color: colorAzul,
-    });
-
-    // Número de recibo
-    page.drawText(numeroRecibo, {
-      x: 490,
-      y: 555,
-      size: 10,
-      font,
-      color: colorAzul,
-
-    });
+    this.dibujarRecibo(page, data, -165);
+    this.dibujarRecibo(page, dataAbajo, 170);
 
     const pdfBytes = await pdfDoc.save();
 
@@ -999,20 +1030,48 @@ export class PagosComponent {
 
   numeroALetras(monto: number): string {
     const unidades = [
-      '', 'UNO', 'DOS', 'TRES', 'CUATRO', 'CINCO',
-      'SEIS', 'SIETE', 'OCHO', 'NUEVE', 'DIEZ',
-      'ONCE', 'DOCE', 'TRECE', 'CATORCE', 'QUINCE'
+      '',
+      'UNO',
+      'DOS',
+      'TRES',
+      'CUATRO',
+      'CINCO',
+      'SEIS',
+      'SIETE',
+      'OCHO',
+      'NUEVE',
+      'DIEZ',
+      'ONCE',
+      'DOCE',
+      'TRECE',
+      'CATORCE',
+      'QUINCE',
     ];
 
     const decenas = [
-      '', '', 'VEINTE', 'TREINTA', 'CUARENTA',
-      'CINCUENTA', 'SESENTA', 'SETENTA', 'OCHENTA', 'NOVENTA'
+      '',
+      '',
+      'VEINTE',
+      'TREINTA',
+      'CUARENTA',
+      'CINCUENTA',
+      'SESENTA',
+      'SETENTA',
+      'OCHENTA',
+      'NOVENTA',
     ];
 
     const centenas = [
-      '', 'CIENTO', 'DOSCIENTOS', 'TRESCIENTOS',
-      'CUATROCIENTOS', 'QUINIENTOS', 'SEISCIENTOS',
-      'SETECIENTOS', 'OCHOCIENTOS', 'NOVECIENTOS'
+      '',
+      'CIENTO',
+      'DOSCIENTOS',
+      'TRESCIENTOS',
+      'CUATROCIENTOS',
+      'QUINIENTOS',
+      'SEISCIENTOS',
+      'SETECIENTOS',
+      'OCHOCIENTOS',
+      'NOVECIENTOS',
     ];
 
     const entero = Math.floor(monto);
@@ -1023,17 +1082,16 @@ export class PagosComponent {
     if (entero === 100) {
       letras = 'CIEN';
     } else {
-      
       if (entero > 99) {
         letras += centenas[Math.floor(entero / 100)] + ' ';
       }
 
       const resto = entero % 100;
-     
+
       if (resto <= 15) {
         letras += unidades[resto];
       } else if (resto < 20) {
-        letras += 'DIECI' + unidades[resto - 10]; 
+        letras += 'DIECI' + unidades[resto - 10];
       } else if (resto === 20) {
         letras += 'VEINTE';
       } else if (resto < 30) {
@@ -1049,16 +1107,123 @@ export class PagosComponent {
     return `${letras.trim().toUpperCase()} CON ${decimal.toString().padStart(2, '0')}/100 SOLES`;
   }
 
+  dibujarRecibo(page: any, data: any, offsetY = 0) {
+    const {
+      nombre,
+      montoTexto,
+      monto,
+      concepto,
+      dia,
+      mes,
+      marcarEfectivo,
+      marcarDeposito,
+      marcarOtros,
+      detalleOtros,
+      numeroRecibo,
+      font,
+      color,
+    } = data;
 
-  pagoEstudiante(id: number) {
-    this.modalPagoEstudiante = true;
-    this.modalAbierto = false;
-    this.cargarDetallePago(id);
-  }
+    // 👇 Detecta si es el de abajo (no tiene nombre)
+    const ajusteExtra = nombre ? 0 : 40; // ajusta 20–40 según veas
 
-  NuevoPago() {
-    this.modalPagoEstudiante = false;
-    this.modalAbierto = true;
+    // NOMBRE
+    if (nombre) {
+      page.drawText(nombre, {
+        x: 200,
+        y: 490 - offsetY,
+        size: 10,
+        font,
+        color,
+      });
+    }
+
+    // MONTO EN LETRAS
+    page.drawText(montoTexto, {
+      x: 200,
+      y: 460 - offsetY,
+      size: 10,
+      font,
+      color,
+    });
+
+    // MONTO EN NÚMERO 👇 (AQUÍ APLICAMOS AJUSTE)
+    page.drawText(`S/ ${monto}`, {
+      x: 485,
+      y: 530 - offsetY - ajusteExtra,
+      size: 10,
+      font,
+      color,
+    });
+
+    // CONCEPTO
+    page.drawText(concepto, {
+      x: 200,
+      y: 430 - offsetY,
+      size: 10,
+      font,
+      color,
+    });
+
+    // FECHA
+    page.drawText(dia, {
+      x: 160,
+      y: 380 - offsetY,
+      size: 10,
+      font,
+      color,
+    });
+
+    page.drawText(mes, {
+      x: 240,
+      y: 380 - offsetY,
+      size: 10,
+      font,
+      color,
+    });
+
+    // CHECKS
+    page.drawText(marcarEfectivo, {
+      x: 175,
+      y: 335 - offsetY,
+      size: 12,
+      font,
+      color,
+    });
+
+    page.drawText(marcarDeposito, {
+      x: 175,
+      y: 315 - offsetY,
+      size: 12,
+      font,
+      color,
+    });
+
+    page.drawText(marcarOtros, {
+      x: 175,
+      y: 295 - offsetY,
+      size: 12,
+      font,
+      color,
+    });
+
+    // DETALLE
+    page.drawText(detalleOtros, {
+      x: 320,
+      y: 300 - offsetY,
+      size: 10,
+      font,
+      color,
+    });
+
+    // NÚMERO DE RECIBO 👇 (AQUÍ TAMBIÉN)
+    page.drawText(numeroRecibo, {
+      x: 490,
+      y: 555 - offsetY - ajusteExtra,
+      size: 10,
+      font,
+      color,
+    });
   }
 
   cerrarModal(element: HTMLElement, tipo: 'pago' | 'principal') {

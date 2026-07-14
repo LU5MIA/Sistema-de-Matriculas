@@ -1,0 +1,3169 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Frontend - Sistema de Matrículas</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Frontend - Sistema de Matrículas</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  PadresComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/dashboard/pages/padres/padres.component.ts</code>
+</p>
+
+
+
+
+    <p class="comment">
+        <h3>Implements</h3>
+    </p>
+    <p class="comment">
+                    <code><a href="https://angular.io/api/core/OnInit" target="_blank" >OnInit</a></code>
+    </p>
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-padres</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./padres.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./padres.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#activeTab" >activeTab</a>
+                            </li>
+                            <li>
+                                <a href="#buscandoDni" >buscandoDni</a>
+                            </li>
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#dniEstudiante" >dniEstudiante</a>
+                            </li>
+                            <li>
+                                <a href="#estudiantesAsignados" >estudiantesAsignados</a>
+                            </li>
+                            <li>
+                                <a href="#formMadre" >formMadre</a>
+                            </li>
+                            <li>
+                                <a href="#formPadre" >formPadre</a>
+                            </li>
+                            <li>
+                                <a href="#mensaje" >mensaje</a>
+                            </li>
+                            <li>
+                                <a href="#modalAbierto" >modalAbierto</a>
+                            </li>
+                            <li>
+                                <a href="#modoEditar" >modoEditar</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarConfirmacion" >mostrarConfirmacion</a>
+                            </li>
+                            <li>
+                                <a href="#ocultando" >ocultando</a>
+                            </li>
+                            <li>
+                                <a href="#padreAEliminar" >padreAEliminar</a>
+                            </li>
+                            <li>
+                                <a href="#padreIdEditar" >padreIdEditar</a>
+                            </li>
+                            <li>
+                                <a href="#padreIdEliminar" >padreIdEliminar</a>
+                            </li>
+                            <li>
+                                <a href="#padres" >padres</a>
+                            </li>
+                            <li>
+                                <a href="#tipoMensaje" >tipoMensaje</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirAgregar" >abrirAgregar</a>
+                            </li>
+                            <li>
+                                <a href="#abrirEditar" >abrirEditar</a>
+                            </li>
+                            <li>
+                                <a href="#buscarDniReniec" >buscarDniReniec</a>
+                            </li>
+                            <li>
+                                <a href="#buscarEstudiante" >buscarEstudiante</a>
+                            </li>
+                            <li>
+                                <a href="#cancelarEliminacion" >cancelarEliminacion</a>
+                            </li>
+                            <li>
+                                <a href="#cargarDatosEnFormulario" >cargarDatosEnFormulario</a>
+                            </li>
+                            <li>
+                                <a href="#cargarPadres" >cargarPadres</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarAlerta" >cerrarAlerta</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarModal" >cerrarModal</a>
+                            </li>
+                            <li>
+                                <a href="#confirmarEliminacion" >confirmarEliminacion</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarEstudianteDeLista" >eliminarEstudianteDeLista</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarPadre" >eliminarPadre</a>
+                            </li>
+                            <li>
+                                <a href="#getDefaultForm" >getDefaultForm</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#guardarPadre" >guardarPadre</a>
+                            </li>
+                            <li>
+                                <a href="#limpiarFormulario" >limpiarFormulario</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarError" >mostrarError</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarExito" >mostrarExito</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarMensaje" >mostrarMensaje</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sincronizarEstudiantesAsignados" >sincronizarEstudiantesAsignados</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(dialog: MatDialog, padresService: <a href="../injectables/PadresService.html" target="_self">PadresService</a>, cd: <a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank">ChangeDetectorRef</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:37</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>dialog</td>
+                                                  
+                                                        <td>
+                                                                    <code>MatDialog</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>padresService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/PadresService.html" target="_self" >PadresService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>cd</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/ChangeDetectorRef" target="_blank" >ChangeDetectorRef</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirAgregar"></a>
+                    <span class="name">
+                        <span ><b>abrirAgregar</b></span>
+                        <a href="#abrirAgregar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirAgregar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="174"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:174</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirEditar"></a>
+                    <span class="name">
+                        <span ><b>abrirEditar</b></span>
+                        <a href="#abrirEditar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirEditar(padre?: <a href="../interfaces/Padres.html" target="_self">Padres</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="165"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:165</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>padre</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Padres.html" target="_self" >Padres</a></code>
+                                            </td>
+
+                                            <td>
+                                                    Yes
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buscarDniReniec"></a>
+                    <span class="name">
+                        <span ><b>buscarDniReniec</b></span>
+                        <a href="#buscarDniReniec"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>buscarDniReniec(tipo: "padre" | "madre")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="88"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:88</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                        <code>&quot;padre&quot; | &quot;madre&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buscarEstudiante"></a>
+                    <span class="name">
+                        <span ><b>buscarEstudiante</b></span>
+                        <a href="#buscarEstudiante"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>buscarEstudiante()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="130"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:130</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelarEliminacion"></a>
+                    <span class="name">
+                        <span ><b>cancelarEliminacion</b></span>
+                        <a href="#cancelarEliminacion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cancelarEliminacion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="404"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:404</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarDatosEnFormulario"></a>
+                    <span class="name">
+                        <span ><b>cargarDatosEnFormulario</b></span>
+                        <a href="#cargarDatosEnFormulario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarDatosEnFormulario(padre: <a href="../interfaces/Padres.html" target="_self">Padres</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="190"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:190</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>padre</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Padres.html" target="_self" >Padres</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarPadres"></a>
+                    <span class="name">
+                        <span ><b>cargarPadres</b></span>
+                        <a href="#cargarPadres"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarPadres()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="49"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:49</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarAlerta"></a>
+                    <span class="name">
+                        <span ><b>cerrarAlerta</b></span>
+                        <a href="#cerrarAlerta"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarAlerta()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="444"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:444</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarModal"></a>
+                    <span class="name">
+                        <span ><b>cerrarModal</b></span>
+                        <a href="#cerrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="453"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:453</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmarEliminacion"></a>
+                    <span class="name">
+                        <span ><b>confirmarEliminacion</b></span>
+                        <a href="#confirmarEliminacion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmarEliminacion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="409"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:409</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarEstudianteDeLista"></a>
+                    <span class="name">
+                        <span ><b>eliminarEstudianteDeLista</b></span>
+                        <a href="#eliminarEstudianteDeLista"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarEstudianteDeLista(index: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="161"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:161</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>index</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarPadre"></a>
+                    <span class="name">
+                        <span ><b>eliminarPadre</b></span>
+                        <a href="#eliminarPadre"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarPadre(padre: <a href="../interfaces/Padres.html" target="_self">Padres</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="396"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:396</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>padre</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Padres.html" target="_self" >Padres</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDefaultForm"></a>
+                    <span class="name">
+                        <span ><b>getDefaultForm</b></span>
+                        <a href="#getDefaultForm"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getDefaultForm(tipoRelacion: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>tipoRelacion</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/ParentForm.html" target="_self" >ParentForm</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardarPadre"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>guardarPadre</b></span>
+                        <a href="#guardarPadre"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>guardarPadre()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="228"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:228</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="limpiarFormulario"></a>
+                    <span class="name">
+                        <span ><b>limpiarFormulario</b></span>
+                        <a href="#limpiarFormulario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>limpiarFormulario()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="183"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:183</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarError"></a>
+                    <span class="name">
+                        <span ><b>mostrarError</b></span>
+                        <a href="#mostrarError"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>mostrarError(err: unknown)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="374"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:374</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>err</td>
+                                            <td>
+                                                        <code>unknown</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarExito"></a>
+                    <span class="name">
+                        <span ><b>mostrarExito</b></span>
+                        <a href="#mostrarExito"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>mostrarExito(msg: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="368"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:368</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>msg</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarMensaje"></a>
+                    <span class="name">
+                        <span ><b>mostrarMensaje</b></span>
+                        <a href="#mostrarMensaje"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>mostrarMensaje(texto: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, tipo: "success" | "error")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="433"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:433</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>texto</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                        <code>&quot;success&quot; | &quot;error&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="45"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:45</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="sincronizarEstudiantesAsignados"></a>
+                    <span class="name">
+                            <span class="modifier">Async</span>
+                        <span ><b>sincronizarEstudiantesAsignados</b></span>
+                        <a href="#sincronizarEstudiantesAsignados"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>sincronizarEstudiantesAsignados(padreId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="336"
+                                    class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:336</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>padreId</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="activeTab"></a>
+                    <span class="name">
+                        <span ><b>activeTab</b></span>
+                        <a href="#activeTab"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>1</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:66</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buscandoDni"></a>
+                    <span class="name">
+                        <span ><b>buscandoDni</b></span>
+                        <a href="#buscandoDni"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dniEstudiante"></a>
+                    <span class="name">
+                        <span ><b>dniEstudiante</b></span>
+                        <a href="#dniEstudiante"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="127" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:127</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="estudiantesAsignados"></a>
+                    <span class="name">
+                        <span ><b>estudiantesAsignados</b></span>
+                        <a href="#estudiantesAsignados"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>any[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="128" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:128</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formMadre"></a>
+                    <span class="name">
+                        <span ><b>formMadre</b></span>
+                        <a href="#formMadre"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ParentForm.html" target="_self" >ParentForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.getDefaultForm(&#x27;Madre&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:70</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formPadre"></a>
+                    <span class="name">
+                        <span ><b>formPadre</b></span>
+                        <a href="#formPadre"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/ParentForm.html" target="_self" >ParentForm</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>this.getDefaultForm(&#x27;Padre&#x27;)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="69" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:69</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mensaje"></a>
+                    <span class="name">
+                        <span ><b>mensaje</b></span>
+                        <a href="#mensaje"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="430" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:430</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalAbierto"></a>
+                    <span class="name">
+                        <span ><b>modalAbierto</b></span>
+                        <a href="#modalAbierto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:60</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modoEditar"></a>
+                    <span class="name">
+                        <span ><b>modoEditar</b></span>
+                        <a href="#modoEditar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarConfirmacion"></a>
+                    <span class="name">
+                        <span ><b>mostrarConfirmacion</b></span>
+                        <a href="#mostrarConfirmacion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="401" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:401</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ocultando"></a>
+                    <span class="name">
+                        <span ><b>ocultando</b></span>
+                        <a href="#ocultando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="442" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:442</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="padreAEliminar"></a>
+                    <span class="name">
+                        <span ><b>padreAEliminar</b></span>
+                        <a href="#padreAEliminar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Padres.html" target="_self" >Padres | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="402" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:402</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="padreIdEditar"></a>
+                    <span class="name">
+                        <span ><b>padreIdEditar</b></span>
+                        <a href="#padreIdEditar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="padreIdEliminar"></a>
+                    <span class="name">
+                        <span ><b>padreIdEliminar</b></span>
+                        <a href="#padreIdEliminar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>number | null</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="394" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:394</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="padres"></a>
+                    <span class="name">
+                        <span ><b>padres</b></span>
+                        <a href="#padres"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Padres.html" target="_self" >Padres[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="36" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:36</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tipoMensaje"></a>
+                    <span class="name">
+                        <span ><b>tipoMensaje</b></span>
+                        <a href="#tipoMensaje"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;success&quot; | &quot;error&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;success&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="431" class="link-to-prism">src/app/dashboard/pages/padres/padres.component.ts:431</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, ChangeDetectorRef } from &#x27;@angular/core&#x27;;
+import { MatDialog } from &#x27;@angular/material/dialog&#x27;;
+import { ConfirmDialogComponent } from &#x27;../../../shared/confirm-dialog/confirm-dialog.component&#x27;;
+import { PadresService } from &#x27;../../../core/services/padres.service&#x27;;
+import { Padres } from &#x27;../../../shared/interfaces/padres.interface&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
+
+interface ApiError {
+  status?: number;
+  message?: string;
+  error?: {
+    message?: string;
+  };
+}
+
+interface ParentForm {
+  nombres: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  dni: string;
+  telefono: string;
+  email: string;
+  direccion: string;
+  tipo_relacion: string;
+  detalles_relacion: string;
+  es_contacto_principal: boolean;
+}
+
+@Component({
+  selector: &#x27;app-padres&#x27;,
+  standalone: false,
+  templateUrl: &#x27;./padres.component.html&#x27;,
+  styleUrl: &#x27;./padres.component.css&#x27;,
+})
+export class PadresComponent implements OnInit {
+  padres: Padres[] &#x3D; [];
+  cargando: boolean &#x3D; false;
+
+  constructor(
+    private dialog: MatDialog,
+    private padresService: PadresService,
+    private cd: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
+    this.cargarPadres();
+  }
+
+  cargarPadres() {
+    this.padresService.getPadres().subscribe({
+      next: (response: any) &#x3D;&gt; {
+        this.padres &#x3D; response.data;
+      },
+      error: (err) &#x3D;&gt; {
+        console.error(&#x27;Error al cargar padres:&#x27;, err);
+      },
+    });
+  }
+
+  modalAbierto: boolean &#x3D; false;
+  modoEditar: boolean &#x3D; false;
+  padreIdEditar: number | null &#x3D; null;
+  buscandoDni: boolean &#x3D; false;
+
+  // ESTADO DE TABS
+  activeTab: number &#x3D; 1;
+
+  // VARIABLES DE FORMULARIO
+  formPadre: ParentForm &#x3D; this.getDefaultForm(&#x27;Padre&#x27;);
+  formMadre: ParentForm &#x3D; this.getDefaultForm(&#x27;Madre&#x27;);
+
+  getDefaultForm(tipoRelacion: string): ParentForm {
+    return {
+      nombres: &#x27;&#x27;,
+      apellido_paterno: &#x27;&#x27;,
+      apellido_materno: &#x27;&#x27;,
+      dni: &#x27;&#x27;,
+      telefono: &#x27;&#x27;,
+      email: &#x27;&#x27;,
+      direccion: &#x27;&#x27;,
+      tipo_relacion: tipoRelacion,
+      detalles_relacion: &#x27;&#x27;,
+      es_contacto_principal: false,
+    };
+  }
+
+  // ✅ Método para buscar DNI en RENIEC
+  buscarDniReniec(tipo: &#x27;padre&#x27; | &#x27;madre&#x27;) {
+    const formTarget &#x3D; tipo &#x3D;&#x3D;&#x3D; &#x27;padre&#x27; ? this.formPadre : this.formMadre;
+    const dniString &#x3D; String(formTarget.dni || &#x27;&#x27;).trim();
+
+    if (!dniString || dniString.length !&#x3D;&#x3D; 8 || !/^\d{8}$/.test(dniString)) {
+      alert(&#x27;Por favor ingrese un DNI válido de 8 dígitos&#x27;);
+      return;
+    }
+
+    this.buscandoDni &#x3D; true;
+
+    this.padresService.buscarDniEnReniec(dniString).subscribe({
+      next: (response) &#x3D;&gt; {
+        this.buscandoDni &#x3D; false;
+        formTarget.nombres &#x3D; response.nombres;
+        formTarget.apellido_paterno &#x3D; response.apellidoPaterno;
+        formTarget.apellido_materno &#x3D; response.apellidoMaterno;
+        alert(&#x27;✅ Datos encontrados en RENIEC. Complete los campos restantes.&#x27;);
+      },
+      error: (err) &#x3D;&gt; {
+        this.buscandoDni &#x3D; false;
+        console.error(&#x27;Error al buscar DNI:&#x27;, err);
+
+        if (err.status &#x3D;&#x3D;&#x3D; 404) {
+          alert(&#x27;❌ DNI no encontrado en RENIEC&#x27;);
+        } else if (err.status &#x3D;&#x3D;&#x3D; 401) {
+          alert(&#x27;❌ Error autenticación con RENIEC (Token).&#x27;);
+        } else if (err.status &#x3D;&#x3D;&#x3D; 400) {
+          alert(&#x27;❌ DNI inválido. Debe tener 8 dígitos.&#x27;);
+        } else {
+          alert(
+            &#x27;❌ Error al consultar DNI: &#x27; + (err.error?.message || err.message),
+          );
+        }
+      },
+    });
+  }
+
+  // Variables para asignar estudiantes compartidas
+  dniEstudiante: string &#x3D; &#x27;&#x27;;
+  estudiantesAsignados: any[] &#x3D; [];
+
+  buscarEstudiante() {
+    if (this.dniEstudiante.length !&#x3D;&#x3D; 8) {
+      alert(&#x27;El DNI debe tener 8 dígitos&#x27;);
+      return;
+    }
+
+    this.padresService.getEstudianteByDni(this.dniEstudiante).subscribe({
+      next: (estudiante) &#x3D;&gt; {
+        if (!estudiante) {
+          alert(&#x27;Estudiante no encontrado&#x27;);
+          return;
+        }
+
+        const duplicado &#x3D; this.estudiantesAsignados.find(
+          (e) &#x3D;&gt; e.dni &#x3D;&#x3D;&#x3D; estudiante.dni,
+        );
+        if (duplicado) {
+          alert(&#x27;El estudiante ya está en la lista&#x27;);
+          return;
+        }
+
+        this.estudiantesAsignados.push(estudiante);
+        this.dniEstudiante &#x3D; &#x27;&#x27;; // Limpiar campo
+      },
+      error: (err) &#x3D;&gt; {
+        console.error(&#x27;Error al buscar estudiante:&#x27;, err);
+        alert(&#x27;Error al buscar estudiante (ver consola)&#x27;);
+      },
+    });
+  }
+
+  eliminarEstudianteDeLista(index: number) {
+    this.estudiantesAsignados.splice(index, 1);
+  }
+
+  abrirEditar(padre?: Padres) {
+    if (padre) {
+      this.modoEditar &#x3D; true;
+      this.padreIdEditar &#x3D; padre.padre_id || padre.id || null;
+      this.cargarDatosEnFormulario(padre);
+      this.modalAbierto &#x3D; true;
+    }
+  }
+
+  abrirAgregar() {
+    this.modoEditar &#x3D; false;
+    this.padreIdEditar &#x3D; null;
+    this.limpiarFormulario();
+    this.activeTab &#x3D; 1;
+    this.modalAbierto &#x3D; true;
+    this.cd.detectChanges();
+  }
+
+  limpiarFormulario() {
+    this.formPadre &#x3D; this.getDefaultForm(&#x27;Padre&#x27;);
+    this.formMadre &#x3D; this.getDefaultForm(&#x27;Madre&#x27;);
+    this.estudiantesAsignados &#x3D; [];
+    this.dniEstudiante &#x3D; &#x27;&#x27;;
+  }
+
+  cargarDatosEnFormulario(padre: Padres) {
+    this.limpiarFormulario();
+
+    const parentData &#x3D; {
+      nombres: padre.nombres,
+      apellido_paterno: padre.apellido_paterno,
+      apellido_materno: padre.apellido_materno,
+      dni: padre.dni,
+      telefono: padre.telefono || &#x27;&#x27;,
+      email: padre.email || &#x27;&#x27;,
+      direccion: padre.direccion || &#x27;&#x27;,
+      tipo_relacion: padre.tipo_relacion,
+      detalles_relacion: padre.detalles_relacion || &#x27;&#x27;,
+      es_contacto_principal: padre.es_contacto_principal || false,
+    };
+
+    if (
+      padre.tipo_relacion?.toLowerCase() &#x3D;&#x3D;&#x3D; &#x27;madre&#x27; ||
+      padre.tipo_relacion?.toLowerCase() &#x3D;&#x3D;&#x3D; &#x27;tutora&#x27;
+    ) {
+      this.formMadre &#x3D; parentData;
+      this.activeTab &#x3D; 2;
+    } else {
+      this.formPadre &#x3D; parentData;
+      this.activeTab &#x3D; 1;
+    }
+
+    if (this.padreIdEditar) {
+      this.padresService.getEstudiantesAsignados(this.padreIdEditar).subscribe({
+        next: (data) &#x3D;&gt; {
+          this.estudiantesAsignados &#x3D; data;
+          this.cd.detectChanges();
+        },
+        error: (err) &#x3D;&gt; console.error(err),
+      });
+    }
+  }
+
+  async guardarPadre() {
+    if (this.modoEditar &amp;&amp; this.padreIdEditar) {
+      // Editar solo la pestaña activa / padre correspondiente
+      const formData &#x3D; this.activeTab &#x3D;&#x3D;&#x3D; 2 ? this.formMadre : this.formPadre;
+
+      if (
+        !formData.nombres ||
+        !formData.apellido_paterno ||
+        !formData.dni ||
+        !formData.tipo_relacion
+      ) {
+        alert(&#x27;Por favor complete los campos obligatorios del padre editado&#x27;);
+        return;
+      }
+
+      try {
+        await this.padresService
+          .updatePadre(this.padreIdEditar, formData)
+          .toPromise();
+        await this.sincronizarEstudiantesAsignados(this.padreIdEditar);
+        this.mostrarExito(&#x27;Registro actualizado correctamente&#x27;);
+      } catch (err) {
+        this.mostrarError(err);
+      }
+    } else {
+      // MODO AGREGAR: Evaluar si guardan 1 o 2 apoderados
+      const savePadre &#x3D; !!(this.formPadre.dni &amp;&amp; this.formPadre.nombres);
+      const saveMadre &#x3D; !!(this.formMadre.dni &amp;&amp; this.formMadre.nombres);
+
+      if (!savePadre &amp;&amp; !saveMadre) {
+        alert(
+          &#x27;Debe rellenar al menos los datos de un apoderado (o Padre o Madre)&#x27;,
+        );
+        return;
+      }
+
+      if (
+        savePadre &amp;&amp;
+        (!this.formPadre.nombres ||
+          !this.formPadre.apellido_paterno ||
+          !this.formPadre.dni ||
+          !this.formPadre.tipo_relacion)
+      ) {
+        alert(&#x27;Faltan campos obligatorios en la pestaña Padre/Tutor 1&#x27;);
+        return;
+      }
+
+      if (
+        saveMadre &amp;&amp;
+        (!this.formMadre.nombres ||
+          !this.formMadre.apellido_paterno ||
+          !this.formMadre.dni ||
+          !this.formMadre.tipo_relacion)
+      ) {
+        alert(&#x27;Faltan campos obligatorios en la pestaña Madre/Tutor 2&#x27;);
+        return;
+      }
+
+      try {
+        const promesas &#x3D; [];
+        let idPadreFinal &#x3D; null;
+        let idMadreFinal &#x3D; null;
+
+        // 1. Guardar Padre
+        if (savePadre) {
+          const respPadre &#x3D; await this.padresService
+            .createPadre(this.formPadre)
+            .toPromise();
+          idPadreFinal &#x3D; respPadre?.padre_id || respPadre?.id;
+        }
+
+        // 2. Guardar Madre
+        if (saveMadre) {
+          const respMadre &#x3D; await this.padresService
+            .createPadre(this.formMadre)
+            .toPromise();
+          idMadreFinal &#x3D; respMadre?.padre_id || respMadre?.id;
+        }
+
+        // 3. Asignar Hijos a ambos
+        const asignacionesPromises &#x3D; [];
+        for (const est of this.estudiantesAsignados) {
+          const estId &#x3D; est.estudiante_id || est.id;
+          if (idPadreFinal)
+            asignacionesPromises.push(
+              this.padresService
+                .assignEstudiante(idPadreFinal, estId)
+                .toPromise(),
+            );
+          if (idMadreFinal)
+            asignacionesPromises.push(
+              this.padresService
+                .assignEstudiante(idMadreFinal, estId)
+                .toPromise(),
+            );
+        }
+
+        if (asignacionesPromises.length &gt; 0) {
+          await Promise.all(asignacionesPromises);
+        }
+
+        this.mostrarExito(&#x27;Registro(s) guardado(s) exitosamente&#x27;);
+      } catch (err) {
+        this.mostrarError(err);
+      }
+    }
+  }
+
+  async sincronizarEstudiantesAsignados(padreId: number) {
+    try {
+      const asignacionesActuales &#x3D; await this.padresService
+        .getEstudiantesAsignados(padreId)
+        .toPromise();
+      if (!asignacionesActuales) return;
+
+      const mapaActual &#x3D; new Map();
+      asignacionesActuales.forEach((a) &#x3D;&gt; mapaActual.set(a.estudiante_id, a));
+
+      const mapaNuevo &#x3D; new Map();
+      this.estudiantesAsignados.forEach((e) &#x3D;&gt;
+        mapaNuevo.set(e.estudiante_id || e.id, e),
+      );
+
+      for (const [id, _] of mapaActual) {
+        if (!mapaNuevo.has(id)) {
+          await this.padresService.removeEstudiante(padreId, id).toPromise();
+        }
+      }
+
+      for (const [id, _] of mapaNuevo) {
+        if (!mapaActual.has(id)) {
+          await this.padresService.assignEstudiante(padreId, id).toPromise();
+        }
+      }
+    } catch (err: unknown) {
+      console.error(&#x27;Error sincronizando estudiantes:&#x27;, err);
+      throw new Error(&#x27;Error al sincronizar hijos&#x27;);
+    }
+  }
+
+  mostrarExito(msg: string) {
+    alert(msg);
+    this.cerrarModal();
+    this.cargarPadres();
+  }
+
+  mostrarError(err: unknown) {
+    console.error(&#x27;Error:&#x27;, err);
+    let errorMessage &#x3D; &#x27;Error desconocido&#x27;;
+    if (err &amp;&amp; typeof err &#x3D;&#x3D;&#x3D; &#x27;object&#x27;) {
+      if (
+        &#x27;error&#x27; in err &amp;&amp;
+        err.error &amp;&amp;
+        typeof err.error &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp;
+        &#x27;message&#x27; in err.error
+      ) {
+        errorMessage &#x3D; (err.error as { message: string }).message;
+      } else if (&#x27;message&#x27; in err) {
+        errorMessage &#x3D; (err as { message: string }).message;
+      }
+    } else if (typeof err &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+      errorMessage &#x3D; err;
+    }
+    alert(&#x27;Error: &#x27; + errorMessage);
+  }
+
+  padreIdEliminar: number | null &#x3D; null;
+
+  eliminarPadre(padre: Padres) {
+    this.padreAEliminar &#x3D; padre;
+    this.mostrarConfirmacion &#x3D; true;
+  }
+
+  mostrarConfirmacion &#x3D; false;
+  padreAEliminar: Padres | null &#x3D; null;
+
+  cancelarEliminacion() {
+    this.mostrarConfirmacion &#x3D; false;
+    this.padreAEliminar &#x3D; null;
+  }
+
+  confirmarEliminacion() {
+    const id &#x3D; this.padreAEliminar?.padre_id || this.padreAEliminar?.id;
+
+    if (!id) return;
+
+    this.padresService.deletePadre(id).subscribe({
+      next: () &#x3D;&gt; {
+        this.mostrarConfirmacion &#x3D; false;
+        this.padreAEliminar &#x3D; null;
+        this.mostrarMensaje(&#x27;Registro eliminado correctamente&#x27;, &#x27;success&#x27;);
+        this.cargarPadres();
+      },
+      error: (err: any) &#x3D;&gt; {
+        console.error(&#x27;Error al eliminar:&#x27;, err);
+        this.mostrarMensaje(&#x27;Error al eliminar&#x27;, &#x27;error&#x27;);
+      },
+    });
+  }
+
+  // Variables para mostrar mensajes de éxito/error
+
+  mensaje: string &#x3D; &#x27;&#x27;;
+  tipoMensaje: &#x27;success&#x27; | &#x27;error&#x27; &#x3D; &#x27;success&#x27;;
+
+  mostrarMensaje(texto: string, tipo: &#x27;success&#x27; | &#x27;error&#x27;) {
+    this.mensaje &#x3D; texto;
+    this.tipoMensaje &#x3D; tipo;
+
+    setTimeout(() &#x3D;&gt; {
+      this.mensaje &#x3D; &#x27;&#x27;;
+    }, 3000);
+  }
+
+  ocultando &#x3D; false;
+
+  cerrarAlerta() {
+    this.ocultando &#x3D; true;
+
+    setTimeout(() &#x3D;&gt; {
+      this.mensaje &#x3D; &#x27;&#x27;;
+      this.ocultando &#x3D; false;
+    }, 400); // mismo tiempo que la animación
+  }
+
+  cerrarModal() {
+    const modal &#x3D; document.querySelector(&#x27;.modal-content&#x27;);
+    if (modal) {
+      modal.classList.add(&#x27;salir&#x27;);
+      setTimeout(() &#x3D;&gt; {
+        this.modalAbierto &#x3D; false;
+        this.limpiarFormulario();
+        this.cd.detectChanges();
+      }, 250);
+    } else {
+      this.modalAbierto &#x3D; false;
+      this.limpiarFormulario();
+      this.cd.detectChanges();
+    }
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div&gt;
+  &lt;div class&#x3D;&quot;cont-es&quot;&gt;
+    &lt;p class&#x3D;&quot;titulo&quot;&gt;PADRES&lt;/p&gt;
+    &lt;button class&#x3D;&quot;btn-padre&quot; (click)&#x3D;&quot;abrirAgregar()&quot;&gt;
+      &lt;i class&#x3D;&quot;fa-solid fa-plus&quot;&gt;&lt;/i&gt;
+      Agregar Padre / Madre
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class&#x3D;&quot;acciones-tabla&quot;&gt;
+    &lt;div class&#x3D;&quot;mostrar-registros&quot;&gt;
+      &lt;span&gt;Mostrar&lt;/span&gt;
+      &lt;select&gt;
+        &lt;option value&#x3D;&quot;0&quot;&gt;Todos&lt;/option&gt;
+        &lt;option value&#x3D;&quot;10&quot; selected&gt;10&lt;/option&gt;
+        &lt;option value&#x3D;&quot;25&quot;&gt;25&lt;/option&gt;
+        &lt;option value&#x3D;&quot;50&quot;&gt;50&lt;/option&gt;
+      &lt;/select&gt;
+      &lt;span&gt;registros&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;div class&#x3D;&quot;buscar-padre&quot;&gt;
+      &lt;label&gt;Buscar:&lt;/label&gt;
+      &lt;div class&#x3D;&quot;input-icono&quot;&gt;
+        &lt;i class&#x3D;&quot;fa-solid fa-magnifying-glass icono-input&quot;&gt;&lt;/i&gt;
+        &lt;input
+          type&#x3D;&quot;number&quot;
+          name&#x3D;&quot;buscar&quot;
+          placeholder&#x3D;&quot;Ingrese el DNI&quot;
+          minlength&#x3D;&quot;8&quot;
+          maxlength&#x3D;&quot;8&quot;
+          oninput&#x3D;&quot;this.value &#x3D; this.value.slice(0, 8)&quot;
+        /&gt;
+      &lt;/div&gt; 
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div *ngIf&#x3D;&quot;mensaje&quot;
+     class&#x3D;&quot;alerta&quot;
+     [ngClass]&#x3D;&quot;[tipoMensaje, ocultando ? &#x27;hide&#x27; : &#x27;&#x27;]&quot;&gt;
+
+  &lt;span class&#x3D;&quot;texto&quot;&gt;{{ mensaje }}&lt;/span&gt;
+
+  &lt;button class&#x3D;&quot;cerrar&quot; (click)&#x3D;&quot;cerrarAlerta()&quot;&gt;✕&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class&#x3D;&quot;cont-tabla tabla-scroll&quot;&gt;
+  &lt;div *ngIf&#x3D;&quot;cargando&quot; class&#x3D;&quot;cargando&quot;&gt;
+    &lt;i class&#x3D;&quot;fa-solid fa-spinner fa-spin&quot;&gt;&lt;/i&gt; Cargando registros...
+  &lt;/div&gt;
+
+  &lt;table class&#x3D;&quot;tabla-datos&quot;&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;ID&lt;/th&gt;
+        &lt;th&gt;DNI&lt;/th&gt;
+        &lt;th&gt;NOMBRE&lt;/th&gt;
+        &lt;th&gt;APELLIDO&lt;/th&gt;
+        &lt;th&gt;TELÉFONO&lt;/th&gt; 
+        &lt;th&gt;EMAIL&lt;/th&gt;
+        &lt;th&gt;DIRECCIÓN&lt;/th&gt;
+        &lt;th&gt;RELACIÓN&lt;/th&gt;
+        &lt;th&gt;ACCIONES&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr *ngFor&#x3D;&quot;let padre of padres; let i &#x3D; index&quot;&gt;
+        &lt;td&gt;{{ i + 1 }}&lt;/td&gt;
+        &lt;td&gt;{{ padre.dni }}&lt;/td&gt;
+        &lt;td&gt;{{ padre.nombres }}&lt;/td&gt;
+        &lt;td&gt;{{ padre.apellido_paterno }} {{ padre.apellido_materno }}&lt;/td&gt;
+        &lt;td&gt;{{ padre.telefono }}&lt;/td&gt;
+        &lt;td&gt;{{ padre.email }}&lt;/td&gt;
+        &lt;td&gt;{{ padre.direccion }}&lt;/td&gt;
+        &lt;td&gt;{{ padre.tipo_relacion }}&lt;/td&gt;
+        &lt;td&gt;
+          &lt;button class&#x3D;&quot;btn-icon btn-edit&quot; (click)&#x3D;&quot;abrirEditar(padre)&quot;&gt;
+            &lt;i class&#x3D;&quot;fa-solid fa-pen&quot;&gt;&lt;/i&gt;
+          &lt;/button&gt;
+
+          &lt;!-- &lt;button
+            class&#x3D;&quot;btn-icon btn-delete&quot;
+            (click)&#x3D;&quot;eliminarPadre(padre)&quot;
+          &gt;
+            &lt;i class&#x3D;&quot;fa-solid fa-trash&quot;&gt;&lt;/i&gt;
+          &lt;/button&gt; --&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+
+  &lt;p class&#x3D;&quot;sin-resultados&quot; *ngIf&#x3D;&quot;!cargando &amp;&amp; padres.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+    &lt;i class&#x3D;&quot;fa-solid fa-circle-info&quot;&gt;&lt;/i&gt;
+    No se encontraron padres.
+  &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- Modal --&gt;
+&lt;div class&#x3D;&quot;modal&quot; *ngIf&#x3D;&quot;modalAbierto&quot;&gt;
+  &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+    &lt;!-- Header --&gt;
+    &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+      &lt;h2&gt;
+        &lt;i
+          class&#x3D;&quot;fa-solid&quot;
+          [ngClass]&#x3D;&quot;modoEditar ? &#x27;fa-user-pen&#x27; : &#x27;fa-users-line&#x27;&quot;
+        &gt;&lt;/i&gt;
+        {{ modoEditar ? &quot;Editar Apoderado&quot; : &quot;Registro de Apoderados&quot; }}
+      &lt;/h2&gt;
+      &lt;span class&#x3D;&quot;close&quot; (click)&#x3D;&quot;cerrarModal()&quot;&gt;&amp;times;&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;!-- TABS HEADERS --&gt;
+    &lt;aside class&#x3D;&quot;tabs-header&quot;&gt;
+      &lt;!-- Si estamos editando y NO era madre, mostramos esta pestaña como la única &quot;Parent&quot; info. Si agregamos, vemos 1 --&gt;
+      &lt;button
+        class&#x3D;&quot;tab-btn&quot;
+        [class.active]&#x3D;&quot;activeTab &#x3D;&#x3D;&#x3D; 1&quot;
+        (click)&#x3D;&quot;activeTab &#x3D; 1&quot;
+        [hidden]&#x3D;&quot;modoEditar &amp;&amp; formMadre.dni&quot;
+      &gt;
+        &lt;i class&#x3D;&quot;fa-solid fa-user-tie&quot;&gt;&lt;/i&gt; Padre / Tutor 1
+      &lt;/button&gt;
+
+      &lt;!-- Si estamos editando y NO era padre, mostramos la 2 como la unica &quot;Parent&quot; info. Si agregamos, vemos 2 --&gt;
+      &lt;button
+        class&#x3D;&quot;tab-btn&quot;
+        [class.active]&#x3D;&quot;activeTab &#x3D;&#x3D;&#x3D; 2&quot;
+        (click)&#x3D;&quot;activeTab &#x3D; 2&quot;
+        [hidden]&#x3D;&quot;modoEditar &amp;&amp; formPadre.dni&quot;
+      &gt;
+        &lt;i class&#x3D;&quot;fa-solid fa-person-dress&quot;&gt;&lt;/i&gt; Madre / Tutor 2
+      &lt;/button&gt;
+
+      &lt;button
+        class&#x3D;&quot;tab-btn&quot;
+        [class.active]&#x3D;&quot;activeTab &#x3D;&#x3D;&#x3D; 3&quot;
+        (click)&#x3D;&quot;activeTab &#x3D; 3&quot;
+      &gt;
+        &lt;i class&#x3D;&quot;fa-solid fa-children&quot;&gt;&lt;/i&gt; Hijos Asignados
+      &lt;/button&gt;
+    &lt;/aside&gt;
+
+    &lt;!-- Body --&gt;
+    &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+      &lt;!-- CONTENIDO TAB 1: PADRE / TUTOR 1 --&gt;
+      &lt;div class&#x3D;&quot;tab-content&quot; [class.active]&#x3D;&quot;activeTab &#x3D;&#x3D;&#x3D; 1&quot;&gt;
+        &lt;div class&#x3D;&quot;info-opcional&quot; *ngIf&#x3D;&quot;!modoEditar&quot;&gt;
+          &lt;i class&#x3D;&quot;fa-solid fa-circle-info&quot;&gt;&lt;/i&gt; Puedes dejar esta pestaña
+          vacía si solo vas a registrar a la madre.
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;form-grid mt-3&quot;&gt;
+          &lt;!-- DNI --&gt;
+          &lt;div class&#x3D;&quot;dni-container&quot;&gt;
+            &lt;div class&#x3D;&quot;dni-input&quot;&gt;
+              &lt;label&gt;DNI *&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                placeholder&#x3D;&quot;Ingrese DNI&quot;
+                [(ngModel)]&#x3D;&quot;formPadre.dni&quot;
+                name&#x3D;&quot;dniP&quot;
+                [disabled]&#x3D;&quot;modoEditar&quot;
+                maxlength&#x3D;&quot;8&quot;
+                oninput&#x3D;&quot;this.value &#x3D; this.value.slice(0, 8)&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;button
+              *ngIf&#x3D;&quot;!modoEditar&quot;
+              class&#x3D;&quot;btn-buscar-dni&quot;
+              (click)&#x3D;&quot;buscarDniReniec(&#x27;padre&#x27;)&quot;
+              [disabled]&#x3D;&quot;buscandoDni&quot;
+            &gt;
+              &lt;i
+                class&#x3D;&quot;fa-solid&quot;
+                [ngClass]&#x3D;&quot;
+                  buscandoDni ? &#x27;fa-spinner fa-spin&#x27; : &#x27;fa-magnifying-glass&#x27;
+                &quot;
+              &gt;&lt;/i&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Nombres --&gt;
+          &lt;div&gt;
+            &lt;label&gt;Nombres *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;Nombres&quot;
+              [(ngModel)]&#x3D;&quot;formPadre.nombres&quot;
+              name&#x3D;&quot;nomP&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Apellidos --&gt;
+          &lt;div&gt;
+            &lt;label&gt;Apellido Paterno *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;A. Paterno&quot;
+              [(ngModel)]&#x3D;&quot;formPadre.apellido_paterno&quot;
+              name&#x3D;&quot;apP&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;label&gt;Apellido Materno *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;A. Materno&quot;
+              [(ngModel)]&#x3D;&quot;formPadre.apellido_materno&quot;
+              name&#x3D;&quot;amP&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Contacto --&gt;
+          &lt;div&gt;
+            &lt;label&gt;Teléfono&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;tel&quot;
+              placeholder&#x3D;&quot;Teléfono&quot;
+              maxlength&#x3D;&quot;9&quot;
+              [(ngModel)]&#x3D;&quot;formPadre.telefono&quot;
+              name&#x3D;&quot;telP&quot;
+              oninput&#x3D;&quot;
+                this.value &#x3D; this.value.replace(/[^0-9]/g, &#x27;&#x27;).slice(0, 9)
+              &quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;label&gt;Email&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;email&quot;
+              placeholder&#x3D;&quot;ejemplo@correo.com&quot;
+              [(ngModel)]&#x3D;&quot;formPadre.email&quot;
+              name&#x3D;&quot;emP&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;full-width&quot;&gt;
+            &lt;label&gt;Dirección&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;Dirección completa&quot;
+              [(ngModel)]&#x3D;&quot;formPadre.direccion&quot;
+              name&#x3D;&quot;dirP&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Tipo Relación &amp; Apoderado --&gt;
+          &lt;div class&#x3D;&quot;relacion-container&quot;&gt;
+            &lt;div class&#x3D;&quot;full-width&quot;&gt;
+              &lt;label&gt;Tipo de Relación *&lt;/label&gt;
+              &lt;select [(ngModel)]&#x3D;&quot;formPadre.tipo_relacion&quot; name&#x3D;&quot;trP&quot;&gt;
+                &lt;option value&#x3D;&quot;Padre&quot;&gt;Padre&lt;/option&gt;
+                &lt;option value&#x3D;&quot;Tutor&quot;&gt;Tutor / Familiar&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;apoderado-principal-check flex-1&quot;&gt;
+              &lt;label class&#x3D;&quot;toggle-switch&quot;&gt;
+                &lt;input
+                  type&#x3D;&quot;checkbox&quot;
+                  [(ngModel)]&#x3D;&quot;formPadre.es_contacto_principal&quot;
+                  name&#x3D;&quot;ecpP&quot;
+                /&gt;
+                &lt;span class&#x3D;&quot;slider round&quot;&gt;&lt;/span&gt;
+              &lt;/label&gt;
+              &lt;span
+                class&#x3D;&quot;toggle-label&quot;
+                [class.active]&#x3D;&quot;formPadre.es_contacto_principal&quot;
+              &gt;
+                {{
+                  formPadre.es_contacto_principal
+                    ? &quot;Cont. Principal&quot;
+                    : &quot;No es Cont. Principal&quot;
+                }}
+              &lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Especificar -&gt; Tutor --&gt;
+          &lt;div class&#x3D;&quot;full-width&quot; *ngIf&#x3D;&quot;formPadre.tipo_relacion &#x3D;&#x3D;&#x3D; &#x27;Tutor&#x27;&quot;&gt;
+            &lt;label&gt;Especifique el parentesco (Ej: Abuelo, Tío)&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;Ej: Abuelo paterno&quot;
+              [(ngModel)]&#x3D;&quot;formPadre.detalles_relacion&quot;
+              name&#x3D;&quot;drP&quot;
+            /&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- CONTENIDO TAB 2: MADRE / TUTOR 2 --&gt;
+      &lt;div class&#x3D;&quot;tab-content&quot; [class.active]&#x3D;&quot;activeTab &#x3D;&#x3D;&#x3D; 2&quot;&gt;
+        &lt;div class&#x3D;&quot;info-opcional&quot; *ngIf&#x3D;&quot;!modoEditar&quot;&gt;
+          &lt;i class&#x3D;&quot;fa-solid fa-circle-info&quot;&gt;&lt;/i&gt; Puedes dejar esta pestaña
+          vacía si solo vas a registrar al padre.
+        &lt;/div&gt;
+        &lt;div class&#x3D;&quot;form-grid mt-3&quot;&gt;
+          &lt;!-- DNI --&gt;
+          &lt;div class&#x3D;&quot;dni-container&quot;&gt;
+            &lt;div class&#x3D;&quot;dni-input&quot;&gt;
+              &lt;label&gt;DNI *&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                placeholder&#x3D;&quot;Ingrese DNI&quot;
+                [(ngModel)]&#x3D;&quot;formMadre.dni&quot;
+                name&#x3D;&quot;dniM&quot;
+                [disabled]&#x3D;&quot;modoEditar&quot;
+                maxlength&#x3D;&quot;8&quot;
+                oninput&#x3D;&quot;this.value &#x3D; this.value.slice(0, 8)&quot;
+              /&gt;
+            &lt;/div&gt;
+            &lt;button
+              *ngIf&#x3D;&quot;!modoEditar&quot;
+              class&#x3D;&quot;btn-buscar-dni&quot;
+              (click)&#x3D;&quot;buscarDniReniec(&#x27;madre&#x27;)&quot;
+              [disabled]&#x3D;&quot;buscandoDni&quot;
+            &gt;
+              &lt;i
+                class&#x3D;&quot;fa-solid&quot;
+                [ngClass]&#x3D;&quot;
+                  buscandoDni ? &#x27;fa-spinner fa-spin&#x27; : &#x27;fa-magnifying-glass&#x27;
+                &quot;
+              &gt;&lt;/i&gt;
+            &lt;/button&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Nombres --&gt;
+          &lt;div&gt;
+            &lt;label&gt;Nombres *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;Nombres&quot;
+              [(ngModel)]&#x3D;&quot;formMadre.nombres&quot;
+              name&#x3D;&quot;nomM&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Apellidos --&gt;
+          &lt;div&gt;
+            &lt;label&gt;Apellido Paterno *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;A. Paterno&quot;
+              [(ngModel)]&#x3D;&quot;formMadre.apellido_paterno&quot;
+              name&#x3D;&quot;apM&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;label&gt;Apellido Materno *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;A. Materno&quot;
+              [(ngModel)]&#x3D;&quot;formMadre.apellido_materno&quot;
+              name&#x3D;&quot;amM&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Contacto --&gt;
+          &lt;div&gt;
+            &lt;label&gt;Teléfono&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;tel&quot;
+              placeholder&#x3D;&quot;Teléfono&quot;
+              maxlength&#x3D;&quot;9&quot;
+              [(ngModel)]&#x3D;&quot;formMadre.telefono&quot;
+              name&#x3D;&quot;telM&quot;
+              oninput&#x3D;&quot;
+                this.value &#x3D; this.value.replace(/[^0-9]/g, &#x27;&#x27;).slice(0, 9)
+              &quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;label&gt;Email&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;email&quot;
+              placeholder&#x3D;&quot;ejemplo@correo.com&quot;
+              [(ngModel)]&#x3D;&quot;formMadre.email&quot;
+              name&#x3D;&quot;emM&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;div class&#x3D;&quot;full-width&quot;&gt;
+            &lt;label&gt;Dirección&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;Dirección completa&quot;
+              [(ngModel)]&#x3D;&quot;formMadre.direccion&quot;
+              name&#x3D;&quot;dirM&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Tipo Relación &amp; Apoderado --&gt;
+          &lt;div class&#x3D;&quot;relacion-container&quot;&gt;
+            &lt;div class&#x3D;&quot;full-width&quot;&gt;
+              &lt;label&gt;Tipo de Relación *&lt;/label&gt;
+              &lt;select [(ngModel)]&#x3D;&quot;formMadre.tipo_relacion&quot; name&#x3D;&quot;trM&quot;&gt;
+                &lt;option value&#x3D;&quot;Madre&quot;&gt;Madre&lt;/option&gt;
+                &lt;option value&#x3D;&quot;Tutora&quot;&gt;Tutora / Familiar&lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/div&gt;
+
+            &lt;div class&#x3D;&quot;apoderado-principal-check flex-1&quot;&gt;
+              &lt;label class&#x3D;&quot;toggle-switch&quot;&gt;
+                &lt;input
+                  type&#x3D;&quot;checkbox&quot;
+                  [(ngModel)]&#x3D;&quot;formMadre.es_contacto_principal&quot;
+                  name&#x3D;&quot;ecpM&quot;
+                /&gt;
+                &lt;span class&#x3D;&quot;slider round&quot;&gt;&lt;/span&gt;
+              &lt;/label&gt;
+              &lt;span
+                class&#x3D;&quot;toggle-label&quot;
+                [class.active]&#x3D;&quot;formMadre.es_contacto_principal&quot;
+              &gt;
+                {{
+                  formMadre.es_contacto_principal
+                    ? &quot;Cont. Principal&quot;
+                    : &quot;No es Cont. Principal&quot;
+                }}
+              &lt;/span&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;!-- Especificar -&gt; Tutor --&gt;
+          &lt;div class&#x3D;&quot;full-width&quot; *ngIf&#x3D;&quot;formMadre.tipo_relacion &#x3D;&#x3D;&#x3D; &#x27;Tutora&#x27;&quot;&gt;
+            &lt;label&gt;Especifique el parentesco (Ej: Abuela, Tía)&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;Ej: Abuela materna&quot;
+              [(ngModel)]&#x3D;&quot;formMadre.detalles_relacion&quot;
+              name&#x3D;&quot;drM&quot;
+            /&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+      &lt;!-- CONTENIDO TAB 3: HIJOS / ESTUDIANTES ASIGNADOS --&gt;
+      &lt;div
+        class&#x3D;&quot;tab-content asignar-estudiantes-section&quot;
+        [class.active]&#x3D;&quot;activeTab &#x3D;&#x3D;&#x3D; 3&quot;
+        style&#x3D;&quot;margin-top: 0; border-top: none&quot;
+      &gt;
+        &lt;div class&#x3D;&quot;estudiante-search&quot;&gt;
+          &lt;div class&#x3D;&quot;search-group&quot;&gt;
+            &lt;label&gt;DNI del Estudiante a enlazar&lt;/label&gt;
+            &lt;div class&#x3D;&quot;search-input-group&quot;&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                placeholder&#x3D;&quot;Ingrese el DNI del estudiante (8 dígitos)&quot;
+                [(ngModel)]&#x3D;&quot;dniEstudiante&quot;
+                name&#x3D;&quot;dniEstudiante&quot;
+                maxlength&#x3D;&quot;8&quot;
+                oninput&#x3D;&quot;this.value &#x3D; this.value.slice(0, 8)&quot;
+              /&gt;
+              &lt;button
+                class&#x3D;&quot;btn-buscar-estudiante&quot;
+                (click)&#x3D;&quot;buscarEstudiante()&quot;
+              &gt;
+                &lt;i class&#x3D;&quot;fa-solid fa-plus&quot;&gt;&lt;/i&gt;
+                Agregar Hija/o
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+
+        &lt;!-- Lista de estudiantes asignados --&gt;
+        &lt;div class&#x3D;&quot;estudiantes-asignados&quot;&gt;
+          &lt;div class&#x3D;&quot;empty-state&quot; *ngIf&#x3D;&quot;estudiantesAsignados.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+            &lt;i class&#x3D;&quot;fa-solid fa-user-graduate&quot;&gt;&lt;/i&gt;
+            &lt;p&gt;No hay estudiantes asignados&lt;/p&gt;
+            &lt;small
+              &gt;Busque un estudiante por su DNI para enlazar a sus padres&lt;/small
+            &gt;
+          &lt;/div&gt;
+
+          &lt;!-- Tabla de estudiantes asignados --&gt;
+          &lt;table
+            class&#x3D;&quot;tabla-estudiantes&quot;
+            *ngIf&#x3D;&quot;estudiantesAsignados.length &gt; 0&quot;
+          &gt;
+            &lt;thead&gt;
+              &lt;tr&gt;
+                &lt;th&gt;DNI&lt;/th&gt;
+                &lt;th&gt;Nombre Completo&lt;/th&gt;
+                &lt;th&gt;Acciones&lt;/th&gt;
+              &lt;/tr&gt;
+            &lt;/thead&gt;
+            &lt;tbody&gt;
+              &lt;tr
+                *ngFor&#x3D;&quot;let estudiante of estudiantesAsignados; let i &#x3D; index&quot;
+              &gt;
+                &lt;td&gt;{{ estudiante.dni }}&lt;/td&gt;
+                &lt;td&gt;
+                  {{ estudiante.nombres }} {{ estudiante.apellido_paterno }}
+                &lt;/td&gt;
+                &lt;td&gt;
+                  &lt;button
+                    class&#x3D;&quot;btn-delete-small&quot;
+                    (click)&#x3D;&quot;eliminarEstudianteDeLista(i)&quot;
+                  &gt;
+                    &lt;i class&#x3D;&quot;fa-solid fa-trash&quot;&gt;&lt;/i&gt;
+                  &lt;/button&gt;
+                &lt;/td&gt;
+              &lt;/tr&gt;
+            &lt;/tbody&gt;
+          &lt;/table&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Footer --&gt;
+    &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+      &lt;button class&#x3D;&quot;btn-cancelar&quot; (click)&#x3D;&quot;cerrarModal()&quot;&gt;
+        &lt;i class&#x3D;&quot;fa-solid fa-xmark&quot;&gt;&lt;/i&gt; Cancelar
+      &lt;/button&gt;
+
+      &lt;!-- Solo podemos guardar si estamos en la ultima tab, o siempre? 
+                 Dejemos siempre disponible el boton de guardar --&gt;
+      &lt;button class&#x3D;&quot;btn-guardar&quot; (click)&#x3D;&quot;guardarPadre()&quot;&gt;
+        &lt;i
+          class&#x3D;&quot;fa-solid&quot;
+          [ngClass]&#x3D;&quot;modoEditar ? &#x27;fa-arrows-rotate&#x27; : &#x27;fa-floppy-disk&#x27;&quot;
+        &gt;&lt;/i&gt;
+        {{ modoEditar ? &quot;Actualizar&quot; : &quot;Guardar y Finalizar&quot; }}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+
+&lt;div *ngIf&#x3D;&quot;mostrarConfirmacion&quot; class&#x3D;&quot;overlay&quot;&gt;
+  &lt;div class&#x3D;&quot;modal-confirm&quot;&gt;
+    
+    &lt;div class&#x3D;&quot;icono&quot;&gt;
+      &lt;i class&#x3D;&quot;fa-solid fa-trash&quot;&gt;&lt;/i&gt;
+    &lt;/div&gt;
+
+    &lt;h2&gt;¿Eliminar padre?&lt;/h2&gt;
+    &lt;p&gt;Esta acción no se puede deshacer&lt;/p&gt;
+
+    &lt;div class&#x3D;&quot;acciones&quot;&gt;
+      &lt;button class&#x3D;&quot;btn cancelar&quot; (click)&#x3D;&quot;cancelarEliminacion()&quot;&gt;
+        Cancelar
+      &lt;/button&gt;
+
+      &lt;button class&#x3D;&quot;btn eliminar&quot; (click)&#x3D;&quot;confirmarEliminacion()&quot;&gt;
+        Eliminar
+      &lt;/button&gt;
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div>  <div class="cont-es">    <p class="titulo">PADRES</p>    <button class="btn-padre" (click)="abrirAgregar()">      <i class="fa-solid fa-plus"></i>      Agregar Padre / Madre    </button>  </div>  <div class="acciones-tabla">    <div class="mostrar-registros">      <span>Mostrar</span>      <select>        <option value="0">Todos</option>        <option value="10" selected>10</option>        <option value="25">25</option>        <option value="50">50</option>      </select>      <span>registros</span>    </div>    <div class="buscar-padre">      <label>Buscar:</label>      <div class="input-icono">        <i class="fa-solid fa-magnifying-glass icono-input"></i>        <input          type="number"          name="buscar"          placeholder="Ingrese el DNI"          minlength="8"          maxlength="8"          oninput="this.value = this.value.slice(0, 8)"        />      </div>     </div>  </div></div><div *ngIf="mensaje"     class="alerta"     [ngClass]="[tipoMensaje, ocultando ? \'hide\' : \'\']">  <span class="texto">{{ mensaje }}</span>  <button class="cerrar" (click)="cerrarAlerta()">✕</button></div><div class="cont-tabla tabla-scroll">  <div *ngIf="cargando" class="cargando">    <i class="fa-solid fa-spinner fa-spin"></i> Cargando registros...  </div>  <table class="tabla-datos">    <thead>      <tr>        <th>ID</th>        <th>DNI</th>        <th>NOMBRE</th>        <th>APELLIDO</th>        <th>TELÉFONO</th>         <th>EMAIL</th>        <th>DIRECCIÓN</th>        <th>RELACIÓN</th>        <th>ACCIONES</th>      </tr>    </thead>    <tbody>      <tr *ngFor="let padre of padres; let i = index">        <td>{{ i + 1 }}</td>        <td>{{ padre.dni }}</td>        <td>{{ padre.nombres }}</td>        <td>{{ padre.apellido_paterno }} {{ padre.apellido_materno }}</td>        <td>{{ padre.telefono }}</td>        <td>{{ padre.email }}</td>        <td>{{ padre.direccion }}</td>        <td>{{ padre.tipo_relacion }}</td>        <td>          <button class="btn-icon btn-edit" (click)="abrirEditar(padre)">            <i class="fa-solid fa-pen"></i>          </button>          <!-- <button            class="btn-icon btn-delete"            (click)="eliminarPadre(padre)"          >            <i class="fa-solid fa-trash"></i>          </button> -->        </td>      </tr>    </tbody>  </table>  <p class="sin-resultados" *ngIf="!cargando && padres.length === 0">    <i class="fa-solid fa-circle-info"></i>    No se encontraron padres.  </p></div><!-- Modal --><div class="modal" *ngIf="modalAbierto">  <div class="modal-content">    <!-- Header -->    <div class="modal-header">      <h2>        <i          class="fa-solid"          [ngClass]="modoEditar ? \'fa-user-pen\' : \'fa-users-line\'"        ></i>        {{ modoEditar ? "Editar Apoderado" : "Registro de Apoderados" }}      </h2>      <span class="close" (click)="cerrarModal()">&times;</span>    </div>    <!-- TABS HEADERS -->    <aside class="tabs-header">      <!-- Si estamos editando y NO era madre, mostramos esta pestaña como la única "Parent" info. Si agregamos, vemos 1 -->      <button        class="tab-btn"        [class.active]="activeTab === 1"        (click)="activeTab = 1"        [hidden]="modoEditar && formMadre.dni"      >        <i class="fa-solid fa-user-tie"></i> Padre / Tutor 1      </button>      <!-- Si estamos editando y NO era padre, mostramos la 2 como la unica "Parent" info. Si agregamos, vemos 2 -->      <button        class="tab-btn"        [class.active]="activeTab === 2"        (click)="activeTab = 2"        [hidden]="modoEditar && formPadre.dni"      >        <i class="fa-solid fa-person-dress"></i> Madre / Tutor 2      </button>      <button        class="tab-btn"        [class.active]="activeTab === 3"        (click)="activeTab = 3"      >        <i class="fa-solid fa-children"></i> Hijos Asignados      </button>    </aside>    <!-- Body -->    <div class="modal-body">      <!-- CONTENIDO TAB 1: PADRE / TUTOR 1 -->      <div class="tab-content" [class.active]="activeTab === 1">        <div class="info-opcional" *ngIf="!modoEditar">          <i class="fa-solid fa-circle-info"></i> Puedes dejar esta pestaña          vacía si solo vas a registrar a la madre.        </div>        <div class="form-grid mt-3">          <!-- DNI -->          <div class="dni-container">            <div class="dni-input">              <label>DNI *</label>              <input                type="text"                placeholder="Ingrese DNI"                [(ngModel)]="formPadre.dni"                name="dniP"                [disabled]="modoEditar"                maxlength="8"                oninput="this.value = this.value.slice(0, 8)"              />            </div>            <button              *ngIf="!modoEditar"              class="btn-buscar-dni"              (click)="buscarDniReniec(\'padre\')"              [disabled]="buscandoDni"            >              <i                class="fa-solid"                [ngClass]="                  buscandoDni ? \'fa-spinner fa-spin\' : \'fa-magnifying-glass\'                "              ></i>            </button>          </div>          <!-- Nombres -->          <div>            <label>Nombres *</label>            <input              type="text"              placeholder="Nombres"              [(ngModel)]="formPadre.nombres"              name="nomP"            />          </div>          <!-- Apellidos -->          <div>            <label>Apellido Paterno *</label>            <input              type="text"              placeholder="A. Paterno"              [(ngModel)]="formPadre.apellido_paterno"              name="apP"            />          </div>          <div>            <label>Apellido Materno *</label>            <input              type="text"              placeholder="A. Materno"              [(ngModel)]="formPadre.apellido_materno"              name="amP"            />          </div>          <!-- Contacto -->          <div>            <label>Teléfono</label>            <input              type="tel"              placeholder="Teléfono"              maxlength="9"              [(ngModel)]="formPadre.telefono"              name="telP"              oninput="                this.value = this.value.replace(/[^0-9]/g, \'\').slice(0, 9)              "            />          </div>          <div>            <label>Email</label>            <input              type="email"              placeholder="ejemplo@correo.com"              [(ngModel)]="formPadre.email"              name="emP"            />          </div>          <div class="full-width">            <label>Dirección</label>            <input              type="text"              placeholder="Dirección completa"              [(ngModel)]="formPadre.direccion"              name="dirP"            />          </div>          <!-- Tipo Relación & Apoderado -->          <div class="relacion-container">            <div class="full-width">              <label>Tipo de Relación *</label>              <select [(ngModel)]="formPadre.tipo_relacion" name="trP">                <option value="Padre">Padre</option>                <option value="Tutor">Tutor / Familiar</option>              </select>            </div>            <div class="apoderado-principal-check flex-1">              <label class="toggle-switch">                <input                  type="checkbox"                  [(ngModel)]="formPadre.es_contacto_principal"                  name="ecpP"                />                <span class="slider round"></span>              </label>              <span                class="toggle-label"                [class.active]="formPadre.es_contacto_principal"              >                {{                  formPadre.es_contacto_principal                    ? "Cont. Principal"                    : "No es Cont. Principal"                }}              </span>            </div>          </div>          <!-- Especificar -> Tutor -->          <div class="full-width" *ngIf="formPadre.tipo_relacion === \'Tutor\'">            <label>Especifique el parentesco (Ej: Abuelo, Tío)</label>            <input              type="text"              placeholder="Ej: Abuelo paterno"              [(ngModel)]="formPadre.detalles_relacion"              name="drP"            />          </div>        </div>      </div>      <!-- CONTENIDO TAB 2: MADRE / TUTOR 2 -->      <div class="tab-content" [class.active]="activeTab === 2">        <div class="info-opcional" *ngIf="!modoEditar">          <i class="fa-solid fa-circle-info"></i> Puedes dejar esta pestaña          vacía si solo vas a registrar al padre.        </div>        <div class="form-grid mt-3">          <!-- DNI -->          <div class="dni-container">            <div class="dni-input">              <label>DNI *</label>              <input                type="text"                placeholder="Ingrese DNI"                [(ngModel)]="formMadre.dni"                name="dniM"                [disabled]="modoEditar"                maxlength="8"                oninput="this.value = this.value.slice(0, 8)"              />            </div>            <button              *ngIf="!modoEditar"              class="btn-buscar-dni"              (click)="buscarDniReniec(\'madre\')"              [disabled]="buscandoDni"            >              <i                class="fa-solid"                [ngClass]="                  buscandoDni ? \'fa-spinner fa-spin\' : \'fa-magnifying-glass\'                "              ></i>            </button>          </div>          <!-- Nombres -->          <div>            <label>Nombres *</label>            <input              type="text"              placeholder="Nombres"              [(ngModel)]="formMadre.nombres"              name="nomM"            />          </div>          <!-- Apellidos -->          <div>            <label>Apellido Paterno *</label>            <input              type="text"              placeholder="A. Paterno"              [(ngModel)]="formMadre.apellido_paterno"              name="apM"            />          </div>          <div>            <label>Apellido Materno *</label>            <input              type="text"              placeholder="A. Materno"              [(ngModel)]="formMadre.apellido_materno"              name="amM"            />          </div>          <!-- Contacto -->          <div>            <label>Teléfono</label>            <input              type="tel"              placeholder="Teléfono"              maxlength="9"              [(ngModel)]="formMadre.telefono"              name="telM"              oninput="                this.value = this.value.replace(/[^0-9]/g, \'\').slice(0, 9)              "            />          </div>          <div>            <label>Email</label>            <input              type="email"              placeholder="ejemplo@correo.com"              [(ngModel)]="formMadre.email"              name="emM"            />          </div>          <div class="full-width">            <label>Dirección</label>            <input              type="text"              placeholder="Dirección completa"              [(ngModel)]="formMadre.direccion"              name="dirM"            />          </div>          <!-- Tipo Relación & Apoderado -->          <div class="relacion-container">            <div class="full-width">              <label>Tipo de Relación *</label>              <select [(ngModel)]="formMadre.tipo_relacion" name="trM">                <option value="Madre">Madre</option>                <option value="Tutora">Tutora / Familiar</option>              </select>            </div>            <div class="apoderado-principal-check flex-1">              <label class="toggle-switch">                <input                  type="checkbox"                  [(ngModel)]="formMadre.es_contacto_principal"                  name="ecpM"                />                <span class="slider round"></span>              </label>              <span                class="toggle-label"                [class.active]="formMadre.es_contacto_principal"              >                {{                  formMadre.es_contacto_principal                    ? "Cont. Principal"                    : "No es Cont. Principal"                }}              </span>            </div>          </div>          <!-- Especificar -> Tutor -->          <div class="full-width" *ngIf="formMadre.tipo_relacion === \'Tutora\'">            <label>Especifique el parentesco (Ej: Abuela, Tía)</label>            <input              type="text"              placeholder="Ej: Abuela materna"              [(ngModel)]="formMadre.detalles_relacion"              name="drM"            />          </div>        </div>      </div>      <!-- CONTENIDO TAB 3: HIJOS / ESTUDIANTES ASIGNADOS -->      <div        class="tab-content asignar-estudiantes-section"        [class.active]="activeTab === 3"        style="margin-top: 0; border-top: none"      >        <div class="estudiante-search">          <div class="search-group">            <label>DNI del Estudiante a enlazar</label>            <div class="search-input-group">              <input                type="text"                placeholder="Ingrese el DNI del estudiante (8 dígitos)"                [(ngModel)]="dniEstudiante"                name="dniEstudiante"                maxlength="8"                oninput="this.value = this.value.slice(0, 8)"              />              <button                class="btn-buscar-estudiante"                (click)="buscarEstudiante()"              >                <i class="fa-solid fa-plus"></i>                Agregar Hija/o              </button>            </div>          </div>        </div>        <!-- Lista de estudiantes asignados -->        <div class="estudiantes-asignados">          <div class="empty-state" *ngIf="estudiantesAsignados.length === 0">            <i class="fa-solid fa-user-graduate"></i>            <p>No hay estudiantes asignados</p>            <small              >Busque un estudiante por su DNI para enlazar a sus padres</small            >          </div>          <!-- Tabla de estudiantes asignados -->          <table            class="tabla-estudiantes"            *ngIf="estudiantesAsignados.length > 0"          >            <thead>              <tr>                <th>DNI</th>                <th>Nombre Completo</th>                <th>Acciones</th>              </tr>            </thead>            <tbody>              <tr                *ngFor="let estudiante of estudiantesAsignados; let i = index"              >                <td>{{ estudiante.dni }}</td>                <td>                  {{ estudiante.nombres }} {{ estudiante.apellido_paterno }}                </td>                <td>                  <button                    class="btn-delete-small"                    (click)="eliminarEstudianteDeLista(i)"                  >                    <i class="fa-solid fa-trash"></i>                  </button>                </td>              </tr>            </tbody>          </table>        </div>      </div>    </div>    <!-- Footer -->    <div class="modal-footer">      <button class="btn-cancelar" (click)="cerrarModal()">        <i class="fa-solid fa-xmark"></i> Cancelar      </button>      <!-- Solo podemos guardar si estamos en la ultima tab, o siempre?                  Dejemos siempre disponible el boton de guardar -->      <button class="btn-guardar" (click)="guardarPadre()">        <i          class="fa-solid"          [ngClass]="modoEditar ? \'fa-arrows-rotate\' : \'fa-floppy-disk\'"        ></i>        {{ modoEditar ? "Actualizar" : "Guardar y Finalizar" }}      </button>    </div>  </div></div><div *ngIf="mostrarConfirmacion" class="overlay">  <div class="modal-confirm">        <div class="icono">      <i class="fa-solid fa-trash"></i>    </div>    <h2>¿Eliminar padre?</h2>    <p>Esta acción no se puede deshacer</p>    <div class="acciones">      <button class="btn cancelar" (click)="cancelarEliminacion()">        Cancelar      </button>      <button class="btn eliminar" (click)="confirmarEliminacion()">        Eliminar      </button>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AlertaComponent', 'selector': 'app-alerta'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BancosComponent', 'selector': 'app-bancos'},{'name': 'BodyComponent', 'selector': 'app-body'},{'name': 'ConfirmDialogComponent', 'selector': 'app-confirm-dialog'},{'name': 'DashboardLayoutComponent', 'selector': 'app-dashboard-layout'},{'name': 'EstudiantesComponent', 'selector': 'app-estudiantes'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MatriculasComponent', 'selector': 'app-matriculas'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'PadresComponent', 'selector': 'app-padres'},{'name': 'PagosComponent', 'selector': 'app-pagos'},{'name': 'PanelControlComponent', 'selector': 'app-panel-control'},{'name': 'SaludComponent', 'selector': 'app-salud'},{'name': 'SidenavComponent', 'selector': 'app-sidenav'},{'name': 'SublevelMenuComponent', 'selector': 'app-sublevel-menu'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'PadresComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'PadresComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

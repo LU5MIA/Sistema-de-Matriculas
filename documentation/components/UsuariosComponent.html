@@ -1,0 +1,2239 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Frontend - Sistema de Matrículas</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Frontend - Sistema de Matrículas</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  UsuariosComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/dashboard/pages/usuarios/usuarios.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-usuarios</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./usuarios.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./usuarios.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#cantidadRegistros" >cantidadRegistros</a>
+                            </li>
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#mensajeSimple" >mensajeSimple</a>
+                            </li>
+                            <li>
+                                <a href="#modalAbierto" >modalAbierto</a>
+                            </li>
+                            <li>
+                                <a href="#modoEditar" >modoEditar</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarConfirmacionEstado" >mostrarConfirmacionEstado</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarModal" >mostrarModal</a>
+                            </li>
+                            <li>
+                                <a href="#nuevoEstado" >nuevoEstado</a>
+                            </li>
+                            <li>
+                                <a href="#ocultando" >ocultando</a>
+                            </li>
+                            <li>
+                                <a href="#roles" >roles</a>
+                            </li>
+                            <li>
+                                <a href="#textoBusqueda" >textoBusqueda</a>
+                            </li>
+                            <li>
+                                <a href="#tipoMensajeSimple" >tipoMensajeSimple</a>
+                            </li>
+                            <li>
+                                <a href="#usuario" >usuario</a>
+                            </li>
+                            <li>
+                                <a href="#usuarioOriginal" >usuarioOriginal</a>
+                            </li>
+                            <li>
+                                <a href="#usuarios" >usuarios</a>
+                            </li>
+                            <li>
+                                <a href="#usuarioSeleccionado" >usuarioSeleccionado</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirAgregar" >abrirAgregar</a>
+                            </li>
+                            <li>
+                                <a href="#abrirEditar" >abrirEditar</a>
+                            </li>
+                            <li>
+                                <a href="#addUsuario" >addUsuario</a>
+                            </li>
+                            <li>
+                                <a href="#cambiarEstado" >cambiarEstado</a>
+                            </li>
+                            <li>
+                                <a href="#cancelarCambioEstado" >cancelarCambioEstado</a>
+                            </li>
+                            <li>
+                                <a href="#cargarRoles" >cargarRoles</a>
+                            </li>
+                            <li>
+                                <a href="#cargarUsuarios" >cargarUsuarios</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarAlertaSimple" >cerrarAlertaSimple</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarModal" >cerrarModal</a>
+                            </li>
+                            <li>
+                                <a href="#confirmarCambioEstado" >confirmarCambioEstado</a>
+                            </li>
+                            <li>
+                                <a href="#guardar" >guardar</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarMensajeSimple" >mostrarMensajeSimple</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#updateUsuario" >updateUsuario</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#usuariosFiltrados" >usuariosFiltrados</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(usuariosService: <a href="../injectables/UsuariosService.html" target="_self">UsuariosService</a>, rolesService: <a href="../injectables/RolesService.html" target="_self">RolesService</a>, alertaService: <a href="../injectables/AlertaService.html" target="_self">AlertaService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:17</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>usuariosService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/UsuariosService.html" target="_self" >UsuariosService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>rolesService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/RolesService.html" target="_self" >RolesService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>alertaService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AlertaService.html" target="_self" >AlertaService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirAgregar"></a>
+                    <span class="name">
+                        <span ><b>abrirAgregar</b></span>
+                        <a href="#abrirAgregar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirAgregar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="237"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:237</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirEditar"></a>
+                    <span class="name">
+                        <span ><b>abrirEditar</b></span>
+                        <a href="#abrirEditar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirEditar(usuario: <a href="../interfaces/Usuarios.html" target="_self">Usuarios</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="251"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:251</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>usuario</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Usuarios.html" target="_self" >Usuarios</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addUsuario"></a>
+                    <span class="name">
+                        <span ><b>addUsuario</b></span>
+                        <a href="#addUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addUsuario()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="72"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:72</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cambiarEstado"></a>
+                    <span class="name">
+                        <span ><b>cambiarEstado</b></span>
+                        <a href="#cambiarEstado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cambiarEstado(usuario: <a href="../interfaces/Usuarios.html" target="_self">Usuarios</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="194"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:194</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>usuario</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Usuarios.html" target="_self" >Usuarios</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelarCambioEstado"></a>
+                    <span class="name">
+                        <span ><b>cancelarCambioEstado</b></span>
+                        <a href="#cancelarCambioEstado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cancelarCambioEstado()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="225"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:225</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarRoles"></a>
+                    <span class="name">
+                        <span ><b>cargarRoles</b></span>
+                        <a href="#cargarRoles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarRoles()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="53"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:53</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarUsuarios"></a>
+                    <span class="name">
+                        <span ><b>cargarUsuarios</b></span>
+                        <a href="#cargarUsuarios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarUsuarios()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="46"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarAlertaSimple"></a>
+                    <span class="name">
+                        <span ><b>cerrarAlertaSimple</b></span>
+                        <a href="#cerrarAlertaSimple"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarAlertaSimple()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="285"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:285</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarModal"></a>
+                    <span class="name">
+                        <span ><b>cerrarModal</b></span>
+                        <a href="#cerrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="289"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:289</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmarCambioEstado"></a>
+                    <span class="name">
+                        <span ><b>confirmarCambioEstado</b></span>
+                        <a href="#confirmarCambioEstado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmarCambioEstado()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="202"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:202</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardar"></a>
+                    <span class="name">
+                        <span ><b>guardar</b></span>
+                        <a href="#guardar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="229"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:229</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarMensajeSimple"></a>
+                    <span class="name">
+                        <span ><b>mostrarMensajeSimple</b></span>
+                        <a href="#mostrarMensajeSimple"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>mostrarMensajeSimple(texto: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, tipo: "success" | "error")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="276"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:276</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>texto</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                        <code>&quot;success&quot; | &quot;error&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="41"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:41</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateUsuario"></a>
+                    <span class="name">
+                        <span ><b>updateUsuario</b></span>
+                        <a href="#updateUsuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateUsuario()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="112"
+                                    class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:112</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cantidadRegistros"></a>
+                    <span class="name">
+                        <span ><b>cantidadRegistros</b></span>
+                        <a href="#cantidadRegistros"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>10</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:30</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mensajeSimple"></a>
+                    <span class="name">
+                        <span ><b>mensajeSimple</b></span>
+                        <a href="#mensajeSimple"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="269" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:269</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalAbierto"></a>
+                    <span class="name">
+                        <span ><b>modalAbierto</b></span>
+                        <a href="#modalAbierto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:28</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modoEditar"></a>
+                    <span class="name">
+                        <span ><b>modoEditar</b></span>
+                        <a href="#modoEditar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarConfirmacionEstado"></a>
+                    <span class="name">
+                        <span ><b>mostrarConfirmacionEstado</b></span>
+                        <a href="#mostrarConfirmacionEstado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="188" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:188</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarModal"></a>
+                    <span class="name">
+                        <span ><b>mostrarModal</b></span>
+                        <a href="#mostrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="272" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:272</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="nuevoEstado"></a>
+                    <span class="name">
+                        <span ><b>nuevoEstado</b></span>
+                        <a href="#nuevoEstado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="192" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:192</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ocultando"></a>
+                    <span class="name">
+                        <span ><b>ocultando</b></span>
+                        <a href="#ocultando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="274" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:274</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="roles"></a>
+                    <span class="name">
+                        <span ><b>roles</b></span>
+                        <a href="#roles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Roles.html" target="_self" >Roles[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="textoBusqueda"></a>
+                    <span class="name">
+                        <span ><b>textoBusqueda</b></span>
+                        <a href="#textoBusqueda"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:29</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tipoMensajeSimple"></a>
+                    <span class="name">
+                        <span ><b>tipoMensajeSimple</b></span>
+                        <a href="#tipoMensajeSimple"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;success&quot; | &quot;error&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;success&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="270" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:270</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usuario"></a>
+                    <span class="name">
+                        <span ><b>usuario</b></span>
+                        <a href="#usuario"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Usuarios.html" target="_self" >Usuarios</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    user_id: 0,
+    username: &#x27;&#x27;,
+    password: &#x27;&#x27;,
+    estado: &#x27;Activo&#x27;,
+    rol: null,
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usuarioOriginal"></a>
+                    <span class="name">
+                        <span ><b>usuarioOriginal</b></span>
+                        <a href="#usuarioOriginal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Usuarios.html" target="_self" >Usuarios | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usuarios"></a>
+                    <span class="name">
+                        <span ><b>usuarios</b></span>
+                        <a href="#usuarios"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Usuarios.html" target="_self" >Usuarios[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="usuarioSeleccionado"></a>
+                    <span class="name">
+                        <span ><b>usuarioSeleccionado</b></span>
+                        <a href="#usuarioSeleccionado"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Usuarios.html" target="_self" >Usuarios</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="190" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:190</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="usuariosFiltrados"></a>
+                        <span class="name"><b>usuariosFiltrados</b><a href="#usuariosFiltrados"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>usuariosFiltrados()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/app/dashboard/pages/usuarios/usuarios.component.ts:60</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { UsuariosService } from &#x27;../../../core/services/usuarios.service&#x27;;
+import {
+  Usuarios,
+  UsuariosCreate,
+} from &#x27;../../../shared/interfaces/usuarios.interface&#x27;;
+import { Roles } from &#x27;../../../shared/interfaces/roles.interface&#x27;;
+import { RolesService } from &#x27;../../../core/services/roles.service&#x27;;
+import { AlertaService } from &#x27;../../../core/services/alerta.service&#x27;;
+
+@Component({
+  selector: &#x27;app-usuarios&#x27;,
+  standalone: false,
+  templateUrl: &#x27;./usuarios.component.html&#x27;,
+  styleUrl: &#x27;./usuarios.component.css&#x27;,
+})
+export class UsuariosComponent {
+  constructor(
+    private usuariosService: UsuariosService,
+    private rolesService: RolesService,
+    private alertaService: AlertaService,
+  ) {}
+
+  usuarios: Usuarios[] &#x3D; [];
+  roles: Roles[] &#x3D; [];
+  cargando: boolean &#x3D; false;
+  modoEditar: boolean &#x3D; false;
+  modalAbierto: boolean &#x3D; false;
+  textoBusqueda: string &#x3D; &#x27;&#x27;;
+  cantidadRegistros: number &#x3D; 10;
+  usuarioOriginal: Usuarios | null &#x3D; null;
+
+  usuario: Usuarios &#x3D; {
+    user_id: 0,
+    username: &#x27;&#x27;,
+    password: &#x27;&#x27;,
+    estado: &#x27;Activo&#x27;,
+    rol: null,
+  };
+
+  ngOnInit(): void {
+    this.cargarUsuarios();
+    this.cargarRoles();
+  }
+
+  cargarUsuarios(): void {
+    this.usuariosService.getUsuarios().subscribe((data) &#x3D;&gt; {
+      console.log(&#x27;Usuarios obtenidos:&#x27;, data);
+      this.usuarios &#x3D; data;
+    });
+  }
+
+  cargarRoles(): void {
+    this.rolesService.getRoles().subscribe((data) &#x3D;&gt; {
+      console.log(&#x27;Roles obtenidos:&#x27;, data);
+      this.roles &#x3D; data;
+    });
+  }
+
+  get usuariosFiltrados(): Usuarios[] {
+    const filtrados &#x3D; this.usuarios.filter((usuario) &#x3D;&gt;
+      usuario.username.toLowerCase().includes(this.textoBusqueda.toLowerCase()),
+    );
+
+    if (this.cantidadRegistros &#x3D;&#x3D;&#x3D; 0) {
+      return filtrados;
+    }
+
+    return filtrados.slice(0, this.cantidadRegistros);
+  }
+
+  addUsuario(): void {
+    const nuevoUsuario: UsuariosCreate &#x3D; {
+      username: this.usuario.username.trim(),
+      password: this.usuario.password.trim(),
+      rol_id: this.usuario.rol?.rol_id || 0,
+    };
+
+    console.log(this.usuario.rol);
+
+    if (!nuevoUsuario.username || !nuevoUsuario.password) {
+      this.alertaService.mostrar(
+        &#x27;Por favor, complete todos los campos.&#x27;,
+        &#x27;info&#x27;,
+      );
+      return;
+    }
+
+    if (
+      this.usuarios.some(
+        (u) &#x3D;&gt; u.username.toLowerCase() &#x3D;&#x3D;&#x3D; nuevoUsuario.username.toLowerCase(),
+      )
+    ) {
+      this.alertaService.mostrar(&#x27;El nombre de usuario ya existe.&#x27;, &#x27;info&#x27;);
+      return;
+    }
+
+    this.usuariosService.addUsuario(nuevoUsuario).subscribe({
+      next: (response) &#x3D;&gt; {
+        console.log(&#x27;Usuario agregado:&#x27;, response);
+        this.cargarUsuarios();
+        this.cerrarModal();
+        this.mostrarMensajeSimple(&#x27;Usuario agregado correctamente&#x27;, &#x27;success&#x27;);
+      },
+
+      error: (error) &#x3D;&gt; {
+        console.error(error);
+      },
+    });
+  }
+
+  updateUsuario(): void {
+    const nombreUsuario &#x3D; this.usuario.username.trim();
+    const password &#x3D; this.usuario.password.trim();
+    const rolId &#x3D; this.usuario.rol?.rol_id || 0;
+
+    if (!nombreUsuario) {
+      this.alertaService.mostrar(
+        &#x27;El nombre de usuario no puede estar vacío.&#x27;,
+        &#x27;info&#x27;,
+      );
+      return;
+    }
+
+    if (rolId &#x3D;&#x3D;&#x3D; 0) {
+      this.alertaService.mostrar(
+        &#x27;Debe seleccionar un rol para el usuario.&#x27;,
+        &#x27;info&#x27;,
+      );
+      return;
+    }
+
+    // Validar username repetido excepto el usuario actual
+    if (
+      this.usuarios.some(
+        (u) &#x3D;&gt;
+          u.username.toLowerCase() &#x3D;&#x3D;&#x3D; nombreUsuario.toLowerCase() &amp;&amp;
+          u.user_id !&#x3D;&#x3D; this.usuario.user_id,
+      )
+    ) {
+      this.alertaService.mostrar(&#x27;El nombre de usuario ya existe.&#x27;, &#x27;info&#x27;);
+      return;
+    }
+
+    const mismoNombre &#x3D; nombreUsuario &#x3D;&#x3D;&#x3D; this.usuarioOriginal?.username;
+
+    const mismoRol &#x3D; rolId &#x3D;&#x3D;&#x3D; this.usuarioOriginal?.rol?.rol_id;
+
+    const sinPassword &#x3D; !password;
+
+    if (mismoNombre &amp;&amp; mismoRol &amp;&amp; sinPassword) {
+      this.alertaService.mostrar(&#x27;No se realizaron cambios.&#x27;, &#x27;info&#x27;);
+      return;
+    }
+
+    const usuarioActualizado: any &#x3D; {
+      username: nombreUsuario,
+      rol_id: rolId,
+    };
+
+    // Solo actualizar contraseña si se escribió una nueva
+    if (password) {
+      usuarioActualizado.password &#x3D; password;
+    }
+
+    this.usuariosService
+      .updateUsuario(this.usuario.user_id, usuarioActualizado)
+      .subscribe({
+        next: (response) &#x3D;&gt; {
+          console.log(&#x27;Usuario actualizado:&#x27;, response);
+
+          this.cargarUsuarios();
+
+          this.cerrarModal();
+
+          this.mostrarMensajeSimple(
+            &#x27;Usuario actualizado correctamente&#x27;,
+            &#x27;success&#x27;,
+          );
+        },
+
+        error: (error) &#x3D;&gt; {
+          console.error(&#x27;Error al actualizar usuario:&#x27;, error);
+        },
+      });
+  }
+
+  mostrarConfirmacionEstado &#x3D; false;
+
+  usuarioSeleccionado!: Usuarios;
+
+  nuevoEstado!: string;
+
+  cambiarEstado(usuario: Usuarios) {
+    this.usuarioSeleccionado &#x3D; usuario;
+
+    this.nuevoEstado &#x3D; usuario.estado &#x3D;&#x3D;&#x3D; &#x27;Activo&#x27; ? &#x27;Inactivo&#x27; : &#x27;Activo&#x27;;
+
+    this.mostrarConfirmacionEstado &#x3D; true;
+  }
+
+  confirmarCambioEstado() {
+    this.usuariosService
+      .cambiarEstado(this.usuarioSeleccionado.user_id, this.nuevoEstado)
+      .subscribe({
+        next: () &#x3D;&gt; {
+          this.usuarioSeleccionado.estado &#x3D; this.nuevoEstado;
+
+          this.mostrarConfirmacionEstado &#x3D; false;
+
+          this.alertaService.mostrar(
+            &#x60;Usuario ${
+              this.nuevoEstado &#x3D;&#x3D;&#x3D; &#x27;Activo&#x27; ? &#x27;activado&#x27; : &#x27;desactivado&#x27;
+            } correctamente&#x60;,
+            &#x27;success&#x27;,
+          );
+        },
+
+        error: () &#x3D;&gt; {
+          this.alertaService.mostrar(&#x27;Error al cambiar estado&#x27;, &#x27;error&#x27;);
+        },
+      });
+  }
+
+  cancelarCambioEstado() {
+    this.mostrarConfirmacionEstado &#x3D; false;
+  }
+
+  guardar(): void {
+    if (this.modoEditar) {
+      this.updateUsuario();
+    } else {
+      this.addUsuario();
+    }
+  }
+
+  abrirAgregar(): void {
+    this.usuario &#x3D; {
+      user_id: 0,
+      username: &#x27;&#x27;,
+      password: &#x27;&#x27;,
+      estado: &#x27;Activo&#x27;,
+      rol: null,
+    };
+
+    this.usuarioOriginal &#x3D; { ...this.usuario };
+    this.modoEditar &#x3D; false;
+    this.modalAbierto &#x3D; true;
+  }
+
+  abrirEditar(usuario: Usuarios): void {
+    const rolEncontrado &#x3D;
+      this.roles.find((r) &#x3D;&gt; r.rol_id &#x3D;&#x3D;&#x3D; usuario.rol?.rol_id) || null;
+
+    this.usuario &#x3D; {
+      user_id: usuario.user_id,
+      username: usuario.username,
+      password: &#x27;&#x27;,
+      estado: usuario.estado,
+      rol: rolEncontrado,
+    };
+
+    this.usuarioOriginal &#x3D; { ...this.usuario };
+    this.modoEditar &#x3D; true;
+    this.modalAbierto &#x3D; true;
+  }
+
+  /* ALERTA SIMPLE */
+  mensajeSimple: string &#x3D; &#x27;&#x27;;
+  tipoMensajeSimple: &#x27;success&#x27; | &#x27;error&#x27; &#x3D; &#x27;success&#x27;;
+
+  mostrarModal: boolean &#x3D; false;
+
+  ocultando &#x3D; false;
+
+  mostrarMensajeSimple(texto: string, tipo: &#x27;success&#x27; | &#x27;error&#x27;) {
+    this.mensajeSimple &#x3D; texto;
+    this.tipoMensajeSimple &#x3D; tipo;
+
+    setTimeout(() &#x3D;&gt; {
+      this.mensajeSimple &#x3D; &#x27;&#x27;;
+    }, 3000);
+  }
+
+  cerrarAlertaSimple() {
+    this.mensajeSimple &#x3D; &#x27;&#x27;;
+  }
+
+  cerrarModal() {
+    const modal &#x3D; document.querySelector(&#x27;.modal-content&#x27;);
+    if (modal) {
+      modal.classList.add(&#x27;salir&#x27;);
+      setTimeout(() &#x3D;&gt; {
+        this.modalAbierto &#x3D; false;
+      }, 250);
+    }
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div&gt;
+  &lt;div class&#x3D;&quot;cont-usuario&quot;&gt;
+    &lt;p class&#x3D;&quot;titulo&quot;&gt;USUARIOS&lt;/p&gt;
+    &lt;button class&#x3D;&quot;btn-usuario&quot; (click)&#x3D;&quot;abrirAgregar()&quot;&gt;
+      &lt;i class&#x3D;&quot;fa-solid fa-user-plus&quot;&gt;&lt;/i&gt;
+      Nuevo Usuario
+    &lt;/button&gt;
+  &lt;/div&gt;
+  &lt;div class&#x3D;&quot;acciones-tabla&quot;&gt;
+    &lt;div class&#x3D;&quot;mostrar-registros&quot;&gt;
+      &lt;span&gt;Mostrar&lt;/span&gt;
+
+      &lt;select&gt;
+        &lt;option value&#x3D;&quot;0&quot;&gt;Todos&lt;/option&gt;
+        &lt;option value&#x3D;&quot;10&quot; selected&gt;10&lt;/option&gt;
+        &lt;option value&#x3D;&quot;25&quot;&gt;25&lt;/option&gt;
+        &lt;option value&#x3D;&quot;50&quot;&gt;50&lt;/option&gt;
+      &lt;/select&gt;
+
+      &lt;span&gt;registros&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;buscar-usuario&quot;&gt;
+      &lt;label&gt;Buscar:&lt;/label&gt;
+      &lt;div class&#x3D;&quot;input-icono&quot;&gt;
+        &lt;i class&#x3D;&quot;fa-solid fa-magnifying-glass icono-input&quot;&gt;&lt;/i&gt;
+        &lt;input
+          type&#x3D;&quot;text&quot;
+          maxlength&#x3D;&quot;8&quot;
+          inputmode&#x3D;&quot;numeric&quot;
+          placeholder&#x3D;&quot;Ingrese usuario a buscar&quot;
+          [(ngModel)]&#x3D;&quot;textoBusqueda&quot;
+        /&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div
+  *ngIf&#x3D;&quot;mensajeSimple&quot;
+  class&#x3D;&quot;alerta&quot;
+  [ngClass]&#x3D;&quot;[tipoMensajeSimple, ocultando ? &#x27;hide&#x27; : &#x27;&#x27;]&quot;
+&gt;
+  &lt;span class&#x3D;&quot;texto&quot;&gt;
+    {{ mensajeSimple }}
+  &lt;/span&gt;
+  &lt;button class&#x3D;&quot;cerrar&quot; (click)&#x3D;&quot;cerrarAlertaSimple()&quot;&gt;
+    &lt;i class&#x3D;&quot;fa-solid fa-xmark&quot;&gt;&lt;/i&gt;
+  &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class&#x3D;&quot;cont-tabla tabla-scroll&quot;&gt;
+  &lt;div *ngIf&#x3D;&quot;cargando&quot; class&#x3D;&quot;cargando&quot;&gt;
+    &lt;i class&#x3D;&quot;fa-solid fa-spinner fa-spin&quot;&gt;&lt;/i&gt; Cargando registros...
+  &lt;/div&gt;
+  &lt;table class&#x3D;&quot;tabla-datos&quot;&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;ID&lt;/th&gt;
+        &lt;th&gt;USUARIO&lt;/th&gt;
+        &lt;th&gt;ROL&lt;/th&gt;
+        &lt;th&gt;ESTADO&lt;/th&gt;
+        &lt;th&gt;ACCIONES&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr *ngFor&#x3D;&quot;let usuario of usuariosFiltrados; let i &#x3D; index&quot;&gt;
+        &lt;td&gt;{{ i + 1 }}&lt;/td&gt;
+        &lt;td&gt;{{ usuario.username }}&lt;/td&gt;
+        &lt;td&gt;
+          &lt;span
+            class&#x3D;&quot;badge-rol&quot;
+            [ngClass]&#x3D;&quot;{
+              admin: usuario.rol?.nombre &#x3D;&#x3D;&#x3D; &#x27;Administrador&#x27;,
+              profesor: usuario.rol?.nombre &#x3D;&#x3D;&#x3D; &#x27;Profesor&#x27;,
+              secretaria: usuario.rol?.nombre &#x3D;&#x3D;&#x3D; &#x27;Secretaria&#x27;,
+              tesorera: usuario.rol?.nombre &#x3D;&#x3D;&#x3D; &#x27;Tesorera&#x27;,
+            }&quot;
+          &gt;
+            {{ usuario.rol?.nombre || &quot;Sin rol&quot; }}
+          &lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;span
+            [ngClass]&#x3D;&quot;
+              usuario.estado &#x3D;&#x3D;&#x3D; &#x27;Activo&#x27; ? &#x27;estado-activo&#x27; : &#x27;estado-inactivo&#x27;
+            &quot;
+          &gt;
+            {{ usuario.estado }}
+          &lt;/span&gt;
+        &lt;/td&gt;
+
+        &lt;td&gt;
+          &lt;button class&#x3D;&quot;btn-icon btn-edit&quot; (click)&#x3D;&quot;abrirEditar(usuario)&quot;&gt;
+            &lt;i class&#x3D;&quot;fa-solid fa-pen&quot;&gt;&lt;/i&gt;
+          &lt;/button&gt;
+
+          &lt;button
+            class&#x3D;&quot;btn-icon&quot;
+            [ngClass]&#x3D;&quot;
+              usuario.estado &#x3D;&#x3D;&#x3D; &#x27;Activo&#x27; ? &#x27;btn-desactivar&#x27; : &#x27;btn-activar&#x27;
+            &quot;
+            (click)&#x3D;&quot;cambiarEstado(usuario)&quot;
+            [title]&#x3D;&quot;
+              usuario.estado &#x3D;&#x3D;&#x3D; &#x27;Activo&#x27;
+                ? &#x27;Desactivar usuario&#x27;
+                : &#x27;Activar usuario&#x27;
+            &quot;
+          &gt;
+            &lt;i
+              class&#x3D;&quot;fa-solid&quot;
+              [ngClass]&#x3D;&quot;
+                usuario.estado &#x3D;&#x3D;&#x3D; &#x27;Activo&#x27;
+                  ? &#x27;fa-user-slash&#x27;
+                  : &#x27;fa-user-check&#x27;
+              &quot;
+            &gt;
+            &lt;/i&gt;
+          &lt;/button&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+  &lt;p class&#x3D;&quot;sin-resultados&quot; *ngIf&#x3D;&quot;!cargando &amp;&amp; usuarios.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+    &lt;i class&#x3D;&quot;fa-solid fa-circle-info&quot;&gt;&lt;/i&gt;
+    No se encontraron usuarios.
+  &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- Modal --&gt;
+&lt;div class&#x3D;&quot;modal&quot; *ngIf&#x3D;&quot;modalAbierto&quot;&gt;
+  &lt;div class&#x3D;&quot;modal-content&quot;&gt;
+    &lt;!-- Header --&gt;
+    &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+      &lt;h2&gt;
+        &lt;i
+          class&#x3D;&quot;fa-solid&quot;
+          [ngClass]&#x3D;&quot;modoEditar ? &#x27;fa-user-pen&#x27; : &#x27;fa-user-plus&#x27;&quot;
+        &gt;
+        &lt;/i&gt;
+        {{ modoEditar ? &quot;Editar usuario&quot; : &quot;Nuevo usuario&quot; }}
+      &lt;/h2&gt;
+      &lt;span class&#x3D;&quot;close&quot; (click)&#x3D;&quot;cerrarModal()&quot;&gt;&amp;times;&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Body --&gt;
+    &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+      &lt;div class&#x3D;&quot;form-grid&quot;&gt;
+        &lt;div&gt;
+          &lt;label&gt;Rol *&lt;/label&gt;
+          &lt;select [(ngModel)]&#x3D;&quot;usuario.rol&quot; name&#x3D;&quot;rol&quot; required class&#x3D;&quot;rol&quot;&gt;
+            &lt;option [ngValue]&#x3D;&quot;null&quot; disabled selected&gt;
+              Seleccione un rol
+            &lt;/option&gt;
+            &lt;option *ngFor&#x3D;&quot;let r of roles&quot; [ngValue]&#x3D;&quot;r&quot;&gt;
+              {{ r.nombre }}
+            &lt;/option&gt;
+          &lt;/select&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+          &lt;label&gt;Nombre de usuario *&lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;text&quot;
+            placeholder&#x3D;&quot;Ingrese el nombre de usuario&quot;
+            [(ngModel)]&#x3D;&quot;usuario.username&quot;
+            name&#x3D;&quot;username&quot;
+            required
+          /&gt;
+        &lt;/div&gt;
+
+        &lt;div&gt;
+          &lt;label&gt;Contraseña *&lt;/label&gt;
+          &lt;input
+            type&#x3D;&quot;password&quot;
+            placeholder&#x3D;&quot;Ingrese la contraseña&quot;
+            [(ngModel)]&#x3D;&quot;usuario.password&quot;
+            name&#x3D;&quot;password&quot;
+            required
+          /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Footer --&gt;
+    &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+      &lt;button class&#x3D;&quot;btn-cancelar&quot; (click)&#x3D;&quot;cerrarModal()&quot;&gt;
+        &lt;i class&#x3D;&quot;fa-solid fa-xmark&quot;&gt;&lt;/i&gt; Cancelar
+      &lt;/button&gt;
+
+      &lt;form (ngSubmit)&#x3D;&quot;guardar()&quot;&gt;
+        &lt;button class&#x3D;&quot;btn-guardar&quot; type&#x3D;&quot;submit&quot;&gt;
+          &lt;i
+            class&#x3D;&quot;fa-solid&quot;
+            [ngClass]&#x3D;&quot;modoEditar ? &#x27;fa-arrows-rotate&#x27; : &#x27;fa-floppy-disk&#x27;&quot;
+          &gt;
+          &lt;/i&gt;
+          {{ modoEditar ? &quot;Actualizar&quot; : &quot;Guardar&quot; }}
+        &lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div *ngIf&#x3D;&quot;mostrarConfirmacionEstado&quot; class&#x3D;&quot;overlay&quot;&gt;
+
+  &lt;div class&#x3D;&quot;modal-confirm&quot;&gt;
+
+    &lt;div class&#x3D;&quot;icono estado&quot;&gt;
+
+      &lt;i
+        class&#x3D;&quot;fa-solid&quot;
+        [ngClass]&#x3D;&quot;
+          nuevoEstado &#x3D;&#x3D;&#x3D; &#x27;Activo&#x27;
+            ? &#x27;fa-user-check&#x27;
+            : &#x27;fa-user-slash&#x27;
+        &quot;
+      &gt;&lt;/i&gt;
+
+    &lt;/div&gt;
+
+    &lt;h2&gt;
+      ¿{{ nuevoEstado &#x3D;&#x3D;&#x3D; &#x27;Activo&#x27; ? &#x27;Activar&#x27; : &#x27;Desactivar&#x27; }}
+      Usuario?
+    &lt;/h2&gt;
+
+    &lt;p&gt;
+      El estado del usuario será cambiado a
+      &lt;strong&gt;{{ nuevoEstado }}&lt;/strong&gt;
+    &lt;/p&gt;
+
+    &lt;div class&#x3D;&quot;acciones&quot;&gt;
+
+      &lt;button
+        class&#x3D;&quot;btn cancelar&quot;
+        (click)&#x3D;&quot;cancelarCambioEstado()&quot;
+      &gt;
+        Cancelar
+      &lt;/button&gt;
+
+      &lt;button
+        class&#x3D;&quot;btn eliminar&quot;
+        (click)&#x3D;&quot;confirmarCambioEstado()&quot;
+      &gt;
+        {{ nuevoEstado &#x3D;&#x3D;&#x3D; &#x27;Activo&#x27; ? &#x27;Activar&#x27; : &#x27;Desactivar&#x27; }}
+      &lt;/button&gt;
+
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div>  <div class="cont-usuario">    <p class="titulo">USUARIOS</p>    <button class="btn-usuario" (click)="abrirAgregar()">      <i class="fa-solid fa-user-plus"></i>      Nuevo Usuario    </button>  </div>  <div class="acciones-tabla">    <div class="mostrar-registros">      <span>Mostrar</span>      <select>        <option value="0">Todos</option>        <option value="10" selected>10</option>        <option value="25">25</option>        <option value="50">50</option>      </select>      <span>registros</span>    </div>    <div class="buscar-usuario">      <label>Buscar:</label>      <div class="input-icono">        <i class="fa-solid fa-magnifying-glass icono-input"></i>        <input          type="text"          maxlength="8"          inputmode="numeric"          placeholder="Ingrese usuario a buscar"          [(ngModel)]="textoBusqueda"        />      </div>    </div>  </div></div><div  *ngIf="mensajeSimple"  class="alerta"  [ngClass]="[tipoMensajeSimple, ocultando ? \'hide\' : \'\']">  <span class="texto">    {{ mensajeSimple }}  </span>  <button class="cerrar" (click)="cerrarAlertaSimple()">    <i class="fa-solid fa-xmark"></i>  </button></div><div class="cont-tabla tabla-scroll">  <div *ngIf="cargando" class="cargando">    <i class="fa-solid fa-spinner fa-spin"></i> Cargando registros...  </div>  <table class="tabla-datos">    <thead>      <tr>        <th>ID</th>        <th>USUARIO</th>        <th>ROL</th>        <th>ESTADO</th>        <th>ACCIONES</th>      </tr>    </thead>    <tbody>      <tr *ngFor="let usuario of usuariosFiltrados; let i = index">        <td>{{ i + 1 }}</td>        <td>{{ usuario.username }}</td>        <td>          <span            class="badge-rol"            [ngClass]="{              admin: usuario.rol?.nombre === \'Administrador\',              profesor: usuario.rol?.nombre === \'Profesor\',              secretaria: usuario.rol?.nombre === \'Secretaria\',              tesorera: usuario.rol?.nombre === \'Tesorera\',            }"          >            {{ usuario.rol?.nombre || "Sin rol" }}          </span>        </td>        <td>          <span            [ngClass]="              usuario.estado === \'Activo\' ? \'estado-activo\' : \'estado-inactivo\'            "          >            {{ usuario.estado }}          </span>        </td>        <td>          <button class="btn-icon btn-edit" (click)="abrirEditar(usuario)">            <i class="fa-solid fa-pen"></i>          </button>          <button            class="btn-icon"            [ngClass]="              usuario.estado === \'Activo\' ? \'btn-desactivar\' : \'btn-activar\'            "            (click)="cambiarEstado(usuario)"            [title]="              usuario.estado === \'Activo\'                ? \'Desactivar usuario\'                : \'Activar usuario\'            "          >            <i              class="fa-solid"              [ngClass]="                usuario.estado === \'Activo\'                  ? \'fa-user-slash\'                  : \'fa-user-check\'              "            >            </i>          </button>        </td>      </tr>    </tbody>  </table>  <p class="sin-resultados" *ngIf="!cargando && usuarios.length === 0">    <i class="fa-solid fa-circle-info"></i>    No se encontraron usuarios.  </p></div><!-- Modal --><div class="modal" *ngIf="modalAbierto">  <div class="modal-content">    <!-- Header -->    <div class="modal-header">      <h2>        <i          class="fa-solid"          [ngClass]="modoEditar ? \'fa-user-pen\' : \'fa-user-plus\'"        >        </i>        {{ modoEditar ? "Editar usuario" : "Nuevo usuario" }}      </h2>      <span class="close" (click)="cerrarModal()">&times;</span>    </div>    <!-- Body -->    <div class="modal-body">      <div class="form-grid">        <div>          <label>Rol *</label>          <select [(ngModel)]="usuario.rol" name="rol" required class="rol">            <option [ngValue]="null" disabled selected>              Seleccione un rol            </option>            <option *ngFor="let r of roles" [ngValue]="r">              {{ r.nombre }}            </option>          </select>        </div>        <div>          <label>Nombre de usuario *</label>          <input            type="text"            placeholder="Ingrese el nombre de usuario"            [(ngModel)]="usuario.username"            name="username"            required          />        </div>        <div>          <label>Contraseña *</label>          <input            type="password"            placeholder="Ingrese la contraseña"            [(ngModel)]="usuario.password"            name="password"            required          />        </div>      </div>    </div>    <!-- Footer -->    <div class="modal-footer">      <button class="btn-cancelar" (click)="cerrarModal()">        <i class="fa-solid fa-xmark"></i> Cancelar      </button>      <form (ngSubmit)="guardar()">        <button class="btn-guardar" type="submit">          <i            class="fa-solid"            [ngClass]="modoEditar ? \'fa-arrows-rotate\' : \'fa-floppy-disk\'"          >          </i>          {{ modoEditar ? "Actualizar" : "Guardar" }}        </button>      </form>    </div>  </div></div><div *ngIf="mostrarConfirmacionEstado" class="overlay">  <div class="modal-confirm">    <div class="icono estado">      <i        class="fa-solid"        [ngClass]="          nuevoEstado === \'Activo\'            ? \'fa-user-check\'            : \'fa-user-slash\'        "      ></i>    </div>    <h2>      ¿{{ nuevoEstado === \'Activo\' ? \'Activar\' : \'Desactivar\' }}      Usuario?    </h2>    <p>      El estado del usuario será cambiado a      <strong>{{ nuevoEstado }}</strong>    </p>    <div class="acciones">      <button        class="btn cancelar"        (click)="cancelarCambioEstado()"      >        Cancelar      </button>      <button        class="btn eliminar"        (click)="confirmarCambioEstado()"      >        {{ nuevoEstado === \'Activo\' ? \'Activar\' : \'Desactivar\' }}      </button>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AlertaComponent', 'selector': 'app-alerta'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BancosComponent', 'selector': 'app-bancos'},{'name': 'BodyComponent', 'selector': 'app-body'},{'name': 'ConfirmDialogComponent', 'selector': 'app-confirm-dialog'},{'name': 'DashboardLayoutComponent', 'selector': 'app-dashboard-layout'},{'name': 'EstudiantesComponent', 'selector': 'app-estudiantes'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MatriculasComponent', 'selector': 'app-matriculas'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'PadresComponent', 'selector': 'app-padres'},{'name': 'PagosComponent', 'selector': 'app-pagos'},{'name': 'PanelControlComponent', 'selector': 'app-panel-control'},{'name': 'SaludComponent', 'selector': 'app-salud'},{'name': 'SidenavComponent', 'selector': 'app-sidenav'},{'name': 'SublevelMenuComponent', 'selector': 'app-sublevel-menu'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'UsuariosComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'UsuariosComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

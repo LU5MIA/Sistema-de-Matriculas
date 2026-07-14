@@ -1,7 +1,7 @@
 <!-- CABECERA -->
 <div class="cont-header">
   <div class="header-titulo">
-    <i class="fa-solid fa-heart-pulse icono-salud"></i>
+    <!-- <i class="fa-solid fa-heart-pulse icono-salud"></i> -->
     <p class="titulo">SALUD ESTUDIANTIL</p>
   </div>
   <button class="btn-nuevo" (click)="abrirAgregar()">
@@ -27,7 +27,7 @@
     <label>Buscar:</label>
     <div class="input-icono">
       <i class="fa-solid fa-magnifying-glass icono-input"></i>
-      <input
+      <input 
         type="text"
         placeholder="Nombre, DNI o condición..."
         [(ngModel)]="busqueda"
@@ -46,15 +46,15 @@
   <table class="tabla-datos" *ngIf="!cargando">
     <thead>
       <tr>
-        <th>#</th>
+        <th>Id</th>
         <th>Nombre del Estudiante</th>
         <th>DNI</th>
         <th>Condición Médica</th>
         <th>Tipo</th>
         <th>Gravedad</th>
         <th>Descripción</th>
-        <th>Contacto Padre/Madre</th>
-        <th>Teléfono</th>
+        <!-- <th>Contacto Padre/Madre</th>
+        <th>Teléfono</th> -->
         <th>Acciones</th>
       </tr>
     </thead>
@@ -75,10 +75,10 @@
           </span>
         </td>
         <td class="td-descripcion" [title]="r.descripcion">
-          {{ r.descripcion && r.descripcion.length > 40 ? (r.descripcion | slice:0:40) + '...' : (r.descripcion ?? '—') }}
+          {{ r.descripcion && r.descripcion.length > 40 ? (r.descripcion | slice:0:40) + '...' : (r.descripcion ?? '—') || 'No registrada' }}
         </td>
-        <td>{{ getNombrePadre(r) }}</td>
-        <td>{{ getTelefonoPadre(r) }}</td>
+        <!-- <td>{{ getNombrePadre(r) }}</td>
+        <td>{{ getTelefonoPadre(r) }}</td> -->
         <td class="td-acciones">
           <button class="btn-icon btn-edit" (click)="abrirEditar(r)" title="Editar registro">
             <i class="fa-solid fa-pen"></i>

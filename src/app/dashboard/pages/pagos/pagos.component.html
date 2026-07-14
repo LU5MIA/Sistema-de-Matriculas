@@ -1,435 +1,385 @@
 <div>
-    <div class="cont-es">
-        <p class="titulo">PAGOS</p>
-        <button class="btn-pago" (click)="NuevoPago()">
-            <i class="fa-solid fa-sack-dollar"></i>
-            Nuevo Pago
-        </button>
+  <div class="cont-es">
+    <p class="titulo">PAGOS</p>
+  </div>
+  <div class="acciones-tabla">
+    <div class="mostrar-registros">
+      <span>Mostrar</span>
+      <select (change)="cambiarCantidad($event)">
+        <option value="0">Todos</option>
+        <option value="10" selected>10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+      <span>registros</span>
     </div>
-    <div class="acciones-tabla">
-        <div class="mostrar-registros">
-            <span>Mostrar</span>
-            <select (change)="cambiarCantidad($event)">
-                <option value="0">Todos</option>
-                <option value="10" selected>10</option>
-                <option value="25">25</option>
-                <option value="50">50</option>
-            </select>
-            <span>registros</span>
-        </div>
 
-        <div class="buscar-estudiante">
-            <div class="input-busqueda">
-                <label>Buscar:</label>
-                <div class="input-icono">
-                    <input type="text" placeholder="Ingrese al estudiante matriculado" [(ngModel)]="textoBusqueda"
-                        (input)="filtrarPagos()" />
-                </div>
-            </div>
-        </div>
+    <div class="buscar-estudiante">
+      <label>Buscar:</label>
+      <div class="input-icono">
+        <i class="fa-solid fa-search icono-input"></i>
+        <input
+          type="text"
+          placeholder="Ingrese al estudiante matriculado"
+          [(ngModel)]="textoBusqueda"
+          (input)="filtrarPagos()"
+        />
+      </div>
     </div>
+
+    <div class="filtros-pago">
+      <div>
+        <label for="">CONCEPTO</label>
+        <select (change)="onFiltroConceptoChange($event)">
+          <option value="todos">Todos</option>
+          <option *ngFor="let c of conceptos" [value]="c">{{ c }}</option>
+        </select>
+
+        <label for="">AÑO</label>
+        <select (change)="onFiltroAnioChange($event)">
+          <option value="todos">Todos</option>
+          <option *ngFor="let a of anios" [value]="a">{{ a }}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="mensajeSimple"
+  class="alerta"
+  [ngClass]="[tipoMensajeSimple, ocultando ? 'hide' : '']"
+>
+  <span class="texto">
+    {{ mensajeSimple }}
+  </span>
+  <button class="cerrar" (click)="cerrarAlertaSimple()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
 </div>
 
 <div class="cont-tabla tabla-scroll">
-    <table class="tabla-datos">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>RECIBO</th>
-                <!-- <th>FECHA</th> -->
-                <th>CODIGO. M</th>
-                <th>ESTUDIANTE</th>
-                <th>CONCEPTO</th>
-                <!-- <th>MEDIO</th> -->
-                <th>MONTO</th>
-                <th>ESTADO</th>
-                <th>ACCIONES</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let pago of pagosVista; let i = index">
-                <td>{{ i + 1 }}</td>
-                <td class="text-center">
-                    <button class="btn-icon btn-download" title="Recibo" (click)="imprimirReciboDesdePago(pago)">
-                        <i class="fa-solid fa-file-arrow-down"></i>
-                    </button>
-                </td>
-                <!-- <td>
-                    {{ pago.fecha_pago | date:'dd/MM/yyyy HH:mm' }}
-                </td> -->
+  <div *ngIf="cargando" class="cargando">
+    <i class="fa-solid fa-spinner fa-spin"></i> Cargando registros...
+  </div>
+  <table class="tabla-datos">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>RECIBO</th>
+        <th>CODIGO. M</th>
+        <th>ESTUDIANTE</th>
+        <th>CONCEPTO</th>
+        <th>MONTO</th>
+        <th>FECHA VENCIMIENTO</th>
+        <th>ESTADO</th>
+        <th>ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pago of pagosVista; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td class="text-center">
+          <button
+            class="btn-icon btn-download"
+            title="Recibo"
+            (click)="imprimirReciboDesdePago(pago)"
+          >
+            <i class="fa-solid fa-file-arrow-down"></i>
+          </button>
+        </td>
+        <td>{{ pago.codigoMatricula }}</td>
+        <td>{{ pago.estudianteNombre }}</td>
+        <td>
+          {{ pago.concepto }} <br />
+          <span *ngIf="pago.meses">({{ pago.meses }})</span>
+        </td>
+        <td>{{ pago.monto_pagado }}</td>
+        <td [ngClass]="obtenerClaseVencimiento(pago.fecha_vencimiento)">
+          {{ pago.fecha_vencimiento || "No requiere" }}
+        </td>
+        <td>
+          <span
+            [ngClass]="
+              pago.estado === 'Pagado' ? 'estado-pagado' : 'estado-deuda'
+            "
+          >
+            {{ pago.estado }}
+          </span>
+        </td>
+        <td>
+          <button
+            class="btn-icon btn-money"
+            (click)="pagoEstudiante(pago.pagos_id)"
+          >
+            <i class="fa-solid fa-money-bill"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
-                <td>{{ pago.codigoMatricula }}</td>
-                <td>{{ pago.estudianteNombre }}</td>
-                <td>
-                    {{ pago.concepto }} <br>
-                    <span *ngIf="pago.meses">({{ pago.meses }})</span>
-                </td>
-
-                <!-- <td>{{ pago.canal_pago }}</td> -->
-                <td>{{ pago.monto_pagado }}</td>
-                <td>
-                    <span [ngClass]="pago.estado === 'Pagado' ? 'estado-pagado' : 'estado-deuda'">
-                        {{ pago.estado }}
-                    </span>
-                </td>
-                <td>
-                    <button class="btn-icon btn-money" (click)="pagoEstudiante(pago.pagos_id)">
-                        <i class="fa-solid fa-money-bill"></i>
-                    </button>
-
-                    <button class="btn-icon btn-delete" (click)="eliminarPago(pago.pagos_id)">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<!-- Modal -->
-<div class="modal" *ngIf="modalAbierto">
-    <div class="modal-content" #modalPrincipal>
-
-        <!-- Header -->
-        <div class="modal-header">
-            <h2>
-                <i class="fa-solid fa-sack-dollar">
-                </i>
-                Nuevo pago
-            </h2>
-            <span class="close" (click)="cerrarModal(modalPrincipal, 'principal')">&times;</span>
-        </div>
-
-        <!-- SubHeader -->
-        <div class="modal-subheader">
-            <button [class.active]="seccionActiva === 'datos'" (click)="seccionActiva = 'datos'">
-                Datos del Estudiante
-            </button>
-
-            <button [class.active]="seccionActiva === 'pago'" (click)="seccionActiva = 'pago'">
-                Detalles de pago
-            </button>
-        </div>
-
-        <!-- Body -->
-        <div class="modal-body">
-            <div *ngIf="seccionActiva === 'datos'">
-                <div class="form-grid">
-                    <div class="codigo-container">
-                        <div class="codigo-input">
-                            <label>Codigo de Matricula</label>
-                            <input type="text" placeholder="Codigo" [(ngModel)]="codigoBusqueda"
-                                (input)="limpiarEspacios()">
-                        </div>
-                        <button class="btn-buscar-codigo" (click)="buscarMatriculaPorCodigo()">
-                            <i class="fa-solid fa-magnifying-glass"></i>
-                        </button>
-                    </div>
-
-                    <div>
-                        <label>Alumno</label>
-                        <input type="text" placeholder="Nombres y Apellidos" [(ngModel)]="alumnoNombre" readonly>
-                    </div>
-                    <div class="autocomplete-container">
-                        <label>Responsable de pago</label>
-
-                        <input type="text" [(ngModel)]="textoResponsable" (input)="filtrarPadres()"
-                            placeholder="Responsable de pago" autocomplete="off">
-
-                        <ul *ngIf="mostrarLista" class="lista-sugerencias">
-
-                            <!-- Cuando hay resultados -->
-                            <li *ngFor="let p of padresFiltrados" (click)="seleccionarPadre(p)">
-
-                                <span class="item-contenido">
-                                    <i class="fas fa-user icono-padre"></i>
-                                    {{ p.nombre_completo }}
-                                </span>
-
-                            </li>
-
-                            <!-- Cuando NO hay resultados -->
-                            <li *ngIf="padresFiltrados.length === 0" class="sin-resultados">
-                                No hay padres registrados
-                            </li>
-
-                        </ul>
-
-                    </div>
-
-                    <div>
-                        <label>Aula</label>
-                        <input type="text" placeholder="Ej: Secundaria - 4°C" [(ngModel)]="aulaNombre" readonly>
-                    </div>
-                </div>
-                <div class="form-second-grid">
-                    <div>
-                        <label>Inscripcion</label>
-                        <input type="number" placeholder="150.00" [(ngModel)]="incripcion" readonly>
-                    </div>
-
-                    <div>
-                        <label>Matricula</label>
-                        <input type="number" placeholder="350.00" [(ngModel)]="totalMatricula" readonly>
-                    </div>
-
-                    <div>
-                        <label>Mensualidad</label>
-                        <input type="number" placeholder="350.00" [(ngModel)]="mensualidad" readonly>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="seccionActiva === 'pago'">
-                <div class="form-pago-grid"
-                    [ngClass]="pago.concepto === 'Mensualidad' ? 'tres-columnas' : 'dos-columnas'">
-
-                    <div>
-                        <label>Concepto</label>
-                        <select [(ngModel)]="pago.concepto" (change)="onConceptoChange()">
-                            <option value="">Seleccione</option>
-                            <option value="Inscripción">Inscripción</option>
-                            <option value="Mensualidad">Mensualidad</option>
-                            <option value="Matrícula">Matrícula</option>
-                        </select>
-                    </div>
-
-                    <div *ngIf="pago.concepto === 'Mensualidad'">
-                        <label>Mes a pagar</label>
-                        <select [(ngModel)]="pago.meses">
-                            <option value="">Seleccione</option>
-                            <option *ngFor="let mes of meses" [value]="mes.value">
-                                {{ mes.label }}
-                            </option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label>Canal de pago</label>
-                        <select [(ngModel)]="detalle_pago.canal_pago">
-                            <option value="">Seleccione</option>
-                            <option value="Yape">Yape</option>
-                            <option value="Plin">Plin</option>
-                            <option value="Efectivo">Efectivo</option>
-                            <option value="Tunki">Tunki</option>
-                            <option value="BCP">BCP</option>
-                            <option value="BVVA">BVVA</option>
-                        </select>
-                    </div>
-
-                </div>
-                <div class="form-third-grid">
-                    <div class="form-full">
-                        <label>Monto Total</label>
-                        <input type="number" [(ngModel)]="pago.monto_total" placeholder="0.00" readonly>
-                    </div>
-                    <div class="form-full">
-                        <label>Monto Pagado</label>
-                        <input type="text" inputmode="decimal" [(ngModel)]="detalle_pago.monto" class="pagado"
-                            (blur)="formatearMonto(detalle_pago)" [readonly]="pago.concepto === 'Mensualidad'"
-                            placeholder="0.00">
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="modal-footer">
-            <button class="btn-cancelar" (click)="cerrarModal(modalPrincipal, 'principal')">
-                <i class="fa-solid fa-xmark"></i> Cancelar
-            </button>
-
-            <button class="btn-guardar" (click)="guardarPagoCompleto()">
-                <i class="fa-solid" [ngClass]="modalPagoEstudiante ? 'fa-arrows-rotate' : 'fa-floppy-disk'">
-                </i>
-                {{ modalPagoEstudiante ? 'Actualizar' : 'Guardar' }}
-            </button>
-        </div>
-
-    </div>
+  <p class="sin-resultados" *ngIf="!cargando && pagosVista.length === 0">
+    <i class="fa-solid fa-circle-info"></i>
+    No se encontraron pagos.
+  </p>
 </div>
 
 <!-- Modal Pago por estudiante -->
 <div class="modal" *ngIf="modalPagoEstudiante">
-    <div class="modal-content" #modalPago>
-
-        <!-- Header -->
-        <div class="modal-header">
-            <h2>
-                <i class="fa-solid fa-chalkboard-user"></i>
-                Pago de Estudiante
-            </h2>
-            <span class="close" (click)="cerrarModal(modalPago, 'pago')">&times;</span>
-        </div>
-
-        <!-- cambiar el margin top de estas dos columnas -->
-
-        <!-- Body -->
-        <div class="modal-body">
-            <!-- CODIGO - ALUMNO - AULA -->
-            <div class="form-pago-grid dos-columnas">
-
-                <div class="codigo-container">
-                    <div class="codigo-input">
-                        <label>Codigo de Matricula</label>
-                        <input type="text" [value]="pago?.matricula?.codigo_matricula" readonly>
-                    </div>
-                </div>
-
-                <div>
-                    <label>Alumno</label>
-                    <input type="text" [value]="pago?.matricula?.estudiante?.nombres + ' ' +
-                        pago?.matricula?.estudiante?.apellido_paterno + ' ' +
-                        pago?.matricula?.estudiante?.apellido_materno" readonly>
-                </div>
-
-
-            </div>
-
-            <!-- CONCEPTO -->
-            <div class="form-pago-grid" [ngClass]="pago.concepto === 'Mensualidad' ? 'tres-columnas' : 'dos-columnas'">
-
-                <div>
-                    <label>Aula</label>
-                    <input type="text" [value]="pago?.matricula?.aula?.nivel + ' - ' +
-                    pago?.matricula?.aula?.grado + ' ' +
-                    pago?.matricula?.aula?.seccion" readonly>
-                </div>
-                <div>
-                    <label>Concepto</label>
-                    <select [value]="pago.concepto" (change)="onConceptoChange()" [disabled]="pagoCompleto">
-                        <option value="">Seleccione</option>
-                        <option value="Inscripción">Inscripción</option>
-                        <option value="Mensualidad">Mensualidad</option>
-                        <option value="Matrícula">Matrícula</option>
-                    </select>
-                </div>
-
-                <div *ngIf="pago.concepto === 'Mensualidad'">
-                    <label>Mes a pagar</label>
-                    <select [(ngModel)]="pago.meses" [disabled]="pagoCompleto">
-                        <option value="">Seleccione</option>
-                        <option *ngFor="let mes of meses" [value]="mes.value">
-                            {{ mes.label }}
-                        </option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- aca no siempre se va solo mostrar el canal y el responsable de pago -->
-            <div class="form-pago-grid dos-columnas" *ngIf="!pagoCompleto">
-
-
-                <div class="autocomplete-container">
-                    <label>Responsable de pago</label>
-
-                    <input type="text" [(ngModel)]="textoResponsable" (input)="filtrarPadres()"
-                        placeholder="Responsable de pago" autocomplete="off" [ngClass]="{
-                    'input-deuda': !padreSeleccionado
-                    }">
-
-                    <ul *ngIf="mostrarLista" class="lista-sugerencias">
-
-                        <!-- Padres encontrados -->
-                        <li *ngFor="let p of padresFiltrados" (click)="seleccionarPadre(p)">
-                            <span class="item-contenido">
-                                <i class="fas fa-user icono-padre"></i>
-                                {{ p.nombre_completo }}
-                            </span>
-                        </li>
-
-                        <!-- Sin resultados -->
-                        <li *ngIf="padresFiltrados.length === 0" class="sin-resultados">
-                            No hay padres registrados
-                        </li>
-
-                    </ul>
-                </div>
-
-
-                <div>
-                    <label>Canal de pago</label>
-                    <select [(ngModel)]="nuevoDetalle.canal_pago" [ngClass]="{
-                    'input-deuda': !nuevoDetalle.canal_pago
-                    }">
-                        <option value="">Seleccione</option>
-                        <option value="Yape">Yape</option>
-                        <option value="Plin">Plin</option>
-                        <option value="Efectivo">Efectivo</option>
-                        <option value="Tunki">Tunki</option>
-                        <option value="BCP">BCP</option>
-                        <option value="BVVA">BVVA</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-pago-grid" [ngClass]="pagoCompleto ? 'dos-columnas' : 'tres-columnas'"
-                *ngIf="!pagoCompleto">
-                <div>
-                    <label>Monto Total</label>
-                    <input type="number" placeholder="0.00" [value]="pago.monto_total" readonly>
-                </div>
-
-                <div>
-                    <label>Monto Pagado</label>
-                    <input type="text" [value]="getMontoPagado(detalles).toFixed(2)" readonly>
-                </div>
-
-                <div *ngIf="!pagoCompleto">
-                    <label>Monto a Pagar</label>
-                    <input type="text" placeholder="0.00" [(ngModel)]="nuevoDetalle.monto" inputmode="decimal"
-                        (blur)="formatearMonto(nuevoDetalle)" [ngClass]="{
-                    'input-deuda': !nuevoDetalle.monto
-                    }">
-                </div>
-            </div>
-
-            <button class="btn-agregar" *ngIf="!pagoCompleto" (click)="agregarDetalle()">
-                <i class="fa-solid fa-plus"></i>
-                Agregar
-            </button>
-
-            <div class="linea" *ngIf="!pagoCompleto"></div>
-
-            <div class="detalle-pago">
-                <h2 [style.margin-top]="pagoCompleto ? '20px' : '0px'">
-                    <i class="fa-solid fa-receipt"></i>
-                    Detalle de Pago
-                </h2>
-            </div>
-
-            <table class="tabla-detalles">
-                <thead>
-                    <tr>
-                        <th>PADRE</th>
-                        <th>CANAL</th>
-                        <th>MONTO</th>
-                        <th>FECHA</th>
-                        <th *ngIf="!pagoCompleto">OPCIONES</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let d of detalles; let i = index" (click)="seleccionarDetalle(d, i)"
-                        [class.seleccionado]="indiceEdicion === i">
-                        <td>{{ d.pagador.nombres }} {{ d.pagador.apellido_paterno }} {{ d.pagador.apellido_materno }}
-                        </td>
-                        <td>{{ d.canal_pago }}</td>
-                        <td>{{ d.monto }}</td>
-                        <td>{{ d.fecha_pago | date:'dd/MM/yyyy HH:mm' }}</td>
-                        <td *ngIf="!pagoCompleto">
-                            <button class="btn-icon btn-delete"
-                                (click)="eliminarDetalle(d.detalle_id, i); $event.stopPropagation();">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <button class="btn-pagar" [disabled]="pagoCompleto" (click)="realizarPago()">
-                <i class="fa-solid fa-wallet"></i>
-                {{ pagoCompleto ? 'Pago Completo' : 'Realizar Pago' }}
-            </button>
-        </div>
+  <div class="modal-content" #modalPago>
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>
+        <i class="fa-solid fa-chalkboard-user"></i>
+        Pago de Estudiante
+      </h2>
+      <span class="close" (click)="cerrarModal(modalPago, 'pago')"
+        >&times;</span
+      >
     </div>
+
+    <!-- cambiar el margin top de estas dos columnas -->
+
+    <!-- Body -->
+    <div class="modal-body">
+      <!-- CODIGO - ALUMNO - AULA -->
+      <div class="form-pago-grid dos-columnas">
+        <div class="codigo-container">
+          <div class="codigo-input">
+            <label>Codigo de Matricula</label>
+            <input
+              type="text"
+              [value]="pago?.matricula?.codigo_matricula"
+              readonly
+            />
+          </div>
+        </div>
+
+        <div>
+          <label>Alumno</label>
+          <input
+            type="text"
+            [value]="
+              pago?.matricula?.estudiante?.nombres +
+              ' ' +
+              pago?.matricula?.estudiante?.apellido_paterno +
+              ' ' +
+              pago?.matricula?.estudiante?.apellido_materno
+            "
+            readonly
+          />
+        </div>
+      </div>
+
+      <!-- CONCEPTO -->
+      <div
+        class="form-pago-grid"
+        [ngClass]="
+          pago.concepto === 'Mensualidad' ? 'tres-columnas' : 'dos-columnas'
+        "
+      >
+        <div>
+          <label>Aula</label>
+          <input
+            type="text"
+            [value]="
+              pago?.matricula?.aula?.nivel +
+              ' - ' +
+              pago?.matricula?.aula?.grado +
+              ' ' +
+              pago?.matricula?.aula?.seccion
+            "
+            readonly
+          />
+        </div>
+        <div>
+          <label>Concepto</label>
+          <select
+            [(ngModel)]="pago.concepto"
+            (ngModelChange)="onConceptoChange()"
+            [disabled]="pagoCompleto"
+          >
+            <option value="">Seleccione</option>
+            <option value="Inscripción">Inscripción</option>
+            <option value="Mensualidad">Mensualidad</option>
+            <option value="Matrícula">Matrícula</option>
+          </select>
+        </div>
+
+        <div *ngIf="pago.concepto === 'Mensualidad'">
+          <label>Mes a pagar</label>
+          <select [(ngModel)]="pago.meses" [disabled]="pagoCompleto">
+            <option value="">Seleccione</option>
+            <option *ngFor="let mes of meses" [value]="mes.value">
+              {{ mes.label }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- aca no siempre se va solo mostrar el canal y el responsable de pago -->
+      <div class="form-pago-grid dos-columnas" *ngIf="!pagoCompleto">
+        <div class="autocomplete-container">
+          <label>Responsable de pago</label>
+
+          <input
+            type="text"
+            [(ngModel)]="textoResponsable"
+            (input)="filtrarPadres()"
+            placeholder="Responsable de pago"
+            autocomplete="off"
+            [ngClass]="{
+              'input-deuda': !padreSeleccionado,
+            }"
+          />
+
+          <ul *ngIf="mostrarLista" class="lista-sugerencias">
+            <!-- Padres encontrados -->
+            <li *ngFor="let p of padresFiltrados" (click)="seleccionarPadre(p)">
+              <span class="item-contenido">
+                <i class="fas fa-user icono-padre"></i>
+                {{ p.nombre_completo }}
+              </span>
+            </li>
+
+            <!-- Sin resultados -->
+            <li *ngIf="padresFiltrados.length === 0" class="sin-resultados">
+              No hay padres registrados
+            </li>
+          </ul>
+        </div>
+
+        <div>
+          <label>Canal de pago</label>
+          <select
+            [(ngModel)]="nuevoDetalle.canal_pago"
+            [ngClass]="{
+              'input-deuda': !nuevoDetalle.canal_pago,
+            }"
+          >
+            <option value="">Seleccione</option>
+            <option value="Yape">Yape</option>
+            <option value="Plin">Plin</option>
+            <option value="Efectivo">Efectivo</option>
+            <option value="Tunki">Tunki</option>
+            <option value="BCP">BCP</option>
+            <option value="BVVA">BVVA</option>
+          </select>
+        </div>
+      </div>
+
+      <div
+        class="form-pago-grid"
+        [ngClass]="pagoCompleto ? 'dos-columnas' : 'tres-columnas'"
+        *ngIf="!pagoCompleto"
+      >
+        <div>
+          <label>Monto Total</label>
+          <input
+            type="number"
+            placeholder="0.00"
+            [value]="pago.monto_total"
+            readonly
+          />
+        </div>
+
+        <div>
+          <label>Monto Pagado</label>
+          <input
+            type="text"
+            [value]="getMontoPagado(detalles).toFixed(2)"
+            readonly
+          />
+        </div>
+
+        <div *ngIf="!pagoCompleto">
+          <label>Monto a Pagar</label>
+          <input
+            type="text"
+            [ngClass]="{ 'input-deuda': !nuevoDetalle.monto }"
+            placeholder="0.00"
+            [(ngModel)]="nuevoDetalle.monto"
+            [readonly]="pago.concepto === 'Mensualidad'"
+            inputmode="decimal"
+            (blur)="formatearMonto(nuevoDetalle)"
+          />
+        </div>
+        <!-- <p>{{ nuevoDetalle.monto }}</p> -->
+      </div>
+
+      <button
+        class="btn-agregar"
+        *ngIf="!pagoCompleto"
+        (click)="agregarDetalle()"
+      >
+        <i class="fa-solid fa-plus"></i>
+        Agregar
+      </button>
+
+      <div class="linea" *ngIf="!pagoCompleto"></div>
+
+      <div class="detalle-pago">
+        <h2 [style.margin-top]="pagoCompleto ? '20px' : '0px'">
+          <i class="fa-solid fa-receipt"></i>
+          Detalle de Pago
+        </h2>
+      </div>
+
+      <div *ngIf="cargando" class="cargando">
+        <i class="fa-solid fa-spinner fa-spin"></i> Cargando registros...
+      </div>
+
+      <table class="tabla-detalles">
+        <thead>
+          <tr>
+            <th>PADRE</th>
+            <th>CANAL</th>
+            <th>MONTO</th>
+            <th>FECHA</th>
+            <th *ngIf="!pagoCompleto">OPCIONES</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let d of detalles; let i = index"
+            (click)="seleccionarDetalle(d, i)"
+            [class.seleccionado]="indiceEdicion === i"
+          >
+            <td>
+              {{ d.pagador.nombres }} {{ d.pagador.apellido_paterno }}
+              {{ d.pagador.apellido_materno }}
+            </td>
+            <td>{{ d.canal_pago }}</td>
+            <td>{{ d.monto }}</td>
+            <td>{{ d.fecha_pago | date: "dd/MM/yyyy HH:mm" }}</td>
+            <td *ngIf="!pagoCompleto">
+              <button
+                class="btn-icon btn-delete"
+                (click)="
+                  eliminarDetalle(d.detalle_id, i); $event.stopPropagation()
+                "
+              >
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="sin-resultados" *ngIf="!cargando && detalles.length === 0">
+        <i class="fa-solid fa-circle-info"></i>
+        No se encontraron detalles de pagos.
+      </p>
+
+      <button
+        class="btn-pagar"
+        [disabled]="pagoCompleto"
+        (click)="realizarPago()"
+      >
+        <i class="fa-solid fa-wallet"></i>
+        {{ pagoCompleto ? "Pago Completo" : "Realizar Pago" }}
+      </button>
+    </div>
+  </div>
 </div>

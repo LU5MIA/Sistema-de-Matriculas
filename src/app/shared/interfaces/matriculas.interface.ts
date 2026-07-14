@@ -17,9 +17,6 @@ export interface Matriculas {
     //relaciones
     aula: Aulas | null,
     estudiante: Estudiantes | null,
-    padre_responsable: Padres | null
-    madre?: Padres,
-    padre?: Padres,
 
 }
 
@@ -33,7 +30,6 @@ export interface MatriculasVista extends Matriculas {
 export interface MatriculaCreatePayload {
     estudiante_id: number;
     aula_id: number;
-    padre_responsable_id: number;
 
     situacion: string;
     procedencia: string;

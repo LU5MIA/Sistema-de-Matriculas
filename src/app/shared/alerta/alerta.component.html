@@ -1,0 +1,22 @@
+<div
+  *ngIf="mostrarModal"
+  class="alerta_info"
+  [ngClass]="[tipoMensajeModal, ocultando ? 'hide' : '']"
+>
+  <div class="icono_alerta">
+    <i *ngIf="tipoMensajeModal === 'success'" class="fa-solid fa-circle-check">
+    </i>
+
+    <i *ngIf="tipoMensajeModal === 'error'" class="fa-solid fa-circle-xmark"> </i>
+
+    <i *ngIf="tipoMensajeModal === 'info'" class="fa-solid fa-circle-info"> </i>
+  </div>
+
+  <span class="texto">
+    {{ mensajeModal }}
+  </span>
+
+  <!-- <button class="cerrar" (click)="cerrarAlertaModal()">
+    <i class="fa-solid fa-xmark"></i>
+  </button> -->
+</div>

@@ -8,6 +8,8 @@ import { MatriculasComponent } from "./pages/matriculas/matriculas.component";
 import { PadresComponent } from "./pages/padres/padres.component";
 import { PagosComponent } from "./pages/pagos/pagos.component";
 import { SaludComponent } from "./pages/salud/salud.component";
+import { UsuariosComponent } from "./pages/usuarios/usuarios.component";
+import { AuthGuard } from "../auth/guards/auth.guard";
 
 const routes: Routes = [
   {
@@ -18,30 +20,44 @@ const routes: Routes = [
       {
         path: "panel-control",
         component: PanelControlComponent, 
-      },
-      {
-        path: "bancos",
-        component: BancosComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Administrador', 'Profesor', 'Secretaria', 'Tesorera'] }
       },
       {
         path: "estudiantes",
         component: EstudiantesComponent,
-      },
-      {
-        path: "matriculas",
-        component: MatriculasComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Administrador', 'Profesor', 'Secretaria'] }
       },
       {
         path: "padres",
         component: PadresComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Administrador','Profesor', 'Secretaria'] }
+      },
+      {
+        path: "matriculas",
+        component: MatriculasComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Administrador', 'Secretaria'] }
       },
       {
         path: "pagos",
         component: PagosComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Administrador', 'Tesorera'] }
       },
       {
         path: "salud",
         component: SaludComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Administrador', 'Secretaria'] }
+      },
+      {
+        path: "usuarios",
+        component: UsuariosComponent,
+        canActivate: [AuthGuard],
+        data: { roles: ['Administrador'] }
       }
     ]
   }
@@ -51,4 +67,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class DashboardRoutingModule {}
+export class DashboardRoutingModule {}

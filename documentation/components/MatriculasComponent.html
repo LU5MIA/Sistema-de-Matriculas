@@ -1,0 +1,3913 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Frontend - Sistema de Matrículas</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Frontend - Sistema de Matrículas</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  MatriculasComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/dashboard/pages/matriculas/matriculas.component.ts</code>
+</p>
+
+
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-matriculas</code></td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./matriculas.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./matriculas.component.css</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirEditar" >abrirEditar</a>
+                            </li>
+                            <li>
+                                <a href="#aulas" >aulas</a>
+                            </li>
+                            <li>
+                                <a href="#buscandoDni" >buscandoDni</a>
+                            </li>
+                            <li>
+                                <a href="#cantidad_Mostrar" >cantidad_Mostrar</a>
+                            </li>
+                            <li>
+                                <a href="#cargando" >cargando</a>
+                            </li>
+                            <li>
+                                <a href="#codigoBusqueda" >codigoBusqueda</a>
+                            </li>
+                            <li>
+                                <a href="#dni_estudiante" >dni_estudiante</a>
+                            </li>
+                            <li>
+                                <a href="#dni_padre" >dni_padre</a>
+                            </li>
+                            <li>
+                                <a href="#estudiante" >estudiante</a>
+                            </li>
+                            <li>
+                                <a href="#filtro" >filtro</a>
+                            </li>
+                            <li>
+                                <a href="#grados" >grados</a>
+                            </li>
+                            <li>
+                                <a href="#matricula" >matricula</a>
+                            </li>
+                            <li>
+                                <a href="#MatriculaAEliminar" >MatriculaAEliminar</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#matriculaOriginal" >matriculaOriginal</a>
+                            </li>
+                            <li>
+                                <a href="#matriculasOriginales" >matriculasOriginales</a>
+                            </li>
+                            <li>
+                                <a href="#matriculasVista" >matriculasVista</a>
+                            </li>
+                            <li>
+                                <a href="#matriculasVistaOriginal" >matriculasVistaOriginal</a>
+                            </li>
+                            <li>
+                                <a href="#mensajeModal" >mensajeModal</a>
+                            </li>
+                            <li>
+                                <a href="#mensajeSimple" >mensajeSimple</a>
+                            </li>
+                            <li>
+                                <a href="#modalEditarMatricula" >modalEditarMatricula</a>
+                            </li>
+                            <li>
+                                <a href="#modalMatriculaAbierto" >modalMatriculaAbierto</a>
+                            </li>
+                            <li>
+                                <a href="#modoEditar" >modoEditar</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarConfirmacion" >mostrarConfirmacion</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarModal" >mostrarModal</a>
+                            </li>
+                            <li>
+                                <a href="#niveles" >niveles</a>
+                            </li>
+                            <li>
+                                <a href="#ocultando" >ocultando</a>
+                            </li>
+                            <li>
+                                <a href="#padre" >padre</a>
+                            </li>
+                            <li>
+                                <a href="#seccionActiva" >seccionActiva</a>
+                            </li>
+                            <li>
+                                <a href="#secciones" >secciones</a>
+                            </li>
+                            <li>
+                                <a href="#tipoMensajeModal" >tipoMensajeModal</a>
+                            </li>
+                            <li>
+                                <a href="#tipoMensajeSimple" >tipoMensajeSimple</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#abrirAgregar" >abrirAgregar</a>
+                            </li>
+                            <li>
+                                <a href="#addMatricula" >addMatricula</a>
+                            </li>
+                            <li>
+                                <a href="#aplicarFiltros" >aplicarFiltros</a>
+                            </li>
+                            <li>
+                                <a href="#aplicarFiltroTabla" >aplicarFiltroTabla</a>
+                            </li>
+                            <li>
+                                <a href="#buscarPorDni" >buscarPorDni</a>
+                            </li>
+                            <li>
+                                <a href="#cambiarCantidad" >cambiarCantidad</a>
+                            </li>
+                            <li>
+                                <a href="#cancelarEliminacion" >cancelarEliminacion</a>
+                            </li>
+                            <li>
+                                <a href="#cargarMatriculas" >cargarMatriculas</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarAlertaModal" >cerrarAlertaModal</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarAlertaSimple" >cerrarAlertaSimple</a>
+                            </li>
+                            <li>
+                                <a href="#cerrarModal" >cerrarModal</a>
+                            </li>
+                            <li>
+                                <a href="#confirmarEliminacion" >confirmarEliminacion</a>
+                            </li>
+                            <li>
+                                <a href="#eliminarMatricula" >eliminarMatricula</a>
+                            </li>
+                            <li>
+                                <a href="#filtrarPorCodigo" >filtrarPorCodigo</a>
+                            </li>
+                            <li>
+                                <a href="#formatearDecimal" >formatearDecimal</a>
+                            </li>
+                            <li>
+                                <a href="#getMatriculaVacia" >getMatriculaVacia</a>
+                            </li>
+                            <li>
+                                <a href="#guardar" >guardar</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarMensajeModal" >mostrarMensajeModal</a>
+                            </li>
+                            <li>
+                                <a href="#mostrarMensajeSimple" >mostrarMensajeSimple</a>
+                            </li>
+                            <li>
+                                <a href="#ngOnInit" >ngOnInit</a>
+                            </li>
+                            <li>
+                                <a href="#onCodigoChange" >onCodigoChange</a>
+                            </li>
+                            <li>
+                                <a href="#onFiltroGradoChange" >onFiltroGradoChange</a>
+                            </li>
+                            <li>
+                                <a href="#onFiltroNivelChange" >onFiltroNivelChange</a>
+                            </li>
+                            <li>
+                                <a href="#onGradoChange" >onGradoChange</a>
+                            </li>
+                            <li>
+                                <a href="#onNivelChange" >onNivelChange</a>
+                            </li>
+                            <li>
+                                <a href="#onSeccionChange" >onSeccionChange</a>
+                            </li>
+                            <li>
+                                <a href="#updateMatricula" >updateMatricula</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(matriculasService: <a href="../injectables/MatriculasService.html" target="_self">MatriculasService</a>, aulasService: <a href="../injectables/AulasService.html" target="_self">AulasService</a>, alertaService: <a href="../injectables/AlertaService.html" target="_self">AlertaService</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:24</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>matriculasService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/MatriculasService.html" target="_self" >MatriculasService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>aulasService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AulasService.html" target="_self" >AulasService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>alertaService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AlertaService.html" target="_self" >AlertaService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirAgregar"></a>
+                    <span class="name">
+                        <span ><b>abrirAgregar</b></span>
+                        <a href="#abrirAgregar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>abrirAgregar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="520"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:520</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addMatricula"></a>
+                    <span class="name">
+                        <span ><b>addMatricula</b></span>
+                        <a href="#addMatricula"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>addMatricula()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="249"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:249</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="aplicarFiltros"></a>
+                    <span class="name">
+                        <span ><b>aplicarFiltros</b></span>
+                        <a href="#aplicarFiltros"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>aplicarFiltros()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="233"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:233</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="aplicarFiltroTabla"></a>
+                    <span class="name">
+                        <span ><b>aplicarFiltroTabla</b></span>
+                        <a href="#aplicarFiltroTabla"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>aplicarFiltroTabla()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="194"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:194</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buscarPorDni"></a>
+                    <span class="name">
+                        <span ><b>buscarPorDni</b></span>
+                        <a href="#buscarPorDni"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>buscarPorDni()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="107"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:107</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cambiarCantidad"></a>
+                    <span class="name">
+                        <span ><b>cambiarCantidad</b></span>
+                        <a href="#cambiarCantidad"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cambiarCantidad(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="217"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:217</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cancelarEliminacion"></a>
+                    <span class="name">
+                        <span ><b>cancelarEliminacion</b></span>
+                        <a href="#cancelarEliminacion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cancelarEliminacion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="623"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:623</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargarMatriculas"></a>
+                    <span class="name">
+                        <span ><b>cargarMatriculas</b></span>
+                        <a href="#cargarMatriculas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cargarMatriculas()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="86"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:86</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarAlertaModal"></a>
+                    <span class="name">
+                        <span ><b>cerrarAlertaModal</b></span>
+                        <a href="#cerrarAlertaModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarAlertaModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="374"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:374</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarAlertaSimple"></a>
+                    <span class="name">
+                        <span ><b>cerrarAlertaSimple</b></span>
+                        <a href="#cerrarAlertaSimple"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarAlertaSimple()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="371"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:371</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cerrarModal"></a>
+                    <span class="name">
+                        <span ><b>cerrarModal</b></span>
+                        <a href="#cerrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>cerrarModal()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="586"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:586</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="confirmarEliminacion"></a>
+                    <span class="name">
+                        <span ><b>confirmarEliminacion</b></span>
+                        <a href="#confirmarEliminacion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>confirmarEliminacion()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="628"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:628</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eliminarMatricula"></a>
+                    <span class="name">
+                        <span ><b>eliminarMatricula</b></span>
+                        <a href="#eliminarMatricula"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>eliminarMatricula(matricula: <a href="../interfaces/Matriculas.html" target="_self">Matriculas</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="652"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:652</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>matricula</td>
+                                            <td>
+                                                            <code><a href="../interfaces/Matriculas.html" target="_self" >Matriculas</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filtrarPorCodigo"></a>
+                    <span class="name">
+                        <span ><b>filtrarPorCodigo</b></span>
+                        <a href="#filtrarPorCodigo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>filtrarPorCodigo()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="229"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:229</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="formatearDecimal"></a>
+                    <span class="name">
+                        <span ><b>formatearDecimal</b></span>
+                        <a href="#formatearDecimal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>formatearDecimal(campo: "inscripcion" | "matricula" | "mensualidad")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="447"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:447</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>campo</td>
+                                            <td>
+                                                        <code>&quot;inscripcion&quot; | &quot;matricula&quot; | &quot;mensualidad&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getMatriculaVacia"></a>
+                    <span class="name">
+                        <span ><b>getMatriculaVacia</b></span>
+                        <a href="#getMatriculaVacia"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getMatriculaVacia()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="603"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:603</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../interfaces/Matriculas.html" target="_self" >Matriculas</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="guardar"></a>
+                    <span class="name">
+                        <span ><b>guardar</b></span>
+                        <a href="#guardar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>guardar()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="512"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:512</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarMensajeModal"></a>
+                    <span class="name">
+                        <span ><b>mostrarMensajeModal</b></span>
+                        <a href="#mostrarMensajeModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>mostrarMensajeModal(texto: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, tipo: "success" | "error" | "info")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="351"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:351</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>texto</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                        <code>&quot;success&quot; | &quot;error&quot; | &quot;info&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarMensajeSimple"></a>
+                    <span class="name">
+                        <span ><b>mostrarMensajeSimple</b></span>
+                        <a href="#mostrarMensajeSimple"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>mostrarMensajeSimple(texto: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, tipo: "success" | "error")</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="342"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:342</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>texto</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                        <tr>
+                                                <td>tipo</td>
+                                            <td>
+                                                        <code>&quot;success&quot; | &quot;error&quot;</code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ngOnInit"></a>
+                    <span class="name">
+                        <span ><b>ngOnInit</b></span>
+                        <a href="#ngOnInit"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>ngOnInit()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="82"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:82</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onCodigoChange"></a>
+                    <span class="name">
+                        <span ><b>onCodigoChange</b></span>
+                        <a href="#onCodigoChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onCodigoChange(valor: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="223"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:223</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>valor</td>
+                                            <td>
+                                                            <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFiltroGradoChange"></a>
+                    <span class="name">
+                        <span ><b>onFiltroGradoChange</b></span>
+                        <a href="#onFiltroGradoChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFiltroGradoChange(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="171"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:171</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFiltroNivelChange"></a>
+                    <span class="name">
+                        <span ><b>onFiltroNivelChange</b></span>
+                        <a href="#onFiltroNivelChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onFiltroNivelChange(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="148"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:148</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onGradoChange"></a>
+                    <span class="name">
+                        <span ><b>onGradoChange</b></span>
+                        <a href="#onGradoChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onGradoChange()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="400"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:400</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onNivelChange"></a>
+                    <span class="name">
+                        <span ><b>onNivelChange</b></span>
+                        <a href="#onNivelChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onNivelChange(event: <a href="https://angular.io/api/router/Event" target="_blank">Event</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="384"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:384</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="https://angular.io/api/router/Event" target="_blank" >Event</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onSeccionChange"></a>
+                    <span class="name">
+                        <span ><b>onSeccionChange</b></span>
+                        <a href="#onSeccionChange"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>onSeccionChange()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="420"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:420</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateMatricula"></a>
+                    <span class="name">
+                        <span ><b>updateMatricula</b></span>
+                        <a href="#updateMatricula"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateMatricula()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="454"
+                                    class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:454</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="abrirEditar"></a>
+                    <span class="name">
+                        <span ><b>abrirEditar</b></span>
+                        <a href="#abrirEditar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>() &#x3D;&gt; {...}</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="555" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:555</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="aulas"></a>
+                    <span class="name">
+                        <span ><b>aulas</b></span>
+                        <a href="#aulas"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Aulas.html" target="_self" >Aulas[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:55</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="buscandoDni"></a>
+                    <span class="name">
+                        <span ><b>buscandoDni</b></span>
+                        <a href="#buscandoDni"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:52</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cantidad_Mostrar"></a>
+                    <span class="name">
+                        <span ><b>cantidad_Mostrar</b></span>
+                        <a href="#cantidad_Mostrar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>10</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:43</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="cargando"></a>
+                    <span class="name">
+                        <span ><b>cargando</b></span>
+                        <a href="#cargando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:31</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="codigoBusqueda"></a>
+                    <span class="name">
+                        <span ><b>codigoBusqueda</b></span>
+                        <a href="#codigoBusqueda"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:42</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dni_estudiante"></a>
+                    <span class="name">
+                        <span ><b>dni_estudiante</b></span>
+                        <a href="#dni_estudiante"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:46</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="dni_padre"></a>
+                    <span class="name">
+                        <span ><b>dni_padre</b></span>
+                        <a href="#dni_padre"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:50</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="estudiante"></a>
+                    <span class="name">
+                        <span ><b>estudiante</b></span>
+                        <a href="#estudiante"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Estudiantes.html" target="_self" >Estudiantes | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:47</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="filtro"></a>
+                    <span class="name">
+                        <span ><b>filtro</b></span>
+                        <a href="#filtro"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/object" target="_blank" >object</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    nivel: &#x27;todos&#x27;,
+    grado: &#x27;todos&#x27;,
+    seccion: &#x27;todos&#x27;,
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="142" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:142</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="grados"></a>
+                    <span class="name">
+                        <span ><b>grados</b></span>
+                        <a href="#grados"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:57</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="matricula"></a>
+                    <span class="name">
+                        <span ><b>matricula</b></span>
+                        <a href="#matricula"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Matriculas.html" target="_self" >Matriculas</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    matricula_id: 0,
+    codigo_matricula: &#x27;&#x27;,
+    situacion: &#x27;&#x27;,
+    procedencia: &#x27;&#x27;,
+    ie_procedencia: &#x27;&#x27;,
+    inscripcion: &#x27;&#x27;,
+    matricula: &#x27;&#x27;,
+    mensualidad: &#x27;&#x27;,
+    fecha_matricula: &#x27;&#x27;,
+    estado: &#x27;Activo&#x27;,
+    estudiante: null,
+    aula: null,
+  }</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="67" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:67</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="MatriculaAEliminar"></a>
+                    <span class="name">
+                        <span ><b>MatriculaAEliminar</b></span>
+                        <a href="#MatriculaAEliminar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Matriculas.html" target="_self" >Matriculas | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="621" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:621</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="matriculaOriginal"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>matriculaOriginal</b></span>
+                        <a href="#matriculaOriginal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Matriculas.html" target="_self" >Matriculas</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:61</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="matriculasOriginales"></a>
+                    <span class="name">
+                        <span ><b>matriculasOriginales</b></span>
+                        <a href="#matriculasOriginales"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../interfaces/Matriculas.html" target="_self" >Matriculas[]</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="matriculasVista"></a>
+                    <span class="name">
+                        <span ><b>matriculasVista</b></span>
+                        <a href="#matriculasVista"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>MatriculasVista[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:63</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="matriculasVistaOriginal"></a>
+                    <span class="name">
+                        <span ><b>matriculasVistaOriginal</b></span>
+                        <a href="#matriculasVistaOriginal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>MatriculasVista[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:64</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mensajeModal"></a>
+                    <span class="name">
+                        <span ><b>mensajeModal</b></span>
+                        <a href="#mensajeModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="335" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:335</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mensajeSimple"></a>
+                    <span class="name">
+                        <span ><b>mensajeSimple</b></span>
+                        <a href="#mensajeSimple"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="331" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:331</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalEditarMatricula"></a>
+                    <span class="name">
+                        <span ><b>modalEditarMatricula</b></span>
+                        <a href="#modalEditarMatricula"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:34</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modalMatriculaAbierto"></a>
+                    <span class="name">
+                        <span ><b>modalMatriculaAbierto</b></span>
+                        <a href="#modalMatriculaAbierto"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:33</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="modoEditar"></a>
+                    <span class="name">
+                        <span ><b>modoEditar</b></span>
+                        <a href="#modoEditar"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:38</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarConfirmacion"></a>
+                    <span class="name">
+                        <span ><b>mostrarConfirmacion</b></span>
+                        <a href="#mostrarConfirmacion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="620" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:620</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="mostrarModal"></a>
+                    <span class="name">
+                        <span ><b>mostrarModal</b></span>
+                        <a href="#mostrarModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="338" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:338</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="niveles"></a>
+                    <span class="name">
+                        <span ><b>niveles</b></span>
+                        <a href="#niveles"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="56" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:56</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="ocultando"></a>
+                    <span class="name">
+                        <span ><b>ocultando</b></span>
+                        <a href="#ocultando"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>unknown</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>false</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="340" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:340</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="padre"></a>
+                    <span class="name">
+                        <span ><b>padre</b></span>
+                        <a href="#padre"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:51</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="seccionActiva"></a>
+                    <span class="name">
+                        <span ><b>seccionActiva</b></span>
+                        <a href="#seccionActiva"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;estudiante&quot; | &quot;detalles&quot; | &quot;apoderado&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;estudiante&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="37" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:37</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="secciones"></a>
+                    <span class="name">
+                        <span ><b>secciones</b></span>
+                        <a href="#secciones"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>string[]</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="58" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:58</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tipoMensajeModal"></a>
+                    <span class="name">
+                        <span ><b>tipoMensajeModal</b></span>
+                        <a href="#tipoMensajeModal"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;success&quot; | &quot;error&quot; | &quot;info&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;success&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="336" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:336</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="tipoMensajeSimple"></a>
+                    <span class="name">
+                        <span ><b>tipoMensajeSimple</b></span>
+                        <a href="#tipoMensajeSimple"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>&quot;success&quot; | &quot;error&quot;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;success&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="332" class="link-to-prism">src/app/dashboard/pages/matriculas/matriculas.component.ts:332</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component } from &#x27;@angular/core&#x27;;
+import { ConfirmDialogComponent } from &#x27;../../../shared/confirm-dialog/confirm-dialog.component&#x27;;
+import { MatDialog } from &#x27;@angular/material/dialog&#x27;;
+import {
+  Matriculas,
+  MatriculasVista,
+  MatriculaUpdatePayload,
+} from &#x27;../../../shared/interfaces/matriculas.interface&#x27;;
+import { MatriculasService } from &#x27;../../../core/services/matriculas.service&#x27;;
+import { forkJoin } from &#x27;rxjs&#x27;;
+import { AulasService } from &#x27;../../../core/services/aulas.service&#x27;;
+import { PadresService } from &#x27;../../../core/services/padres.service&#x27;;
+import { Aulas } from &#x27;../../../shared/interfaces/aula.interface&#x27;;
+import { Estudiantes } from &#x27;../../../shared/interfaces/estudiantes.interface&#x27;;
+import { EstudiantesService } from &#x27;../../../core/services/estudiantes.service&#x27;;
+import { AlertaService } from &#x27;../../../core/services/alerta.service&#x27;;
+
+@Component({
+  selector: &#x27;app-matriculas&#x27;,
+  standalone: false,
+  templateUrl: &#x27;./matriculas.component.html&#x27;,
+  styleUrl: &#x27;./matriculas.component.css&#x27;,
+})
+export class MatriculasComponent {
+  constructor(
+    private matriculasService: MatriculasService,
+    private aulasService: AulasService,
+    private alertaService: AlertaService,
+  ) {}
+
+  cargando: boolean &#x3D; false;
+
+  modalMatriculaAbierto: boolean &#x3D; false;
+  modalEditarMatricula: boolean &#x3D; false;
+
+  //form de matriculas
+  seccionActiva: &#x27;estudiante&#x27; | &#x27;detalles&#x27; | &#x27;apoderado&#x27; &#x3D; &#x27;estudiante&#x27;;
+  modoEditar: boolean &#x3D; false;
+  //procedenciaSeleccionado: string &#x3D; &#x27;&#x27;;
+
+  //filtros
+  codigoBusqueda: string &#x3D; &#x27;&#x27;;
+  cantidad_Mostrar: number &#x3D; 10;
+
+  //busqueda por dni estudiante
+  dni_estudiante: string &#x3D; &#x27;&#x27;;
+  estudiante: Estudiantes | null &#x3D; null;
+
+  //busqueda por dni padre
+  dni_padre: string &#x3D; &#x27;&#x27;;
+  padre: any &#x3D; null;
+  buscandoDni: boolean &#x3D; false;
+
+  //aulas de la bd
+  aulas: Aulas[] &#x3D; [];
+  niveles: string[] &#x3D; [];
+  grados: string[] &#x3D; [];
+  secciones: string[] &#x3D; [];
+
+  //matriculas
+  matriculaOriginal?: Matriculas;
+  matriculasOriginales: Matriculas[] &#x3D; [];
+  matriculasVista: MatriculasVista[] &#x3D; [];
+  matriculasVistaOriginal: MatriculasVista[] &#x3D; [];
+
+  // nueva matricula
+  matricula: Matriculas &#x3D; {
+    matricula_id: 0,
+    codigo_matricula: &#x27;&#x27;,
+    situacion: &#x27;&#x27;,
+    procedencia: &#x27;&#x27;,
+    ie_procedencia: &#x27;&#x27;,
+    inscripcion: &#x27;&#x27;,
+    matricula: &#x27;&#x27;,
+    mensualidad: &#x27;&#x27;,
+    fecha_matricula: &#x27;&#x27;,
+    estado: &#x27;Activo&#x27;,
+    estudiante: null,
+    aula: null,
+  };
+
+  ngOnInit(): void {
+    this.cargarMatriculas();
+  }
+
+  cargarMatriculas(): void {
+    this.matriculasService.getMatriculas().subscribe((data) &#x3D;&gt; {
+      const vista &#x3D; data.map((m) &#x3D;&gt; ({
+        ...m,
+        nivel: m.aula?.nivel ?? &#x27;Desconocido&#x27;,
+        grado: m.aula?.grado ?? &#x27;Desconocido&#x27;,
+        seccion: m.aula?.seccion ?? &#x27;Desconocido&#x27;,
+        dni: m.estudiante?.dni ?? &#x27;Desconocido&#x27;,
+      }));
+
+      this.matriculasVistaOriginal &#x3D; [...vista];
+      this.matriculasVista &#x3D; [...vista];
+      this.aplicarFiltros();
+    });
+
+    this.aulasService.getAulas().subscribe((data) &#x3D;&gt; {
+      this.aulas &#x3D; data;
+      this.niveles &#x3D; [...new Set(data.map((a) &#x3D;&gt; a.nivel))];
+    });
+  }
+
+  buscarPorDni(): void {
+    if (!this.dni_estudiante || this.dni_estudiante.length !&#x3D;&#x3D; 8) {
+      this.alertaService.mostrar(&#x27;Ingrese un DNI válido de 8 dígitos&#x27;, &#x27;info&#x27;);
+      return;
+    }
+
+    this.buscandoDni &#x3D; true;
+
+    this.matriculasService
+      .buscarEstudiantePorDni(this.dni_estudiante)
+      .subscribe({
+        next: (estudiante) &#x3D;&gt; {
+          setTimeout(() &#x3D;&gt; {
+            this.buscandoDni &#x3D; false;
+            this.estudiante &#x3D; estudiante;
+            this.matricula.estudiante &#x3D; estudiante;
+          }, 800);
+          this.alertaService.mostrar(
+            &#x27;Estudiante encontrado, puede continuar&#x27;,
+            &#x27;success&#x27;
+          );
+        },
+
+        error: () &#x3D;&gt; {
+          this.buscandoDni &#x3D; false;
+          this.alertaService.mostrar(
+            &#x27;Estudiante no encontrado, puede registrarlo&#x27;,
+            &#x27;error&#x27;
+          );
+        },
+      });
+  }
+
+  //filtro para nivel, grado y sección en la tabla
+
+  filtro &#x3D; {
+    nivel: &#x27;todos&#x27;,
+    grado: &#x27;todos&#x27;,
+    seccion: &#x27;todos&#x27;,
+  };
+
+  onFiltroNivelChange(event: Event) {
+    this.filtro.nivel &#x3D; (event.target as HTMLSelectElement).value;
+
+    if (this.filtro.nivel &#x3D;&#x3D;&#x3D; &#x27;todos&#x27;) {
+      this.grados &#x3D; [];
+      this.secciones &#x3D; [];
+      this.filtro.grado &#x3D; &#x27;todos&#x27;;
+      this.filtro.seccion &#x3D; &#x27;todos&#x27;;
+      return;
+    }
+
+    this.grados &#x3D; [
+      ...new Set(
+        this.aulas
+          .filter((a) &#x3D;&gt; a.nivel &#x3D;&#x3D;&#x3D; this.filtro.nivel)
+          .map((a) &#x3D;&gt; a.grado),
+      ),
+    ];
+
+    this.filtro.grado &#x3D; &#x27;todos&#x27;;
+    this.secciones &#x3D; [];
+  }
+
+  onFiltroGradoChange(event: Event) {
+    this.filtro.grado &#x3D; (event.target as HTMLSelectElement).value;
+
+    if (this.filtro.grado &#x3D;&#x3D;&#x3D; &#x27;todos&#x27;) {
+      this.secciones &#x3D; [];
+      this.filtro.seccion &#x3D; &#x27;todos&#x27;;
+      return;
+    }
+
+    this.secciones &#x3D; [
+      ...new Set(
+        this.aulas
+          .filter(
+            (a) &#x3D;&gt;
+              a.nivel &#x3D;&#x3D;&#x3D; this.filtro.nivel &amp;&amp; a.grado &#x3D;&#x3D;&#x3D; this.filtro.grado,
+          )
+          .map((a) &#x3D;&gt; a.seccion),
+      ),
+    ];
+
+    this.filtro.seccion &#x3D; &#x27;todos&#x27;;
+  }
+
+  aplicarFiltroTabla(): void {
+    this.matriculasVista &#x3D; this.matriculasVistaOriginal.filter((m) &#x3D;&gt; {
+      if (this.filtro.nivel !&#x3D;&#x3D; &#x27;todos&#x27; &amp;&amp; m.nivel !&#x3D;&#x3D; this.filtro.nivel) {
+        return false;
+      }
+
+      if (this.filtro.grado !&#x3D;&#x3D; &#x27;todos&#x27; &amp;&amp; m.grado !&#x3D;&#x3D; this.filtro.grado) {
+        return false;
+      }
+
+      if (
+        this.filtro.seccion !&#x3D;&#x3D; &#x27;todos&#x27; &amp;&amp;
+        m.seccion !&#x3D;&#x3D; this.filtro.seccion
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+  }
+
+  //filtro para cantidad a mostrar
+
+  cambiarCantidad(event: Event): void {
+    const valor &#x3D; Number((event.target as HTMLSelectElement).value);
+    this.cantidad_Mostrar &#x3D; valor;
+    this.aplicarFiltros();
+  }
+
+  onCodigoChange(valor: string): void {
+    const sinEspacios &#x3D; valor.replace(/\s/g, &#x27;&#x27;);
+    this.codigoBusqueda &#x3D; sinEspacios;
+    this.filtrarPorCodigo();
+  }
+
+  filtrarPorCodigo(): void {
+    this.aplicarFiltros();
+  }
+
+  aplicarFiltros(): void {
+    let lista &#x3D; [...this.matriculasVistaOriginal];
+
+    if (this.codigoBusqueda.trim() !&#x3D;&#x3D; &#x27;&#x27;) {
+      lista &#x3D; lista.filter((m) &#x3D;&gt;
+        m.codigo_matricula?.includes(this.codigoBusqueda.trim()),
+      );
+    }
+
+    if (this.cantidad_Mostrar &gt; 0) {
+      lista &#x3D; lista.slice(0, this.cantidad_Mostrar);
+    }
+
+    this.matriculasVista &#x3D; lista;
+  }
+
+  addMatricula(): void {
+    if (!this.matricula.estudiante?.estudiante_id) {
+      this.alertaService.mostrar(&#x27;Seleccione un estudiante válido&#x27;, &#x27;info&#x27;);
+      this.seccionActiva &#x3D; &#x27;estudiante&#x27;;
+      return;
+    }
+
+    if (!this.matricula.aula?.aula_id) {
+      this.alertaService.mostrar(&#x27;Seleccione un aula válida&#x27;, &#x27;info&#x27;);
+      this.seccionActiva &#x3D; &#x27;detalles&#x27;;
+      return;
+    }
+    if (!this.matricula.situacion || !this.matricula.procedencia) {
+      this.alertaService.mostrar(&#x27;Complete los datos de la matrícula&#x27;, &#x27;info&#x27;);
+      this.seccionActiva &#x3D; &#x27;detalles&#x27;;
+      return;
+    }
+
+    // VALIDAR MONTOS VACÍOS
+    if (
+      this.matricula.inscripcion &#x3D;&#x3D;&#x3D; &#x27;&#x27; ||
+      this.matricula.inscripcion &#x3D;&#x3D; null ||
+      this.matricula.matricula &#x3D;&#x3D;&#x3D; &#x27;&#x27; ||
+      this.matricula.matricula &#x3D;&#x3D; null ||
+      this.matricula.mensualidad &#x3D;&#x3D;&#x3D; &#x27;&#x27; ||
+      this.matricula.mensualidad &#x3D;&#x3D; null
+    ) {
+      this.alertaService.mostrar(&#x27;Complete todos los montos&#x27;, &#x27;info&#x27;);
+      this.seccionActiva &#x3D; &#x27;detalles&#x27;;
+      return;
+    }
+
+    // VALIDAR QUE SEAN NÚMEROS
+    if (
+      isNaN(Number(this.matricula.inscripcion)) ||
+      isNaN(Number(this.matricula.matricula)) ||
+      isNaN(Number(this.matricula.mensualidad))
+    ) {
+      this.alertaService.mostrar(&#x27;Montos inválidos&#x27;, &#x27;error&#x27;);
+      this.seccionActiva &#x3D; &#x27;detalles&#x27;;
+      return;
+    }
+    const payload &#x3D; {
+      estudiante_id: this.matricula.estudiante.estudiante_id,
+      aula_id: this.matricula.aula.aula_id,
+      situacion: this.matricula.situacion,
+      procedencia: this.matricula.procedencia,
+      ie_procedencia: this.matricula.ie_procedencia,
+      inscripcion: Number(this.matricula.inscripcion),
+      matricula: Number(this.matricula.matricula),
+      mensualidad: Number(this.matricula.mensualidad),
+    };
+
+    if (
+      isNaN(Number(this.matricula.inscripcion)) ||
+      isNaN(Number(this.matricula.matricula)) ||
+      isNaN(Number(this.matricula.mensualidad))
+    ) {
+      this.alertaService.mostrar(&#x27;Montos inválidos&#x27;, &#x27;error&#x27;);
+      return;
+    }
+
+    this.matriculasService.addMatricula(payload).subscribe({
+      next: () &#x3D;&gt; {
+        this.mostrarMensajeSimple(&#x27;Matrícula registrada con éxito&#x27;, &#x27;success&#x27;);
+
+        this.cerrarModal();
+
+        this.cargarMatriculas();
+      },
+
+      error: (err) &#x3D;&gt; {
+        console.error(err);
+
+        const mensaje &#x3D; err?.error?.message || &#x27;Error al registrar matrícula&#x27;;
+
+        this.alertaService.mostrar(mensaje, &#x27;error&#x27;);
+      },
+    });
+  }
+
+  /* ALERTA SIMPLE */
+  mensajeSimple: string &#x3D; &#x27;&#x27;;
+  tipoMensajeSimple: &#x27;success&#x27; | &#x27;error&#x27; &#x3D; &#x27;success&#x27;;
+
+  /* ALERTA MODERNA */
+  mensajeModal: string &#x3D; &#x27;&#x27;;
+  tipoMensajeModal: &#x27;success&#x27; | &#x27;error&#x27; | &#x27;info&#x27; &#x3D; &#x27;success&#x27;;
+
+  mostrarModal: boolean &#x3D; false;
+
+  ocultando &#x3D; false;
+
+  mostrarMensajeSimple(texto: string, tipo: &#x27;success&#x27; | &#x27;error&#x27;) {
+    this.mensajeSimple &#x3D; texto;
+    this.tipoMensajeSimple &#x3D; tipo;
+
+    setTimeout(() &#x3D;&gt; {
+      this.mensajeSimple &#x3D; &#x27;&#x27;;
+    }, 3000);
+  }
+
+  mostrarMensajeModal(texto: string, tipo: &#x27;success&#x27; | &#x27;error&#x27; | &#x27;info&#x27;) {
+    this.ocultando &#x3D; false;
+
+    this.mensajeModal &#x3D; texto;
+    this.tipoMensajeModal &#x3D; tipo;
+
+    this.mostrarModal &#x3D; true;
+
+    setTimeout(() &#x3D;&gt; {
+      // ACTIVAR ANIMACIÓN
+      this.ocultando &#x3D; true;
+
+      // ESPERAR ANIMACIÓN
+      setTimeout(() &#x3D;&gt; {
+        this.mostrarModal &#x3D; false;
+        this.ocultando &#x3D; false;
+      }, 300);
+    }, 3000);
+  }
+
+  cerrarAlertaSimple() {
+    this.mensajeSimple &#x3D; &#x27;&#x27;;
+  }
+  cerrarAlertaModal() {
+    this.ocultando &#x3D; true;
+
+    setTimeout(() &#x3D;&gt; {
+      this.mensajeModal &#x3D; &#x27;&#x27;;
+      this.mostrarModal &#x3D; false;
+      this.ocultando &#x3D; false;
+    }, 300);
+  }
+
+  onNivelChange(event: Event) {
+    const nivel &#x3D; (event.target as HTMLSelectElement).value;
+
+    this.grados &#x3D; [
+      ...new Set(
+        this.aulas.filter((a) &#x3D;&gt; a.nivel &#x3D;&#x3D;&#x3D; nivel).map((a) &#x3D;&gt; a.grado),
+      ),
+    ];
+
+    this.secciones &#x3D; [];
+    if (this.matricula.aula) {
+      this.matricula.aula.grado &#x3D; &#x27;&#x27;;
+      this.matricula.aula.seccion &#x3D; &#x27;&#x27;;
+    }
+  }
+
+  onGradoChange() {
+    if (!this.matricula.aula) return;
+
+    this.secciones &#x3D; [
+      ...new Set(
+        this.aulas
+          .filter(
+            (a) &#x3D;&gt;
+              a.nivel &#x3D;&#x3D;&#x3D; this.matricula.aula?.nivel &amp;&amp;
+              a.grado &#x3D;&#x3D;&#x3D; this.matricula.aula?.grado,
+          )
+          .map((a) &#x3D;&gt; a.seccion),
+      ),
+    ];
+
+    if (this.matricula.aula) {
+      this.matricula.aula.seccion &#x3D; &#x27;&#x27;;
+    }
+  }
+
+  onSeccionChange() {
+    if (
+      !this.matricula.aula ||
+      !this.matricula.aula.nivel ||
+      !this.matricula.aula.grado ||
+      !this.matricula.aula.seccion
+    ) {
+      return;
+    }
+
+    this.matriculasService
+      .buscarAula(
+        this.matricula.aula.nivel,
+        this.matricula.aula.grado,
+        this.matricula.aula.seccion,
+      )
+      .subscribe({
+        next: (aula) &#x3D;&gt; {
+          this.matricula.aula &#x3D; aula;
+        },
+        error: () &#x3D;&gt; {
+          alert(&#x27;Aula no encontrada&#x27;);
+          this.matricula.aula &#x3D; null;
+        },
+      });
+  }
+
+  formatearDecimal(campo: &#x27;inscripcion&#x27; | &#x27;matricula&#x27; | &#x27;mensualidad&#x27;) {
+    const valor &#x3D; this.matricula[campo];
+    if (valor !&#x3D;&#x3D; null &amp;&amp; valor !&#x3D;&#x3D; undefined &amp;&amp; valor !&#x3D;&#x3D; &#x27;&#x27;) {
+      this.matricula[campo] &#x3D; Number(valor).toFixed(2);
+    }
+  }
+
+  updateMatricula(): void {
+    if (!this.matriculaOriginal) return;
+
+    const cambios: MatriculaUpdatePayload &#x3D; {};
+
+    if (this.matricula.aula?.aula_id !&#x3D;&#x3D; this.matriculaOriginal.aula?.aula_id) {
+      cambios.aula_id &#x3D; this.matricula.aula?.aula_id;
+    }
+    if (this.matricula.situacion !&#x3D;&#x3D; this.matriculaOriginal.situacion)
+      cambios.situacion &#x3D; this.matricula.situacion;
+
+    if (this.matricula.situacion !&#x3D;&#x3D; this.matriculaOriginal.situacion)
+      cambios.situacion &#x3D; this.matricula.situacion;
+
+    if (this.matricula.procedencia !&#x3D;&#x3D; this.matriculaOriginal.procedencia)
+      cambios.procedencia &#x3D; this.matricula.procedencia;
+
+    if (this.matricula.ie_procedencia !&#x3D;&#x3D; this.matriculaOriginal.ie_procedencia)
+      cambios.ie_procedencia &#x3D; this.matricula.ie_procedencia;
+
+    if (this.matricula.inscripcion !&#x3D;&#x3D; this.matriculaOriginal.inscripcion)
+      cambios.inscripcion &#x3D; Number(this.matricula.inscripcion);
+
+    if (this.matricula.matricula !&#x3D;&#x3D; this.matriculaOriginal.matricula)
+      cambios.matricula &#x3D; Number(this.matricula.matricula);
+
+    if (this.matricula.mensualidad !&#x3D;&#x3D; this.matriculaOriginal.mensualidad)
+      cambios.mensualidad &#x3D; Number(this.matricula.mensualidad);
+
+    if (Object.keys(cambios).length &#x3D;&#x3D;&#x3D; 0) {
+      this.alertaService.mostrar(&#x27;No se realizaron cambios&#x27;, &#x27;info&#x27;);
+      return;
+    }
+
+    this.matriculasService
+      .updateMatricula(this.matricula.matricula_id, cambios)
+      .subscribe({
+        next: (res) &#x3D;&gt; {
+          this.cargarMatriculas();
+          this.cerrarModal();
+          this.alertaService.mostrar(
+            &#x27;Matrícula actualizada con éxito&#x27;,
+            &#x27;success&#x27;,
+          );
+        },
+        error: (err) &#x3D;&gt; {
+          if (err.error?.message) {
+            alert(err.error.message[0]); // mensaje del DTO
+          } else {
+            this.alertaService.mostrar(
+              &#x27;Error al actualizar la matrícula&#x27;,
+              &#x27;error&#x27;,
+            );
+          }
+        },
+      });
+  }
+
+  guardar(): void {
+    if (this.modoEditar) {
+      this.updateMatricula();
+    } else {
+      this.addMatricula();
+    }
+  }
+
+  abrirAgregar(): void {
+    this.matricula &#x3D; {
+      matricula_id: 0,
+      codigo_matricula: &#x27;&#x27;,
+      situacion: &#x27;&#x27;,
+      procedencia: &#x27;&#x27;,
+      ie_procedencia: &#x27;&#x27;,
+      inscripcion: &#x27;&#x27;,
+      matricula: &#x27;&#x27;,
+      mensualidad: &#x27;&#x27;,
+      fecha_matricula: &#x27;&#x27;,
+      estado: &#x27;Activo&#x27;,
+
+      estudiante: {
+        estudiante_id: 0,
+        dni: &#x27;&#x27;,
+        nombres: &#x27;&#x27;,
+        apellido_paterno: &#x27;&#x27;,
+        apellido_materno: &#x27;&#x27;,
+        genero: &#x27;&#x27;,
+        fecha_nacimiento: &#x27;&#x27;,
+        estado: &#x27;Activo&#x27;,
+      },
+
+      aula: {
+        aula_id: 0,
+        nivel: &#x27;&#x27;,
+        grado: &#x27;&#x27;,
+        seccion: &#x27;&#x27;,
+      },
+    };
+    this.modoEditar &#x3D; false;
+    this.modalMatriculaAbierto &#x3D; true;
+  }
+
+  abrirEditar &#x3D; (matricula: Matriculas) &#x3D;&gt; {
+    this.matricula &#x3D; JSON.parse(JSON.stringify(matricula));
+    this.matriculaOriginal &#x3D; JSON.parse(JSON.stringify(matricula));
+    this.dni_estudiante &#x3D; matricula.estudiante?.dni ?? &#x27;&#x27;;
+
+    if (this.matricula.aula) {
+      this.grados &#x3D; [
+        ...new Set(
+          this.aulas
+            .filter((a) &#x3D;&gt; a.nivel &#x3D;&#x3D;&#x3D; this.matricula.aula!.nivel)
+            .map((a) &#x3D;&gt; a.grado),
+        ),
+      ];
+
+      this.secciones &#x3D; [
+        ...new Set(
+          this.aulas
+            .filter(
+              (a) &#x3D;&gt;
+                a.nivel &#x3D;&#x3D;&#x3D; this.matricula.aula!.nivel &amp;&amp;
+                a.grado &#x3D;&#x3D;&#x3D; this.matricula.aula!.grado,
+            )
+            .map((a) &#x3D;&gt; a.seccion),
+        ),
+      ];
+    }
+
+    this.modalMatriculaAbierto &#x3D; true;
+    this.modoEditar &#x3D; true;
+  };
+
+  cerrarModal(): void {
+    const modal &#x3D; document.querySelector(&#x27;.modal-content&#x27;);
+    if (modal) {
+      modal.classList.add(&#x27;salir&#x27;);
+      setTimeout(() &#x3D;&gt; {
+        this.modalMatriculaAbierto &#x3D; false;
+        this.matricula &#x3D; this.getMatriculaVacia();
+        this.matriculaOriginal &#x3D; undefined;
+        this.seccionActiva &#x3D; &#x27;estudiante&#x27;;
+        this.grados &#x3D; [];
+        this.secciones &#x3D; [];
+        this.dni_estudiante &#x3D; &#x27;&#x27;;
+        this.dni_padre &#x3D; &#x27;&#x27;;
+      }, 250);
+    }
+  }
+
+  getMatriculaVacia(): Matriculas {
+    return {
+      matricula_id: 0,
+      codigo_matricula: &#x27;&#x27;,
+      situacion: &#x27;&#x27;,
+      procedencia: &#x27;&#x27;,
+      ie_procedencia: &#x27;&#x27;,
+      inscripcion: &#x27;&#x27;,
+      matricula: &#x27;&#x27;,
+      mensualidad: &#x27;&#x27;,
+      fecha_matricula: &#x27;&#x27;,
+      estado: &#x27;Activo&#x27;,
+      estudiante: null,
+      aula: null,
+    };
+  }
+
+  mostrarConfirmacion &#x3D; false;
+  MatriculaAEliminar: Matriculas | null &#x3D; null;
+
+  cancelarEliminacion() {
+    this.mostrarConfirmacion &#x3D; false;
+    this.MatriculaAEliminar &#x3D; null;
+  }
+
+  confirmarEliminacion() {
+    const id &#x3D;
+      this.MatriculaAEliminar?.matricula_id ||
+      this.MatriculaAEliminar?.matricula_id;
+
+    if (!id) return;
+
+    this.matriculasService.deleteMatricula(id).subscribe({
+      next: () &#x3D;&gt; {
+        this.mostrarConfirmacion &#x3D; false;
+        this.MatriculaAEliminar &#x3D; null;
+        this.mostrarMensajeSimple(
+          &#x27;Matrícula eliminada correctamente&#x27;,
+          &#x27;success&#x27;,
+        );
+        this.cargarMatriculas();
+      },
+      error: (err: any) &#x3D;&gt; {
+        console.error(&#x27;Error al eliminar:&#x27;, err);
+        this.mostrarMensajeSimple(&#x27;Error al eliminar&#x27;, &#x27;error&#x27;);
+      },
+    });
+  }
+
+  eliminarMatricula(matricula: Matriculas) {
+    this.MatriculaAEliminar &#x3D; matricula;
+    this.mostrarConfirmacion &#x3D; true;
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div&gt;
+  &lt;div class&#x3D;&quot;conten-principal&quot;&gt;
+    &lt;div class&#x3D;&quot;cont-es&quot;&gt;
+      &lt;p class&#x3D;&quot;titulo&quot;&gt;MATRÍCULAS&lt;/p&gt;
+      &lt;button class&#x3D;&quot;btn-matricula&quot; (click)&#x3D;&quot;abrirAgregar()&quot;&gt;
+        &lt;i class&#x3D;&quot;fa-solid fa-book&quot;&gt;&lt;/i&gt;
+        Nueva Matrícula
+      &lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;filtros-tabla&quot;&gt;
+      &lt;div&gt;
+        &lt;label for&#x3D;&quot;&quot;&gt;NIVEL&lt;/label&gt;
+        &lt;select (change)&#x3D;&quot;onFiltroNivelChange($event)&quot;&gt;
+          &lt;option value&#x3D;&quot;todos&quot;&gt;Todos&lt;/option&gt;
+          &lt;option *ngFor&#x3D;&quot;let n of niveles&quot; [value]&#x3D;&quot;n&quot;&gt;{{ n }}&lt;/option&gt;
+        &lt;/select&gt;
+
+        &lt;label for&#x3D;&quot;&quot;&gt;GRADO&lt;/label&gt;
+        &lt;select (change)&#x3D;&quot;onFiltroGradoChange($event)&quot;&gt;
+          &lt;option value&#x3D;&quot;todos&quot;&gt;Todos&lt;/option&gt;
+          &lt;option *ngFor&#x3D;&quot;let g of grados&quot; [value]&#x3D;&quot;g&quot;&gt;{{ g }}&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;label for&#x3D;&quot;&quot;&gt;SECCIÓN&lt;/label&gt;
+        &lt;select [(ngModel)]&#x3D;&quot;filtro.seccion&quot;&gt;
+          &lt;option value&#x3D;&quot;todos&quot;&gt;Todos&lt;/option&gt;
+          &lt;option *ngFor&#x3D;&quot;let s of secciones&quot; [value]&#x3D;&quot;s&quot;&gt;{{ s }}&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;label for&#x3D;&quot;&quot;&gt;OPCIÓN&lt;/label&gt;
+        &lt;button (click)&#x3D;&quot;aplicarFiltroTabla()&quot; class&#x3D;&quot;btn-filtrar&quot;&gt;
+          &lt;i class&#x3D;&quot;fa-solid fa-filter&quot;&gt;&lt;/i&gt; Filtrar
+        &lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class&#x3D;&quot;acciones-tabla&quot;&gt;
+      &lt;div class&#x3D;&quot;mostrar-registros&quot;&gt;
+        &lt;span&gt;Mostrar&lt;/span&gt;
+        &lt;select (change)&#x3D;&quot;cambiarCantidad($event)&quot;&gt;
+          &lt;option value&#x3D;&quot;0&quot;&gt;Todos&lt;/option&gt;
+          &lt;option value&#x3D;&quot;10&quot; selected&gt;10&lt;/option&gt;
+          &lt;option value&#x3D;&quot;25&quot;&gt;25&lt;/option&gt;
+          &lt;option value&#x3D;&quot;50&quot;&gt;50&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;span&gt;registros&lt;/span&gt;
+      &lt;/div&gt;
+
+      &lt;div class&#x3D;&quot;buscar-codigo&quot;&gt;
+        &lt;label&gt;Buscar:&lt;/label&gt;
+        &lt;div class&#x3D;&quot;input-icono&quot;&gt;
+          &lt;i class&#x3D;&quot;fa-solid fa-magnifying-glass icono-input&quot;&gt;&lt;/i&gt;
+          &lt;input
+            type&#x3D;&quot;text&quot;
+            [(ngModel)]&#x3D;&quot;codigoBusqueda&quot;
+            (ngModelChange)&#x3D;&quot;onCodigoChange($event)&quot;
+            inputmode&#x3D;&quot;text&quot;
+            placeholder&#x3D;&quot;Ingrese Cod. M&quot;
+          /&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div
+  *ngIf&#x3D;&quot;mensajeSimple&quot;
+  class&#x3D;&quot;alerta&quot;
+  [ngClass]&#x3D;&quot;[tipoMensajeSimple, ocultando ? &#x27;hide&#x27; : &#x27;&#x27;]&quot;
+&gt;
+  &lt;span class&#x3D;&quot;texto&quot;&gt;
+    {{ mensajeSimple }}
+  &lt;/span&gt;
+  &lt;button class&#x3D;&quot;cerrar&quot; (click)&#x3D;&quot;cerrarAlertaSimple()&quot;&gt; &lt;i class&#x3D;&quot;fa-solid fa-xmark&quot;&gt;&lt;/i&gt; &lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class&#x3D;&quot;cont-tabla tabla-scroll&quot;&gt;
+  &lt;div *ngIf&#x3D;&quot;cargando&quot; class&#x3D;&quot;cargando&quot;&gt;
+    &lt;i class&#x3D;&quot;fa-solid fa-spinner fa-spin&quot;&gt;&lt;/i&gt; Cargando registros...
+  &lt;/div&gt;
+  &lt;table class&#x3D;&quot;tabla-datos&quot;&gt;
+    &lt;thead&gt;
+      &lt;tr&gt;
+        &lt;th&gt;ID&lt;/th&gt;
+        &lt;th&gt;CODIGO&lt;/th&gt;
+        &lt;th&gt;DNI&lt;/th&gt;
+        &lt;th&gt;NIVEL&lt;/th&gt;
+        &lt;th&gt;GRADO&lt;/th&gt;
+        &lt;th&gt;SECCIÓN&lt;/th&gt;
+        &lt;th&gt;SITUACIÓN&lt;/th&gt;
+        &lt;th&gt;ACCIONES&lt;/th&gt;
+        &lt;th&gt;ESTADO&lt;/th&gt;
+      &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+      &lt;tr *ngFor&#x3D;&quot;let matricula of matriculasVista; let i &#x3D; index&quot;&gt;
+        &lt;td&gt;{{ i + 1 }}&lt;/td&gt;
+        &lt;td&gt;{{ matricula.codigo_matricula }}&lt;/td&gt;
+        &lt;td&gt;{{ matricula.dni }}&lt;/td&gt;
+        &lt;td&gt;{{ matricula.nivel }}&lt;/td&gt;
+        &lt;td&gt;{{ matricula.grado }}&lt;/td&gt;
+        &lt;td&gt;{{ matricula.seccion }}&lt;/td&gt;
+        &lt;td&gt;{{ matricula.situacion }}&lt;/td&gt;
+        &lt;td&gt;
+          &lt;span
+            [ngClass]&#x3D;&quot;
+              matricula.estado &#x3D;&#x3D;&#x3D; &#x27;Activo&#x27;
+                ? &#x27;estado-activo&#x27;
+                : &#x27;estado-inactivo&#x27;
+            &quot;
+          &gt;
+            {{ matricula.estado }}
+          &lt;/span&gt;
+        &lt;/td&gt;
+        &lt;td&gt;
+          &lt;button class&#x3D;&quot;btn-icon btn-edit&quot; (click)&#x3D;&quot;abrirEditar(matricula)&quot;&gt;
+            &lt;i class&#x3D;&quot;fa-solid fa-pen&quot;&gt;&lt;/i&gt;
+          &lt;/button&gt;
+          &lt;button
+            class&#x3D;&quot;btn-icon btn-delete&quot;
+            (click)&#x3D;&quot;eliminarMatricula(matricula)&quot;
+          &gt;
+            &lt;i class&#x3D;&quot;fa-solid fa-trash&quot;&gt;&lt;/i&gt;
+          &lt;/button&gt;
+        &lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/tbody&gt;
+  &lt;/table&gt;
+  &lt;p class&#x3D;&quot;sin-resultados&quot; *ngIf&#x3D;&quot;!cargando &amp;&amp; matriculasVista.length &#x3D;&#x3D;&#x3D; 0&quot;&gt;
+    &lt;i class&#x3D;&quot;fa-solid fa-circle-info&quot;&gt;&lt;/i&gt;
+    No se encontraron matrículas.
+  &lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- Modal --&gt;
+&lt;div class&#x3D;&quot;modal&quot; *ngIf&#x3D;&quot;modalMatriculaAbierto&quot;&gt;
+  &lt;div class&#x3D;&quot;modal-content&quot; #modalPrincipal&gt;
+    &lt;!-- Header --&gt;
+    &lt;div class&#x3D;&quot;modal-header&quot;&gt;
+      &lt;h2&gt;
+        &lt;i class&#x3D;&quot;fa-solid&quot; [ngClass]&#x3D;&quot;modoEditar ? &#x27;fa-book&#x27; : &#x27;fa-book&#x27;&quot;&gt; &lt;/i&gt;
+        {{ modoEditar ? &quot;Editar Matrícula&quot; : &quot;Nueva Matrícula&quot; }}
+      &lt;/h2&gt;
+      &lt;span class&#x3D;&quot;close&quot; (click)&#x3D;&quot;cerrarModal()&quot;&gt;&amp;times;&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;!-- SubHeader --&gt;
+    &lt;div class&#x3D;&quot;modal-subheader&quot;&gt;
+      &lt;button
+        [class.active]&#x3D;&quot;seccionActiva &#x3D;&#x3D;&#x3D; &#x27;estudiante&#x27;&quot;
+        (click)&#x3D;&quot;seccionActiva &#x3D; &#x27;estudiante&#x27;&quot;
+      &gt;
+        &lt;i class&#x3D;&quot;fa-solid fa-user-graduate&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;ESTUDIANTE&lt;/span&gt;
+      &lt;/button&gt;
+
+      &lt;button
+        [class.active]&#x3D;&quot;seccionActiva &#x3D;&#x3D;&#x3D; &#x27;detalles&#x27;&quot;
+        (click)&#x3D;&quot;seccionActiva &#x3D; &#x27;detalles&#x27;&quot;
+      &gt;
+        &lt;i class&#x3D;&quot;fa-solid fa-file-lines&quot;&gt;&lt;/i&gt;
+        &lt;span&gt;DETALLES&lt;/span&gt;
+      &lt;/button&gt;
+
+      
+    &lt;/div&gt;
+    &lt;!-- Body --&gt;
+    &lt;div class&#x3D;&quot;modal-body&quot;&gt;
+      &lt;div *ngIf&#x3D;&quot;seccionActiva &#x3D;&#x3D;&#x3D; &#x27;estudiante&#x27;&quot;&gt;
+        &lt;div class&#x3D;&quot;form-grid&quot; *ngIf&#x3D;&quot;matricula.estudiante&quot;&gt;
+          &lt;div class&#x3D;&quot;dni-container&quot;&gt;
+            &lt;div class&#x3D;&quot;dni-input&quot;&gt;
+              &lt;label&gt;DNI *&lt;/label&gt;
+              &lt;input
+                type&#x3D;&quot;text&quot;
+                placeholder&#x3D;&quot;DNI del estudiante&quot;
+                maxlength&#x3D;&quot;8&quot;
+                [(ngModel)]&#x3D;&quot;dni_estudiante&quot;
+              /&gt;
+            &lt;/div&gt;
+
+            &lt;button
+              *ngIf&#x3D;&quot;!modoEditar&quot;
+              class&#x3D;&quot;btn-buscar-dni&quot;
+              (click)&#x3D;&quot;buscarPorDni()&quot;
+            &gt;
+              &lt;i
+                class&#x3D;&quot;fa-solid&quot;
+                [ngClass]&#x3D;&quot;
+                  buscandoDni ? &#x27;fa-spinner fa-spin&#x27; : &#x27;fa-magnifying-glass&#x27;
+                &quot;
+              &gt;&lt;/i&gt;
+              {{ buscandoDni ? &quot;Buscando...&quot; : &quot;Buscar&quot; }}
+            &lt;/button&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label&gt;Nombres *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;Ingrese los nombres&quot;
+              [(ngModel)]&#x3D;&quot;matricula.estudiante.nombres&quot;
+              readonly
+            /&gt;
+          &lt;/div&gt;
+          &lt;div&gt;
+            &lt;label&gt;Apellido Paterno *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;Ingrese el apellido paterno&quot;
+              [(ngModel)]&#x3D;&quot;matricula.estudiante.apellido_paterno&quot;
+              readonly
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label&gt;Apellido Materno *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;Ingrese el apellido materno&quot;
+              [(ngModel)]&#x3D;&quot;matricula.estudiante.apellido_materno&quot;
+              readonly
+            /&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div *ngIf&#x3D;&quot;seccionActiva &#x3D;&#x3D;&#x3D; &#x27;detalles&#x27;&quot;&gt;
+        &lt;div class&#x3D;&quot;form-second-grid&quot; *ngIf&#x3D;&quot;matricula.aula&quot;&gt;
+          &lt;div&gt;
+            &lt;label&gt;Nivel *&lt;/label&gt;
+            &lt;select
+              [(ngModel)]&#x3D;&quot;matricula.aula.nivel&quot;
+              (change)&#x3D;&quot;onNivelChange($event)&quot;
+            &gt;
+              &lt;option value&#x3D;&quot;&quot;&gt;Seleccione&lt;/option&gt;
+              &lt;option *ngFor&#x3D;&quot;let n of niveles&quot; [value]&#x3D;&quot;n&quot;&gt;{{ n }}&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label&gt;Grado *&lt;/label&gt;
+            &lt;select
+              [(ngModel)]&#x3D;&quot;matricula.aula.grado&quot;
+              (change)&#x3D;&quot;onGradoChange()&quot;
+            &gt;
+              &lt;option value&#x3D;&quot;&quot;&gt;Seleccione&lt;/option&gt;
+              &lt;option *ngFor&#x3D;&quot;let g of grados&quot; [value]&#x3D;&quot;g&quot;&gt;{{ g }}&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label&gt;Sección *&lt;/label&gt;
+            &lt;select
+              [(ngModel)]&#x3D;&quot;matricula.aula.seccion&quot;
+              (change)&#x3D;&quot;onSeccionChange()&quot;
+            &gt;
+              &lt;option value&#x3D;&quot;&quot;&gt;Seleccione&lt;/option&gt;
+              &lt;option *ngFor&#x3D;&quot;let s of secciones&quot; [value]&#x3D;&quot;s&quot;&gt;{{ s }}&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label&gt;Situacion *&lt;/label&gt;
+            &lt;select [(ngModel)]&#x3D;&quot;matricula.situacion&quot;&gt;
+              &lt;option value&#x3D;&quot;&quot;&gt;Seleccione&lt;/option&gt;
+              &lt;option value&#x3D;&quot;Ingresante&quot;&gt;Ingresante&lt;/option&gt;
+              &lt;option value&#x3D;&quot;Promovido&quot;&gt;Promovido&lt;/option&gt;
+              &lt;option value&#x3D;&quot;Repitente&quot;&gt;Repitente&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label&gt;Procedencia *&lt;/label&gt;
+            &lt;select
+              [(ngModel)]&#x3D;&quot;matricula.procedencia&quot;
+              (ngModelChange)&#x3D;&quot;
+                matricula.ie_procedencia &#x3D;
+                  $event &#x3D;&#x3D;&#x3D; &#x27;Otra IE&#x27; ? matricula.ie_procedencia : &#x27;&#x27;
+              &quot;
+            &gt;
+              &lt;option value&#x3D;&quot;&quot;&gt;Seleccione&lt;/option&gt;
+              &lt;option value&#x3D;&quot;Misma IE&quot;&gt;Misma IE&lt;/option&gt;
+              &lt;option value&#x3D;&quot;Otra IE&quot;&gt;Otra IE&lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label&gt;IE Procedencia *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              placeholder&#x3D;&quot;Ingrese la IE de procedencia&quot;
+              [disabled]&#x3D;&quot;matricula.procedencia !&#x3D;&#x3D; &#x27;Otra IE&#x27;&quot;
+              [(ngModel)]&#x3D;&quot;matricula.ie_procedencia&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label&gt;Inscripción *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              inputmode&#x3D;&quot;decimal&quot;
+              placeholder&#x3D;&quot;150.00&quot;
+              [(ngModel)]&#x3D;&quot;matricula.inscripcion&quot;
+              (blur)&#x3D;&quot;formatearDecimal(&#x27;inscripcion&#x27;)&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label&gt;Matrícula *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              inputmode&#x3D;&quot;decimal&quot;
+              placeholder&#x3D;&quot;350.00&quot;
+              [(ngModel)]&#x3D;&quot;matricula.matricula&quot;
+              (blur)&#x3D;&quot;formatearDecimal(&#x27;matricula&#x27;)&quot;
+            /&gt;
+          &lt;/div&gt;
+
+          &lt;div&gt;
+            &lt;label&gt;Mensualidad *&lt;/label&gt;
+            &lt;input
+              type&#x3D;&quot;text&quot;
+              inputmode&#x3D;&quot;decimal&quot;
+              placeholder&#x3D;&quot;350.00&quot;
+              [(ngModel)]&#x3D;&quot;matricula.mensualidad&quot;
+              (blur)&#x3D;&quot;formatearDecimal(&#x27;mensualidad&#x27;)&quot;
+            /&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+      
+    &lt;/div&gt; 
+
+    &lt;!-- Footer --&gt;
+    &lt;div class&#x3D;&quot;modal-footer&quot;&gt;
+      &lt;button class&#x3D;&quot;btn-cancelar&quot; (click)&#x3D;&quot;cerrarModal()&quot;&gt;
+        &lt;i class&#x3D;&quot;fa-solid fa-xmark&quot;&gt;&lt;/i&gt; Cancelar
+      &lt;/button&gt;
+
+      &lt;button class&#x3D;&quot;btn-guardar&quot; (click)&#x3D;&quot;guardar()&quot;&gt;
+        &lt;i
+          class&#x3D;&quot;fa-solid&quot;
+          [ngClass]&#x3D;&quot;modoEditar ? &#x27;fa-arrows-rotate&#x27; : &#x27;fa-floppy-disk&#x27;&quot;
+        &gt;
+        &lt;/i&gt;
+        {{ modoEditar ? &quot;Actualizar&quot; : &quot;Guardar&quot; }}
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div *ngIf&#x3D;&quot;mostrarConfirmacion&quot; class&#x3D;&quot;overlay&quot;&gt;
+  &lt;div class&#x3D;&quot;modal-confirm&quot;&gt;
+    &lt;div class&#x3D;&quot;icono&quot;&gt;
+      &lt;i class&#x3D;&quot;fa-solid fa-book&quot;&gt;&lt;/i&gt;
+    &lt;/div&gt;
+
+    &lt;h2&gt;¿Eliminar Matricula?&lt;/h2&gt;
+    &lt;p&gt;Esta acción no se puede deshacer&lt;/p&gt;
+
+    &lt;div class&#x3D;&quot;acciones&quot;&gt;
+      &lt;button class&#x3D;&quot;btn cancelar&quot; (click)&#x3D;&quot;cancelarEliminacion()&quot;&gt;
+        Cancelar
+      &lt;/button&gt;
+
+      &lt;button class&#x3D;&quot;btn eliminar&quot; (click)&#x3D;&quot;confirmarEliminacion()&quot;&gt;
+        Eliminar
+      &lt;/button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div>  <div class="conten-principal">    <div class="cont-es">      <p class="titulo">MATRÍCULAS</p>      <button class="btn-matricula" (click)="abrirAgregar()">        <i class="fa-solid fa-book"></i>        Nueva Matrícula      </button>    </div>    <div class="filtros-tabla">      <div>        <label for="">NIVEL</label>        <select (change)="onFiltroNivelChange($event)">          <option value="todos">Todos</option>          <option *ngFor="let n of niveles" [value]="n">{{ n }}</option>        </select>        <label for="">GRADO</label>        <select (change)="onFiltroGradoChange($event)">          <option value="todos">Todos</option>          <option *ngFor="let g of grados" [value]="g">{{ g }}</option>        </select>        <label for="">SECCIÓN</label>        <select [(ngModel)]="filtro.seccion">          <option value="todos">Todos</option>          <option *ngFor="let s of secciones" [value]="s">{{ s }}</option>        </select>        <label for="">OPCIÓN</label>        <button (click)="aplicarFiltroTabla()" class="btn-filtrar">          <i class="fa-solid fa-filter"></i> Filtrar        </button>      </div>    </div>    <div class="acciones-tabla">      <div class="mostrar-registros">        <span>Mostrar</span>        <select (change)="cambiarCantidad($event)">          <option value="0">Todos</option>          <option value="10" selected>10</option>          <option value="25">25</option>          <option value="50">50</option>        </select>        <span>registros</span>      </div>      <div class="buscar-codigo">        <label>Buscar:</label>        <div class="input-icono">          <i class="fa-solid fa-magnifying-glass icono-input"></i>          <input            type="text"            [(ngModel)]="codigoBusqueda"            (ngModelChange)="onCodigoChange($event)"            inputmode="text"            placeholder="Ingrese Cod. M"          />        </div>      </div>    </div>  </div></div><div  *ngIf="mensajeSimple"  class="alerta"  [ngClass]="[tipoMensajeSimple, ocultando ? \'hide\' : \'\']">  <span class="texto">    {{ mensajeSimple }}  </span>  <button class="cerrar" (click)="cerrarAlertaSimple()"> <i class="fa-solid fa-xmark"></i> </button></div><div class="cont-tabla tabla-scroll">  <div *ngIf="cargando" class="cargando">    <i class="fa-solid fa-spinner fa-spin"></i> Cargando registros...  </div>  <table class="tabla-datos">    <thead>      <tr>        <th>ID</th>        <th>CODIGO</th>        <th>DNI</th>        <th>NIVEL</th>        <th>GRADO</th>        <th>SECCIÓN</th>        <th>SITUACIÓN</th>        <th>ACCIONES</th>        <th>ESTADO</th>      </tr>    </thead>    <tbody>      <tr *ngFor="let matricula of matriculasVista; let i = index">        <td>{{ i + 1 }}</td>        <td>{{ matricula.codigo_matricula }}</td>        <td>{{ matricula.dni }}</td>        <td>{{ matricula.nivel }}</td>        <td>{{ matricula.grado }}</td>        <td>{{ matricula.seccion }}</td>        <td>{{ matricula.situacion }}</td>        <td>          <span            [ngClass]="              matricula.estado === \'Activo\'                ? \'estado-activo\'                : \'estado-inactivo\'            "          >            {{ matricula.estado }}          </span>        </td>        <td>          <button class="btn-icon btn-edit" (click)="abrirEditar(matricula)">            <i class="fa-solid fa-pen"></i>          </button>          <button            class="btn-icon btn-delete"            (click)="eliminarMatricula(matricula)"          >            <i class="fa-solid fa-trash"></i>          </button>        </td>      </tr>    </tbody>  </table>  <p class="sin-resultados" *ngIf="!cargando && matriculasVista.length === 0">    <i class="fa-solid fa-circle-info"></i>    No se encontraron matrículas.  </p></div><!-- Modal --><div class="modal" *ngIf="modalMatriculaAbierto">  <div class="modal-content" #modalPrincipal>    <!-- Header -->    <div class="modal-header">      <h2>        <i class="fa-solid" [ngClass]="modoEditar ? \'fa-book\' : \'fa-book\'"> </i>        {{ modoEditar ? "Editar Matrícula" : "Nueva Matrícula" }}      </h2>      <span class="close" (click)="cerrarModal()">&times;</span>    </div>    <!-- SubHeader -->    <div class="modal-subheader">      <button        [class.active]="seccionActiva === \'estudiante\'"        (click)="seccionActiva = \'estudiante\'"      >        <i class="fa-solid fa-user-graduate"></i>        <span>ESTUDIANTE</span>      </button>      <button        [class.active]="seccionActiva === \'detalles\'"        (click)="seccionActiva = \'detalles\'"      >        <i class="fa-solid fa-file-lines"></i>        <span>DETALLES</span>      </button>          </div>    <!-- Body -->    <div class="modal-body">      <div *ngIf="seccionActiva === \'estudiante\'">        <div class="form-grid" *ngIf="matricula.estudiante">          <div class="dni-container">            <div class="dni-input">              <label>DNI *</label>              <input                type="text"                placeholder="DNI del estudiante"                maxlength="8"                [(ngModel)]="dni_estudiante"              />            </div>            <button              *ngIf="!modoEditar"              class="btn-buscar-dni"              (click)="buscarPorDni()"            >              <i                class="fa-solid"                [ngClass]="                  buscandoDni ? \'fa-spinner fa-spin\' : \'fa-magnifying-glass\'                "              ></i>              {{ buscandoDni ? "Buscando..." : "Buscar" }}            </button>          </div>          <div>            <label>Nombres *</label>            <input              type="text"              placeholder="Ingrese los nombres"              [(ngModel)]="matricula.estudiante.nombres"              readonly            />          </div>          <div>            <label>Apellido Paterno *</label>            <input              type="text"              placeholder="Ingrese el apellido paterno"              [(ngModel)]="matricula.estudiante.apellido_paterno"              readonly            />          </div>          <div>            <label>Apellido Materno *</label>            <input              type="text"              placeholder="Ingrese el apellido materno"              [(ngModel)]="matricula.estudiante.apellido_materno"              readonly            />          </div>        </div>      </div>      <div *ngIf="seccionActiva === \'detalles\'">        <div class="form-second-grid" *ngIf="matricula.aula">          <div>            <label>Nivel *</label>            <select              [(ngModel)]="matricula.aula.nivel"              (change)="onNivelChange($event)"            >              <option value="">Seleccione</option>              <option *ngFor="let n of niveles" [value]="n">{{ n }}</option>            </select>          </div>          <div>            <label>Grado *</label>            <select              [(ngModel)]="matricula.aula.grado"              (change)="onGradoChange()"            >              <option value="">Seleccione</option>              <option *ngFor="let g of grados" [value]="g">{{ g }}</option>            </select>          </div>          <div>            <label>Sección *</label>            <select              [(ngModel)]="matricula.aula.seccion"              (change)="onSeccionChange()"            >              <option value="">Seleccione</option>              <option *ngFor="let s of secciones" [value]="s">{{ s }}</option>            </select>          </div>          <div>            <label>Situacion *</label>            <select [(ngModel)]="matricula.situacion">              <option value="">Seleccione</option>              <option value="Ingresante">Ingresante</option>              <option value="Promovido">Promovido</option>              <option value="Repitente">Repitente</option>            </select>          </div>          <div>            <label>Procedencia *</label>            <select              [(ngModel)]="matricula.procedencia"              (ngModelChange)="                matricula.ie_procedencia =                  $event === \'Otra IE\' ? matricula.ie_procedencia : \'\'              "            >              <option value="">Seleccione</option>              <option value="Misma IE">Misma IE</option>              <option value="Otra IE">Otra IE</option>            </select>          </div>          <div>            <label>IE Procedencia *</label>            <input              type="text"              placeholder="Ingrese la IE de procedencia"              [disabled]="matricula.procedencia !== \'Otra IE\'"              [(ngModel)]="matricula.ie_procedencia"            />          </div>          <div>            <label>Inscripción *</label>            <input              type="text"              inputmode="decimal"              placeholder="150.00"              [(ngModel)]="matricula.inscripcion"              (blur)="formatearDecimal(\'inscripcion\')"            />          </div>          <div>            <label>Matrícula *</label>            <input              type="text"              inputmode="decimal"              placeholder="350.00"              [(ngModel)]="matricula.matricula"              (blur)="formatearDecimal(\'matricula\')"            />          </div>          <div>            <label>Mensualidad *</label>            <input              type="text"              inputmode="decimal"              placeholder="350.00"              [(ngModel)]="matricula.mensualidad"              (blur)="formatearDecimal(\'mensualidad\')"            />          </div>        </div>      </div>          </div>     <!-- Footer -->    <div class="modal-footer">      <button class="btn-cancelar" (click)="cerrarModal()">        <i class="fa-solid fa-xmark"></i> Cancelar      </button>      <button class="btn-guardar" (click)="guardar()">        <i          class="fa-solid"          [ngClass]="modoEditar ? \'fa-arrows-rotate\' : \'fa-floppy-disk\'"        >        </i>        {{ modoEditar ? "Actualizar" : "Guardar" }}      </button>    </div>  </div></div><div *ngIf="mostrarConfirmacion" class="overlay">  <div class="modal-confirm">    <div class="icono">      <i class="fa-solid fa-book"></i>    </div>    <h2>¿Eliminar Matricula?</h2>    <p>Esta acción no se puede deshacer</p>    <div class="acciones">      <button class="btn cancelar" (click)="cancelarEliminacion()">        Cancelar      </button>      <button class="btn eliminar" (click)="confirmarEliminacion()">        Eliminar      </button>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'AlertaComponent', 'selector': 'app-alerta'},{'name': 'AppComponent', 'selector': 'app-root'},{'name': 'BancosComponent', 'selector': 'app-bancos'},{'name': 'BodyComponent', 'selector': 'app-body'},{'name': 'ConfirmDialogComponent', 'selector': 'app-confirm-dialog'},{'name': 'DashboardLayoutComponent', 'selector': 'app-dashboard-layout'},{'name': 'EstudiantesComponent', 'selector': 'app-estudiantes'},{'name': 'LoginComponent', 'selector': 'app-login'},{'name': 'MatriculasComponent', 'selector': 'app-matriculas'},{'name': 'NavbarComponent', 'selector': 'app-navbar'},{'name': 'PadresComponent', 'selector': 'app-padres'},{'name': 'PagosComponent', 'selector': 'app-pagos'},{'name': 'PanelControlComponent', 'selector': 'app-panel-control'},{'name': 'SaludComponent', 'selector': 'app-salud'},{'name': 'SidenavComponent', 'selector': 'app-sidenav'},{'name': 'SublevelMenuComponent', 'selector': 'app-sublevel-menu'},{'name': 'UsuariosComponent', 'selector': 'app-usuarios'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'MatriculasComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'MatriculasComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

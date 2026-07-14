@@ -12,7 +12,7 @@
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
   border-radius: 12px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
 }
@@ -67,8 +67,8 @@
 }
 
 .box-info li:nth-child(3) .fas{
-  background: var(--light-cyan);
-  color: var(--dark-cyan);
+  background: var(--light-green);
+  color: var(--dark-green);
 }
 
 .item {
@@ -121,7 +121,7 @@
 }
 
 .btn-info {
-  background-color: #0dcaf0;
+  background-color: var(--light-green);
 }
 
 
@@ -134,12 +134,12 @@
 }
 
 .btn-info:hover{
-  background-color: #0aa2c0;
+  background-color: var(--dark-green);
 }
 
 .footer {
   max-width: 1000px;
-  margin: 3.5rem auto 2rem auto;
+  margin: 3.5rem auto 1rem auto;
   padding: 1.5rem;
   text-align: center;
   border-radius: 1.5rem;
@@ -169,11 +169,5 @@
   transition: all 0.3s ease;
   text-decoration: none;
 }
-
-
-/* Hover */
-/* .social-icon:hover {
-  transform: translateY(-4px) scale(1.05);
-} */
 
 

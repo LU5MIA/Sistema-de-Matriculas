@@ -1,0 +1,1116 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Frontend - Sistema de Matrículas</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">Frontend - Sistema de Matrículas</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Interfaces</li>
+  <li class="breadcrumb-item"
+  >
+  ParentForm</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/app/dashboard/pages/padres/padres.component.ts</code>
+        </p>
+
+
+
+
+        <section data-compodoc="block-index">
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#apellido_materno" 
+>
+                                            apellido_materno
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#apellido_paterno" 
+>
+                                            apellido_paterno
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#detalles_relacion" 
+>
+                                            detalles_relacion
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#direccion" 
+>
+                                            direccion
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#dni" 
+>
+                                            dni
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#email" 
+>
+                                            email
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#es_contacto_principal" 
+>
+                                            es_contacto_principal
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#nombres" 
+>
+                                            nombres
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#telefono" 
+>
+                                            telefono
+                                        </a>
+                                </li>
+                                <li>
+                                        <a href="#tipo_relacion" 
+>
+                                            tipo_relacion
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+
+
+            <section data-compodoc="block-properties">
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="apellido_materno"></a>
+                                        <span class="name "><b>apellido_materno</b>
+                                            <a href="#apellido_materno">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>apellido_materno:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="apellido_paterno"></a>
+                                        <span class="name "><b>apellido_paterno</b>
+                                            <a href="#apellido_paterno">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>apellido_paterno:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="detalles_relacion"></a>
+                                        <span class="name "><b>detalles_relacion</b>
+                                            <a href="#detalles_relacion">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>detalles_relacion:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="direccion"></a>
+                                        <span class="name "><b>direccion</b>
+                                            <a href="#direccion">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>direccion:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="dni"></a>
+                                        <span class="name "><b>dni</b>
+                                            <a href="#dni">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>dni:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="email"></a>
+                                        <span class="name "><b>email</b>
+                                            <a href="#email">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>email:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="es_contacto_principal"></a>
+                                        <span class="name "><b>es_contacto_principal</b>
+                                            <a href="#es_contacto_principal">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>es_contacto_principal:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="nombres"></a>
+                                        <span class="name "><b>nombres</b>
+                                            <a href="#nombres">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>nombres:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="telefono"></a>
+                                        <span class="name "><b>telefono</b>
+                                            <a href="#telefono">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>telefono:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="tipo_relacion"></a>
+                                        <span class="name "><b>tipo_relacion</b>
+                                            <a href="#tipo_relacion">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>tipo_relacion:         <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Component, OnInit, ChangeDetectorRef } from &#x27;@angular/core&#x27;;
+import { MatDialog } from &#x27;@angular/material/dialog&#x27;;
+import { ConfirmDialogComponent } from &#x27;../../../shared/confirm-dialog/confirm-dialog.component&#x27;;
+import { PadresService } from &#x27;../../../core/services/padres.service&#x27;;
+import { Padres } from &#x27;../../../shared/interfaces/padres.interface&#x27;;
+import Swal from &#x27;sweetalert2&#x27;;
+
+interface ApiError {
+  status?: number;
+  message?: string;
+  error?: {
+    message?: string;
+  };
+}
+
+interface ParentForm {
+  nombres: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  dni: string;
+  telefono: string;
+  email: string;
+  direccion: string;
+  tipo_relacion: string;
+  detalles_relacion: string;
+  es_contacto_principal: boolean;
+}
+
+@Component({
+  selector: &#x27;app-padres&#x27;,
+  standalone: false,
+  templateUrl: &#x27;./padres.component.html&#x27;,
+  styleUrl: &#x27;./padres.component.css&#x27;,
+})
+export class PadresComponent implements OnInit {
+  padres: Padres[] &#x3D; [];
+  cargando: boolean &#x3D; false;
+
+  constructor(
+    private dialog: MatDialog,
+    private padresService: PadresService,
+    private cd: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit(): void {
+    this.cargarPadres();
+  }
+
+  cargarPadres() {
+    this.padresService.getPadres().subscribe({
+      next: (response: any) &#x3D;&gt; {
+        this.padres &#x3D; response.data;
+      },
+      error: (err) &#x3D;&gt; {
+        console.error(&#x27;Error al cargar padres:&#x27;, err);
+      },
+    });
+  }
+
+  modalAbierto: boolean &#x3D; false;
+  modoEditar: boolean &#x3D; false;
+  padreIdEditar: number | null &#x3D; null;
+  buscandoDni: boolean &#x3D; false;
+
+  // ESTADO DE TABS
+  activeTab: number &#x3D; 1;
+
+  // VARIABLES DE FORMULARIO
+  formPadre: ParentForm &#x3D; this.getDefaultForm(&#x27;Padre&#x27;);
+  formMadre: ParentForm &#x3D; this.getDefaultForm(&#x27;Madre&#x27;);
+
+  getDefaultForm(tipoRelacion: string): ParentForm {
+    return {
+      nombres: &#x27;&#x27;,
+      apellido_paterno: &#x27;&#x27;,
+      apellido_materno: &#x27;&#x27;,
+      dni: &#x27;&#x27;,
+      telefono: &#x27;&#x27;,
+      email: &#x27;&#x27;,
+      direccion: &#x27;&#x27;,
+      tipo_relacion: tipoRelacion,
+      detalles_relacion: &#x27;&#x27;,
+      es_contacto_principal: false,
+    };
+  }
+
+  // ✅ Método para buscar DNI en RENIEC
+  buscarDniReniec(tipo: &#x27;padre&#x27; | &#x27;madre&#x27;) {
+    const formTarget &#x3D; tipo &#x3D;&#x3D;&#x3D; &#x27;padre&#x27; ? this.formPadre : this.formMadre;
+    const dniString &#x3D; String(formTarget.dni || &#x27;&#x27;).trim();
+
+    if (!dniString || dniString.length !&#x3D;&#x3D; 8 || !/^\d{8}$/.test(dniString)) {
+      alert(&#x27;Por favor ingrese un DNI válido de 8 dígitos&#x27;);
+      return;
+    }
+
+    this.buscandoDni &#x3D; true;
+
+    this.padresService.buscarDniEnReniec(dniString).subscribe({
+      next: (response) &#x3D;&gt; {
+        this.buscandoDni &#x3D; false;
+        formTarget.nombres &#x3D; response.nombres;
+        formTarget.apellido_paterno &#x3D; response.apellidoPaterno;
+        formTarget.apellido_materno &#x3D; response.apellidoMaterno;
+        alert(&#x27;✅ Datos encontrados en RENIEC. Complete los campos restantes.&#x27;);
+      },
+      error: (err) &#x3D;&gt; {
+        this.buscandoDni &#x3D; false;
+        console.error(&#x27;Error al buscar DNI:&#x27;, err);
+
+        if (err.status &#x3D;&#x3D;&#x3D; 404) {
+          alert(&#x27;❌ DNI no encontrado en RENIEC&#x27;);
+        } else if (err.status &#x3D;&#x3D;&#x3D; 401) {
+          alert(&#x27;❌ Error autenticación con RENIEC (Token).&#x27;);
+        } else if (err.status &#x3D;&#x3D;&#x3D; 400) {
+          alert(&#x27;❌ DNI inválido. Debe tener 8 dígitos.&#x27;);
+        } else {
+          alert(
+            &#x27;❌ Error al consultar DNI: &#x27; + (err.error?.message || err.message),
+          );
+        }
+      },
+    });
+  }
+
+  // Variables para asignar estudiantes compartidas
+  dniEstudiante: string &#x3D; &#x27;&#x27;;
+  estudiantesAsignados: any[] &#x3D; [];
+
+  buscarEstudiante() {
+    if (this.dniEstudiante.length !&#x3D;&#x3D; 8) {
+      alert(&#x27;El DNI debe tener 8 dígitos&#x27;);
+      return;
+    }
+
+    this.padresService.getEstudianteByDni(this.dniEstudiante).subscribe({
+      next: (estudiante) &#x3D;&gt; {
+        if (!estudiante) {
+          alert(&#x27;Estudiante no encontrado&#x27;);
+          return;
+        }
+
+        const duplicado &#x3D; this.estudiantesAsignados.find(
+          (e) &#x3D;&gt; e.dni &#x3D;&#x3D;&#x3D; estudiante.dni,
+        );
+        if (duplicado) {
+          alert(&#x27;El estudiante ya está en la lista&#x27;);
+          return;
+        }
+
+        this.estudiantesAsignados.push(estudiante);
+        this.dniEstudiante &#x3D; &#x27;&#x27;; // Limpiar campo
+      },
+      error: (err) &#x3D;&gt; {
+        console.error(&#x27;Error al buscar estudiante:&#x27;, err);
+        alert(&#x27;Error al buscar estudiante (ver consola)&#x27;);
+      },
+    });
+  }
+
+  eliminarEstudianteDeLista(index: number) {
+    this.estudiantesAsignados.splice(index, 1);
+  }
+
+  abrirEditar(padre?: Padres) {
+    if (padre) {
+      this.modoEditar &#x3D; true;
+      this.padreIdEditar &#x3D; padre.padre_id || padre.id || null;
+      this.cargarDatosEnFormulario(padre);
+      this.modalAbierto &#x3D; true;
+    }
+  }
+
+  abrirAgregar() {
+    this.modoEditar &#x3D; false;
+    this.padreIdEditar &#x3D; null;
+    this.limpiarFormulario();
+    this.activeTab &#x3D; 1;
+    this.modalAbierto &#x3D; true;
+    this.cd.detectChanges();
+  }
+
+  limpiarFormulario() {
+    this.formPadre &#x3D; this.getDefaultForm(&#x27;Padre&#x27;);
+    this.formMadre &#x3D; this.getDefaultForm(&#x27;Madre&#x27;);
+    this.estudiantesAsignados &#x3D; [];
+    this.dniEstudiante &#x3D; &#x27;&#x27;;
+  }
+
+  cargarDatosEnFormulario(padre: Padres) {
+    this.limpiarFormulario();
+
+    const parentData &#x3D; {
+      nombres: padre.nombres,
+      apellido_paterno: padre.apellido_paterno,
+      apellido_materno: padre.apellido_materno,
+      dni: padre.dni,
+      telefono: padre.telefono || &#x27;&#x27;,
+      email: padre.email || &#x27;&#x27;,
+      direccion: padre.direccion || &#x27;&#x27;,
+      tipo_relacion: padre.tipo_relacion,
+      detalles_relacion: padre.detalles_relacion || &#x27;&#x27;,
+      es_contacto_principal: padre.es_contacto_principal || false,
+    };
+
+    if (
+      padre.tipo_relacion?.toLowerCase() &#x3D;&#x3D;&#x3D; &#x27;madre&#x27; ||
+      padre.tipo_relacion?.toLowerCase() &#x3D;&#x3D;&#x3D; &#x27;tutora&#x27;
+    ) {
+      this.formMadre &#x3D; parentData;
+      this.activeTab &#x3D; 2;
+    } else {
+      this.formPadre &#x3D; parentData;
+      this.activeTab &#x3D; 1;
+    }
+
+    if (this.padreIdEditar) {
+      this.padresService.getEstudiantesAsignados(this.padreIdEditar).subscribe({
+        next: (data) &#x3D;&gt; {
+          this.estudiantesAsignados &#x3D; data;
+          this.cd.detectChanges();
+        },
+        error: (err) &#x3D;&gt; console.error(err),
+      });
+    }
+  }
+
+  async guardarPadre() {
+    if (this.modoEditar &amp;&amp; this.padreIdEditar) {
+      // Editar solo la pestaña activa / padre correspondiente
+      const formData &#x3D; this.activeTab &#x3D;&#x3D;&#x3D; 2 ? this.formMadre : this.formPadre;
+
+      if (
+        !formData.nombres ||
+        !formData.apellido_paterno ||
+        !formData.dni ||
+        !formData.tipo_relacion
+      ) {
+        alert(&#x27;Por favor complete los campos obligatorios del padre editado&#x27;);
+        return;
+      }
+
+      try {
+        await this.padresService
+          .updatePadre(this.padreIdEditar, formData)
+          .toPromise();
+        await this.sincronizarEstudiantesAsignados(this.padreIdEditar);
+        this.mostrarExito(&#x27;Registro actualizado correctamente&#x27;);
+      } catch (err) {
+        this.mostrarError(err);
+      }
+    } else {
+      // MODO AGREGAR: Evaluar si guardan 1 o 2 apoderados
+      const savePadre &#x3D; !!(this.formPadre.dni &amp;&amp; this.formPadre.nombres);
+      const saveMadre &#x3D; !!(this.formMadre.dni &amp;&amp; this.formMadre.nombres);
+
+      if (!savePadre &amp;&amp; !saveMadre) {
+        alert(
+          &#x27;Debe rellenar al menos los datos de un apoderado (o Padre o Madre)&#x27;,
+        );
+        return;
+      }
+
+      if (
+        savePadre &amp;&amp;
+        (!this.formPadre.nombres ||
+          !this.formPadre.apellido_paterno ||
+          !this.formPadre.dni ||
+          !this.formPadre.tipo_relacion)
+      ) {
+        alert(&#x27;Faltan campos obligatorios en la pestaña Padre/Tutor 1&#x27;);
+        return;
+      }
+
+      if (
+        saveMadre &amp;&amp;
+        (!this.formMadre.nombres ||
+          !this.formMadre.apellido_paterno ||
+          !this.formMadre.dni ||
+          !this.formMadre.tipo_relacion)
+      ) {
+        alert(&#x27;Faltan campos obligatorios en la pestaña Madre/Tutor 2&#x27;);
+        return;
+      }
+
+      try {
+        const promesas &#x3D; [];
+        let idPadreFinal &#x3D; null;
+        let idMadreFinal &#x3D; null;
+
+        // 1. Guardar Padre
+        if (savePadre) {
+          const respPadre &#x3D; await this.padresService
+            .createPadre(this.formPadre)
+            .toPromise();
+          idPadreFinal &#x3D; respPadre?.padre_id || respPadre?.id;
+        }
+
+        // 2. Guardar Madre
+        if (saveMadre) {
+          const respMadre &#x3D; await this.padresService
+            .createPadre(this.formMadre)
+            .toPromise();
+          idMadreFinal &#x3D; respMadre?.padre_id || respMadre?.id;
+        }
+
+        // 3. Asignar Hijos a ambos
+        const asignacionesPromises &#x3D; [];
+        for (const est of this.estudiantesAsignados) {
+          const estId &#x3D; est.estudiante_id || est.id;
+          if (idPadreFinal)
+            asignacionesPromises.push(
+              this.padresService
+                .assignEstudiante(idPadreFinal, estId)
+                .toPromise(),
+            );
+          if (idMadreFinal)
+            asignacionesPromises.push(
+              this.padresService
+                .assignEstudiante(idMadreFinal, estId)
+                .toPromise(),
+            );
+        }
+
+        if (asignacionesPromises.length &gt; 0) {
+          await Promise.all(asignacionesPromises);
+        }
+
+        this.mostrarExito(&#x27;Registro(s) guardado(s) exitosamente&#x27;);
+      } catch (err) {
+        this.mostrarError(err);
+      }
+    }
+  }
+
+  async sincronizarEstudiantesAsignados(padreId: number) {
+    try {
+      const asignacionesActuales &#x3D; await this.padresService
+        .getEstudiantesAsignados(padreId)
+        .toPromise();
+      if (!asignacionesActuales) return;
+
+      const mapaActual &#x3D; new Map();
+      asignacionesActuales.forEach((a) &#x3D;&gt; mapaActual.set(a.estudiante_id, a));
+
+      const mapaNuevo &#x3D; new Map();
+      this.estudiantesAsignados.forEach((e) &#x3D;&gt;
+        mapaNuevo.set(e.estudiante_id || e.id, e),
+      );
+
+      for (const [id, _] of mapaActual) {
+        if (!mapaNuevo.has(id)) {
+          await this.padresService.removeEstudiante(padreId, id).toPromise();
+        }
+      }
+
+      for (const [id, _] of mapaNuevo) {
+        if (!mapaActual.has(id)) {
+          await this.padresService.assignEstudiante(padreId, id).toPromise();
+        }
+      }
+    } catch (err: unknown) {
+      console.error(&#x27;Error sincronizando estudiantes:&#x27;, err);
+      throw new Error(&#x27;Error al sincronizar hijos&#x27;);
+    }
+  }
+
+  mostrarExito(msg: string) {
+    alert(msg);
+    this.cerrarModal();
+    this.cargarPadres();
+  }
+
+  mostrarError(err: unknown) {
+    console.error(&#x27;Error:&#x27;, err);
+    let errorMessage &#x3D; &#x27;Error desconocido&#x27;;
+    if (err &amp;&amp; typeof err &#x3D;&#x3D;&#x3D; &#x27;object&#x27;) {
+      if (
+        &#x27;error&#x27; in err &amp;&amp;
+        err.error &amp;&amp;
+        typeof err.error &#x3D;&#x3D;&#x3D; &#x27;object&#x27; &amp;&amp;
+        &#x27;message&#x27; in err.error
+      ) {
+        errorMessage &#x3D; (err.error as { message: string }).message;
+      } else if (&#x27;message&#x27; in err) {
+        errorMessage &#x3D; (err as { message: string }).message;
+      }
+    } else if (typeof err &#x3D;&#x3D;&#x3D; &#x27;string&#x27;) {
+      errorMessage &#x3D; err;
+    }
+    alert(&#x27;Error: &#x27; + errorMessage);
+  }
+
+  padreIdEliminar: number | null &#x3D; null;
+
+  eliminarPadre(padre: Padres) {
+    this.padreAEliminar &#x3D; padre;
+    this.mostrarConfirmacion &#x3D; true;
+  }
+
+  mostrarConfirmacion &#x3D; false;
+  padreAEliminar: Padres | null &#x3D; null;
+
+  cancelarEliminacion() {
+    this.mostrarConfirmacion &#x3D; false;
+    this.padreAEliminar &#x3D; null;
+  }
+
+  confirmarEliminacion() {
+    const id &#x3D; this.padreAEliminar?.padre_id || this.padreAEliminar?.id;
+
+    if (!id) return;
+
+    this.padresService.deletePadre(id).subscribe({
+      next: () &#x3D;&gt; {
+        this.mostrarConfirmacion &#x3D; false;
+        this.padreAEliminar &#x3D; null;
+        this.mostrarMensaje(&#x27;Registro eliminado correctamente&#x27;, &#x27;success&#x27;);
+        this.cargarPadres();
+      },
+      error: (err: any) &#x3D;&gt; {
+        console.error(&#x27;Error al eliminar:&#x27;, err);
+        this.mostrarMensaje(&#x27;Error al eliminar&#x27;, &#x27;error&#x27;);
+      },
+    });
+  }
+
+  // Variables para mostrar mensajes de éxito/error
+
+  mensaje: string &#x3D; &#x27;&#x27;;
+  tipoMensaje: &#x27;success&#x27; | &#x27;error&#x27; &#x3D; &#x27;success&#x27;;
+
+  mostrarMensaje(texto: string, tipo: &#x27;success&#x27; | &#x27;error&#x27;) {
+    this.mensaje &#x3D; texto;
+    this.tipoMensaje &#x3D; tipo;
+
+    setTimeout(() &#x3D;&gt; {
+      this.mensaje &#x3D; &#x27;&#x27;;
+    }, 3000);
+  }
+
+  ocultando &#x3D; false;
+
+  cerrarAlerta() {
+    this.ocultando &#x3D; true;
+
+    setTimeout(() &#x3D;&gt; {
+      this.mensaje &#x3D; &#x27;&#x27;;
+      this.ocultando &#x3D; false;
+    }, 400); // mismo tiempo que la animación
+  }
+
+  cerrarModal() {
+    const modal &#x3D; document.querySelector(&#x27;.modal-content&#x27;);
+    if (modal) {
+      modal.classList.add(&#x27;salir&#x27;);
+      setTimeout(() &#x3D;&gt; {
+        this.modalAbierto &#x3D; false;
+        this.limpiarFormulario();
+        this.cd.detectChanges();
+      }, 250);
+    } else {
+      this.modalAbierto &#x3D; false;
+      this.limpiarFormulario();
+      this.cd.detectChanges();
+    }
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'ParentForm.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

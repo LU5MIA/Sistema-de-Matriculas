@@ -1,0 +1,251 @@
+<div>
+  <div class="cont-usuario">
+    <p class="titulo">USUARIOS</p>
+    <button class="btn-usuario" (click)="abrirAgregar()">
+      <i class="fa-solid fa-user-plus"></i>
+      Nuevo Usuario
+    </button>
+  </div>
+  <div class="acciones-tabla">
+    <div class="mostrar-registros">
+      <span>Mostrar</span>
+
+      <select>
+        <option value="0">Todos</option>
+        <option value="10" selected>10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+
+      <span>registros</span>
+    </div>
+    <div class="buscar-usuario">
+      <label>Buscar:</label>
+      <div class="input-icono">
+        <i class="fa-solid fa-magnifying-glass icono-input"></i>
+        <input
+          type="text"
+          maxlength="8"
+          inputmode="numeric"
+          placeholder="Ingrese usuario a buscar"
+          [(ngModel)]="textoBusqueda"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="mensajeSimple"
+  class="alerta"
+  [ngClass]="[tipoMensajeSimple, ocultando ? 'hide' : '']"
+>
+  <span class="texto">
+    {{ mensajeSimple }}
+  </span>
+  <button class="cerrar" (click)="cerrarAlertaSimple()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+</div>
+
+<div class="cont-tabla tabla-scroll">
+  <div *ngIf="cargando" class="cargando">
+    <i class="fa-solid fa-spinner fa-spin"></i> Cargando registros...
+  </div>
+  <table class="tabla-datos">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>USUARIO</th>
+        <th>ROL</th>
+        <th>ESTADO</th>
+        <th>ACCIONES</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let usuario of usuariosFiltrados; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ usuario.username }}</td>
+        <td>
+          <span
+            class="badge-rol"
+            [ngClass]="{
+              admin: usuario.rol?.nombre === 'Administrador',
+              profesor: usuario.rol?.nombre === 'Profesor',
+              secretaria: usuario.rol?.nombre === 'Secretaria',
+              tesorera: usuario.rol?.nombre === 'Tesorera',
+            }"
+          >
+            {{ usuario.rol?.nombre || "Sin rol" }}
+          </span>
+        </td>
+        <td>
+          <span
+            [ngClass]="
+              usuario.estado === 'Activo' ? 'estado-activo' : 'estado-inactivo'
+            "
+          >
+            {{ usuario.estado }}
+          </span>
+        </td>
+
+        <td>
+          <button class="btn-icon btn-edit" (click)="abrirEditar(usuario)">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+
+          <button
+            class="btn-icon"
+            [ngClass]="
+              usuario.estado === 'Activo' ? 'btn-desactivar' : 'btn-activar'
+            "
+            (click)="cambiarEstado(usuario)"
+            [title]="
+              usuario.estado === 'Activo'
+                ? 'Desactivar usuario'
+                : 'Activar usuario'
+            "
+          >
+            <i
+              class="fa-solid"
+              [ngClass]="
+                usuario.estado === 'Activo'
+                  ? 'fa-user-slash'
+                  : 'fa-user-check'
+              "
+            >
+            </i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="sin-resultados" *ngIf="!cargando && usuarios.length === 0">
+    <i class="fa-solid fa-circle-info"></i>
+    No se encontraron usuarios.
+  </p>
+</div>
+
+<!-- Modal -->
+<div class="modal" *ngIf="modalAbierto">
+  <div class="modal-content">
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>
+        <i
+          class="fa-solid"
+          [ngClass]="modoEditar ? 'fa-user-pen' : 'fa-user-plus'"
+        >
+        </i>
+        {{ modoEditar ? "Editar usuario" : "Nuevo usuario" }}
+      </h2>
+      <span class="close" (click)="cerrarModal()">&times;</span>
+    </div>
+
+    <!-- Body -->
+    <div class="modal-body">
+      <div class="form-grid">
+        <div>
+          <label>Rol *</label>
+          <select [(ngModel)]="usuario.rol" name="rol" required class="rol">
+            <option [ngValue]="null" disabled selected>
+              Seleccione un rol
+            </option>
+            <option *ngFor="let r of roles" [ngValue]="r">
+              {{ r.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div>
+          <label>Nombre de usuario *</label>
+          <input
+            type="text"
+            placeholder="Ingrese el nombre de usuario"
+            [(ngModel)]="usuario.username"
+            name="username"
+            required
+          />
+        </div>
+
+        <div>
+          <label>Contraseña *</label>
+          <input
+            type="password"
+            placeholder="Ingrese la contraseña"
+            [(ngModel)]="usuario.password"
+            name="password"
+            required
+          />
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cerrarModal()">
+        <i class="fa-solid fa-xmark"></i> Cancelar
+      </button>
+
+      <form (ngSubmit)="guardar()">
+        <button class="btn-guardar" type="submit">
+          <i
+            class="fa-solid"
+            [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'"
+          >
+          </i>
+          {{ modoEditar ? "Actualizar" : "Guardar" }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="mostrarConfirmacionEstado" class="overlay">
+
+  <div class="modal-confirm">
+
+    <div class="icono estado">
+
+      <i
+        class="fa-solid"
+        [ngClass]="
+          nuevoEstado === 'Activo'
+            ? 'fa-user-check'
+            : 'fa-user-slash'
+        "
+      ></i>
+
+    </div>
+
+    <h2>
+      ¿{{ nuevoEstado === 'Activo' ? 'Activar' : 'Desactivar' }}
+      Usuario?
+    </h2>
+
+    <p>
+      El estado del usuario será cambiado a
+      <strong>{{ nuevoEstado }}</strong>
+    </p>
+
+    <div class="acciones">
+
+      <button
+        class="btn cancelar"
+        (click)="cancelarCambioEstado()"
+      >
+        Cancelar
+      </button>
+
+      <button
+        class="btn eliminar"
+        (click)="confirmarCambioEstado()"
+      >
+        {{ nuevoEstado === 'Activo' ? 'Activar' : 'Desactivar' }}
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

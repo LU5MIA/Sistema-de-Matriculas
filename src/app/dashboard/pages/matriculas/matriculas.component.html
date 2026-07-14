@@ -1,289 +1,368 @@
 <div>
-    <div class="conten-principal">
-        <div class="cont-es">
-            <p class="titulo">MATRÍCULAS</p>
-            <button class="btn-matricula" (click)="abrirAgregar()">
-                <i class="fa-solid fa-book"></i>
-                Nueva Matrícula
-            </button>
-        </div>
-        <div class="filtros-tabla">
-
-            <div>
-                <label for="">NIVEL</label>
-                <select (change)="onFiltroNivelChange($event)">
-                    <option value="todos">Todos</option>
-                    <option *ngFor="let n of niveles" [value]="n">{{ n }}</option>
-                </select>
-
-                <label for="">GRADO</label>
-                <select (change)="onFiltroGradoChange($event)">
-                    <option value="todos">Todos</option>
-                    <option *ngFor="let g of grados" [value]="g">{{ g }}</option>
-                </select>
-                <label for="">SECCIÓN</label>
-                <select [(ngModel)]="filtro.seccion">
-                    <option value="todos">Todos</option>
-                    <option *ngFor="let s of secciones" [value]="s">{{ s }}</option>
-                </select>
-                <label for="">OPCIÓN</label>
-                <button (click)="aplicarFiltroTabla()" class="btn-filtrar">
-                    <i class="fa-solid fa-filter"></i> Filtrar
-                </button>
-            </div>
-        </div>
-        <div class="acciones-tabla">
-            <div class="mostrar-registros">
-                <span>Mostrar</span>
-                <select (change)="cambiarCantidad($event)">
-                    <option value="0">Todos</option>
-                    <option value="10" selected>10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                </select>
-                <span>registros</span>
-            </div>
-
-            <div class="buscar-codigo">
-                <div class="input-busqueda">
-                    <label>Buscar:</label>
-                    <div class="input-icono">
-                        <input type="text" [(ngModel)]="codigoBusqueda" (ngModelChange)="onCodigoChange($event)"
-                            inputmode="text" placeholder="Ingrese Cod. M" />
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="conten-principal">
+    <div class="cont-es">
+      <p class="titulo">MATRÍCULAS</p>
+      <button class="btn-matricula" (click)="abrirAgregar()">
+        <i class="fa-solid fa-book"></i>
+        Nueva Matrícula
+      </button>
     </div>
+    <div class="filtros-tabla">
+      <div>
+        <label for="">NIVEL</label>
+        <select (change)="onFiltroNivelChange($event)">
+          <option value="todos">Todos</option>
+          <option *ngFor="let n of niveles" [value]="n">{{ n }}</option>
+        </select>
 
+        <label for="">GRADO</label>
+        <select (change)="onFiltroGradoChange($event)">
+          <option value="todos">Todos</option>
+          <option *ngFor="let g of grados" [value]="g">{{ g }}</option>
+        </select>
+        <label for="">SECCIÓN</label>
+        <select [(ngModel)]="filtro.seccion">
+          <option value="todos">Todos</option>
+          <option *ngFor="let s of secciones" [value]="s">{{ s }}</option>
+        </select>
+        <label for="">OPCIÓN</label>
+        <button (click)="aplicarFiltroTabla()" class="btn-filtrar">
+          <i class="fa-solid fa-filter"></i> Filtrar
+        </button>
+      </div>
+    </div>
+    <div class="acciones-tabla">
+      <div class="mostrar-registros">
+        <span>Mostrar</span>
+        <select (change)="cambiarCantidad($event)">
+          <option value="0">Todos</option>
+          <option value="10" selected>10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+        <span>registros</span>
+      </div>
+
+      <div class="buscar-codigo">
+        <label>Buscar:</label>
+        <div class="input-icono">
+          <i class="fa-solid fa-magnifying-glass icono-input"></i>
+          <input
+            type="text"
+            [(ngModel)]="codigoBusqueda"
+            (ngModelChange)="onCodigoChange($event)"
+            inputmode="text"
+            placeholder="Ingrese Cod. M"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  *ngIf="mensajeSimple"
+  class="alerta"
+  [ngClass]="[tipoMensajeSimple, ocultando ? 'hide' : '']"
+>
+  <span class="texto">
+    {{ mensajeSimple }}
+  </span>
+  <button class="cerrar" (click)="cerrarAlertaSimple()"> <i class="fa-solid fa-xmark"></i> </button>
 </div>
 
 <div class="cont-tabla tabla-scroll">
-    <table class="tabla-datos">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>CODIGO</th>
-                <th>DNI</th>
-                <th>NIVEL</th>
-                <th>GRADO</th>
-                <th>SECCIÓN</th>
-                <th>SITUACIÓN</th>
-                <th>ACCIONES</th>
-                <th>ESTADO</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let matricula of matriculasVista; let i = index">
-                <td>{{i + 1}}</td>
-                <td>{{matricula.codigo_matricula}}</td>
-                <td>{{matricula.dni}}</td>
-                <td>{{matricula.nivel }}</td>
-                <td>{{matricula.grado }}</td>
-                <td>{{matricula.seccion }}</td>
-                <td>{{matricula.situacion}}</td>
-                <td>
-                    <span [ngClass]="matricula.estado === 'Activo' ? 'estado-activo' : 'estado-inactivo'">
-                        {{ matricula.estado }}
-                    </span>
-                </td>
-                <td>
-                    <button class="btn-icon btn-edit" (click)="abrirEditar(matricula)">
-                        <i class="fa-solid fa-pen"></i>
-                    </button>
-
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <p class="sin-resultados" *ngIf="matriculasVista.length === 0 && codigoBusqueda.trim() !== ''">
-        No se encontraron matrículas con ese código
-    </p>
+  <div *ngIf="cargando" class="cargando">
+    <i class="fa-solid fa-spinner fa-spin"></i> Cargando registros...
+  </div>
+  <table class="tabla-datos">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>CODIGO</th>
+        <th>DNI</th>
+        <th>NIVEL</th>
+        <th>GRADO</th>
+        <th>SECCIÓN</th>
+        <th>SITUACIÓN</th>
+        <th>ACCIONES</th>
+        <th>ESTADO</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let matricula of matriculasVista; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ matricula.codigo_matricula }}</td>
+        <td>{{ matricula.dni }}</td>
+        <td>{{ matricula.nivel }}</td>
+        <td>{{ matricula.grado }}</td>
+        <td>{{ matricula.seccion }}</td>
+        <td>{{ matricula.situacion }}</td>
+        <td>
+          <span
+            [ngClass]="
+              matricula.estado === 'Activo'
+                ? 'estado-activo'
+                : 'estado-inactivo'
+            "
+          >
+            {{ matricula.estado }}
+          </span>
+        </td>
+        <td>
+          <button class="btn-icon btn-edit" (click)="abrirEditar(matricula)">
+            <i class="fa-solid fa-pen"></i>
+          </button>
+          <button
+            class="btn-icon btn-delete"
+            (click)="eliminarMatricula(matricula)"
+          >
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="sin-resultados" *ngIf="!cargando && matriculasVista.length === 0">
+    <i class="fa-solid fa-circle-info"></i>
+    No se encontraron matrículas.
+  </p>
 </div>
 
 <!-- Modal -->
 <div class="modal" *ngIf="modalMatriculaAbierto">
-    <div class="modal-content" #modalPrincipal>
-
-        <!-- Header -->
-        <div class="modal-header">
-            <h2>
-                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-book' : 'fa-book'">
-                </i>
-                {{ modoEditar ? 'Editar Matrícula' : 'Nueva Matrícula' }}
-            </h2>
-            <span class="close" (click)="cerrarModal()">&times;</span>
-        </div>
-
-        <!-- SubHeader -->
-        <div class="modal-subheader">
-            <button [class.active]="seccionActiva === 'estudiante'" (click)="seccionActiva = 'estudiante'">
-                ESTUDIANTE
-            </button>
-            <button [class.active]="seccionActiva === 'detalles'" (click)="seccionActiva = 'detalles'">
-                DETALLES
-            </button>
-            <button [class.active]="seccionActiva === 'apoderado'" (click)="seccionActiva = 'apoderado'">
-                APODERADO
-            </button>
-        </div>
-
-        <!-- Body -->
-        <div class="modal-body">
-            <div *ngIf="seccionActiva === 'estudiante'">
-                <div class="form-grid" *ngIf="matricula.estudiante">
-                    <div class="dni-container">
-                        <div class="dni-input">
-                            <label>DNI</label>
-                            <input type="text" placeholder="DNI del estudiante" maxlength="8"
-                                [(ngModel)]="dni_estudiante">
-                        </div>
-
-                        <button *ngIf="!modoEditar" class="btn-buscar-dni" (click)="buscarPorDni()">
-                            <i class="fa-solid"
-                                [ngClass]="buscandoDni ? 'fa-spinner fa-spin' : 'fa-magnifying-glass'"></i>
-                            {{ buscandoDni ? 'Buscando...' : 'Buscar' }}
-                        </button>
-                    </div>
-
-                    <div>
-                        <label>Nombres</label>
-                        <input type="text" placeholder="Ingrese los nombres" [(ngModel)]="matricula.estudiante.nombres">
-                    </div>
-                    <div>
-                        <label>Apellido Paterno</label>
-                        <input type="text" placeholder="Ingrese el apellido paterno"
-                            [(ngModel)]="matricula.estudiante.apellido_paterno">
-                    </div>
-
-                    <div>
-                        <label>Apellido Materno</label>
-                        <input type="text" placeholder="Ingrese el apellido materno"
-                            [(ngModel)]="matricula.estudiante.apellido_materno">
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="seccionActiva === 'detalles'">
-                <div class="form-second-grid" *ngIf="matricula.aula">
-
-                    <div>
-                        <label>Nivel</label>
-                        <select [(ngModel)]="matricula.aula.nivel" (change)="onNivelChange($event)">
-                            <option value="">Seleccione</option>
-                            <option *ngFor="let n of niveles" [value]="n">{{ n }}</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label>Grado</label>
-                        <select [(ngModel)]="matricula.aula.grado" (change)="onGradoChange()">
-                            <option value="">Seleccione</option>
-                            <option *ngFor="let g of grados" [value]="g">{{ g }}</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label>Sección</label>
-                        <select [(ngModel)]="matricula.aula.seccion" (change)="onSeccionChange()">
-                            <option value="">Seleccione</option>
-                            <option *ngFor="let s of secciones" [value]="s">{{ s }}</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label>Situacion</label>
-                        <select [(ngModel)]="matricula.situacion">
-                            <option value="">Seleccione</option>
-                            <option value="Ingresante">Ingresante</option>
-                            <option value="Promovido">Promovido</option>
-                            <option value="Repitente">Repitente</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label>Procedencia</label>
-                        <select [(ngModel)]="matricula.procedencia" (ngModelChange)="
-                            matricula.ie_procedencia = $event === 'Otra IE' ? matricula.ie_procedencia : ''
-                        ">
-
-                            <option value="">Seleccione</option>
-                            <option value="Misma IE">Misma IE</option>
-                            <option value="Otra IE">Otra IE</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label>IE Procedencia</label>
-                        <input type="text" placeholder="Ingrese la IE de procedencia"
-                            [disabled]="matricula.procedencia !== 'Otra IE'" [(ngModel)]="matricula.ie_procedencia">
-                    </div>
-
-                    <div>
-                        <label>Inscripción</label>
-                        <input type="text" inputmode="decimal" placeholder="150.00" [(ngModel)]="matricula.inscripcion"
-                            (blur)="formatearDecimal('inscripcion')">
-                    </div>
-
-                    <div>
-                        <label>Matrícula</label>
-                        <input type="text" inputmode="decimal" placeholder="350.00" [(ngModel)]="matricula.matricula"
-                            (blur)="formatearDecimal('matricula')">
-                    </div>
-
-                    <div>
-                        <label>Mensualidad</label>
-                        <input type="text" inputmode="decimal" placeholder="350.00" [(ngModel)]="matricula.mensualidad"
-                            (blur)="formatearDecimal('mensualidad')">
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="seccionActiva === 'apoderado'">
-                <div class="form-third-grid" *ngIf="matricula.padre_responsable">
-                    <div class="dni-container">
-                        <div class="dni-input">
-                            <label>DNI</label>
-                            <input type="text" placeholder="DNI del apoderado" maxlength="8" [(ngModel)]="dni_padre">
-                        </div>
-
-                        <button *ngIf="!modoEditar" class="btn-buscar-dni" (click)="buscarPorDniPadre()">
-                            <i class="fa-solid"
-                                [ngClass]="buscandoDni ? 'fa-spinner fa-spin' : 'fa-magnifying-glass'"></i>
-                            {{ buscandoDni ? 'Buscando...' : 'Buscar' }}
-                        </button>
-                    </div>
-                    <div>
-                        <label>Nombres</label>
-                        <input type="text" placeholder="Ingrese los nombres"
-                            [(ngModel)]="matricula.padre_responsable.nombres">
-                    </div>
-                    <div>
-                        <label>Apellido Paterno</label>
-                        <input type="text" placeholder="Ingrese el apellido paterno"
-                            [(ngModel)]="matricula.padre_responsable.apellido_paterno">
-                    </div>
-
-                    <div>
-                        <label>Apellido Materno</label>
-                        <input type="text" placeholder="Ingrese el apellido materno"
-                            [(ngModel)]="matricula.padre_responsable.apellido_materno">
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="modal-footer">
-            <button class="btn-cancelar" (click)="cerrarModal()">
-                <i class="fa-solid fa-xmark"></i> Cancelar
-            </button>
-
-            <button class="btn-guardar" (click)="guardar()">
-                <i class="fa-solid" [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'">
-                </i>
-                {{ modoEditar ? 'Actualizar' : 'Guardar' }}
-            </button>
-        </div>
-
+  <div class="modal-content" #modalPrincipal>
+    <!-- Header -->
+    <div class="modal-header">
+      <h2>
+        <i class="fa-solid" [ngClass]="modoEditar ? 'fa-book' : 'fa-book'"> </i>
+        {{ modoEditar ? "Editar Matrícula" : "Nueva Matrícula" }}
+      </h2>
+      <span class="close" (click)="cerrarModal()">&times;</span>
     </div>
+
+    <!-- SubHeader -->
+    <div class="modal-subheader">
+      <button
+        [class.active]="seccionActiva === 'estudiante'"
+        (click)="seccionActiva = 'estudiante'"
+      >
+        <i class="fa-solid fa-user-graduate"></i>
+        <span>ESTUDIANTE</span>
+      </button>
+
+      <button
+        [class.active]="seccionActiva === 'detalles'"
+        (click)="seccionActiva = 'detalles'"
+      >
+        <i class="fa-solid fa-file-lines"></i>
+        <span>DETALLES</span>
+      </button>
+
+      
+    </div>
+    <!-- Body -->
+    <div class="modal-body">
+      <div *ngIf="seccionActiva === 'estudiante'">
+        <div class="form-grid" *ngIf="matricula.estudiante">
+          <div class="dni-container">
+            <div class="dni-input">
+              <label>DNI *</label>
+              <input
+                type="text"
+                placeholder="DNI del estudiante"
+                maxlength="8"
+                [(ngModel)]="dni_estudiante"
+              />
+            </div>
+
+            <button
+              *ngIf="!modoEditar"
+              class="btn-buscar-dni"
+              (click)="buscarPorDni()"
+            >
+              <i
+                class="fa-solid"
+                [ngClass]="
+                  buscandoDni ? 'fa-spinner fa-spin' : 'fa-magnifying-glass'
+                "
+              ></i>
+              {{ buscandoDni ? "Buscando..." : "Buscar" }}
+            </button>
+          </div>
+
+          <div>
+            <label>Nombres *</label>
+            <input
+              type="text"
+              placeholder="Ingrese los nombres"
+              [(ngModel)]="matricula.estudiante.nombres"
+              readonly
+            />
+          </div>
+          <div>
+            <label>Apellido Paterno *</label>
+            <input
+              type="text"
+              placeholder="Ingrese el apellido paterno"
+              [(ngModel)]="matricula.estudiante.apellido_paterno"
+              readonly
+            />
+          </div>
+
+          <div>
+            <label>Apellido Materno *</label>
+            <input
+              type="text"
+              placeholder="Ingrese el apellido materno"
+              [(ngModel)]="matricula.estudiante.apellido_materno"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+      <div *ngIf="seccionActiva === 'detalles'">
+        <div class="form-second-grid" *ngIf="matricula.aula">
+          <div>
+            <label>Nivel *</label>
+            <select
+              [(ngModel)]="matricula.aula.nivel"
+              (change)="onNivelChange($event)"
+            >
+              <option value="">Seleccione</option>
+              <option *ngFor="let n of niveles" [value]="n">{{ n }}</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Grado *</label>
+            <select
+              [(ngModel)]="matricula.aula.grado"
+              (change)="onGradoChange()"
+            >
+              <option value="">Seleccione</option>
+              <option *ngFor="let g of grados" [value]="g">{{ g }}</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Sección *</label>
+            <select
+              [(ngModel)]="matricula.aula.seccion"
+              (change)="onSeccionChange()"
+            >
+              <option value="">Seleccione</option>
+              <option *ngFor="let s of secciones" [value]="s">{{ s }}</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Situacion *</label>
+            <select [(ngModel)]="matricula.situacion">
+              <option value="">Seleccione</option>
+              <option value="Ingresante">Ingresante</option>
+              <option value="Promovido">Promovido</option>
+              <option value="Repitente">Repitente</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Procedencia *</label>
+            <select
+              [(ngModel)]="matricula.procedencia"
+              (ngModelChange)="
+                matricula.ie_procedencia =
+                  $event === 'Otra IE' ? matricula.ie_procedencia : ''
+              "
+            >
+              <option value="">Seleccione</option>
+              <option value="Misma IE">Misma IE</option>
+              <option value="Otra IE">Otra IE</option>
+            </select>
+          </div>
+
+          <div>
+            <label>IE Procedencia *</label>
+            <input
+              type="text"
+              placeholder="Ingrese la IE de procedencia"
+              [disabled]="matricula.procedencia !== 'Otra IE'"
+              [(ngModel)]="matricula.ie_procedencia"
+            />
+          </div>
+
+          <div>
+            <label>Inscripción *</label>
+            <input
+              type="text"
+              inputmode="decimal"
+              placeholder="150.00"
+              [(ngModel)]="matricula.inscripcion"
+              (blur)="formatearDecimal('inscripcion')"
+            />
+          </div>
+
+          <div>
+            <label>Matrícula *</label>
+            <input
+              type="text"
+              inputmode="decimal"
+              placeholder="350.00"
+              [(ngModel)]="matricula.matricula"
+              (blur)="formatearDecimal('matricula')"
+            />
+          </div>
+
+          <div>
+            <label>Mensualidad *</label>
+            <input
+              type="text"
+              inputmode="decimal"
+              placeholder="350.00"
+              [(ngModel)]="matricula.mensualidad"
+              (blur)="formatearDecimal('mensualidad')"
+            />
+          </div>
+        </div>
+      </div>
+      
+    </div> 
+
+    <!-- Footer -->
+    <div class="modal-footer">
+      <button class="btn-cancelar" (click)="cerrarModal()">
+        <i class="fa-solid fa-xmark"></i> Cancelar
+      </button>
+
+      <button class="btn-guardar" (click)="guardar()">
+        <i
+          class="fa-solid"
+          [ngClass]="modoEditar ? 'fa-arrows-rotate' : 'fa-floppy-disk'"
+        >
+        </i>
+        {{ modoEditar ? "Actualizar" : "Guardar" }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="mostrarConfirmacion" class="overlay">
+  <div class="modal-confirm">
+    <div class="icono">
+      <i class="fa-solid fa-book"></i>
+    </div>
+
+    <h2>¿Eliminar Matricula?</h2>
+    <p>Esta acción no se puede deshacer</p>
+
+    <div class="acciones">
+      <button class="btn cancelar" (click)="cancelarEliminacion()">
+        Cancelar
+      </button>
+
+      <button class="btn eliminar" (click)="confirmarEliminacion()">
+        Eliminar
+      </button>
+    </div>
+  </div>
 </div>

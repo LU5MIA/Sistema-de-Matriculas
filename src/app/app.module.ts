@@ -7,7 +7,8 @@ import { FormsModule } from "@angular/forms";
 import { HttpClient, HttpClientModule } from "@angular/common/http";
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-
+import { MatIconModule } from '@angular/material/icon';
+import { AlertaComponent } from "./shared/alerta/alerta.component";
 
 
 @NgModule({
@@ -15,14 +16,16 @@ import { MatButtonModule } from '@angular/material/button';
         AppComponent,
     ],
     imports: [
-        BrowserModule,
-        AppRoutingModule,
-        BrowserAnimationsModule,
-        FormsModule,
-        HttpClientModule,
-        MatDialogModule,
-        MatButtonModule
-    ],
+    MatIconModule,
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FormsModule,
+    HttpClientModule,
+    MatDialogModule,
+    MatButtonModule,
+    AlertaComponent
+],
     providers: [],
     bootstrap: [AppComponent]
 })

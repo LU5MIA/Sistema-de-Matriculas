@@ -1,27 +1,55 @@
+/* ANIMACIÓN GENERAL DEL MODAL */
 .dialog-container {
-  text-align: center;
-  padding: 0.5rem 1rem;
+  animation: fadeScaleIn 0.18s ease-out;
 }
 
+/* ICONO CON APARICIÓN SUAVE */
 .dialog-icon {
   font-size: 3rem;
   color: #d32f2f;
-  margin-top: 1rem; 
+  margin-top: 1rem;
+  animation: fadeIn 0.25s ease-out;
 }
 
-.dialog-title {
-  margin: 0;
-  font-weight: 500;
-  font-size: 1rem;
-}
- 
-.dialog-content {
-  font-size: 0.95rem;
-  color: #555;
-  margin-bottom: 1rem;
+/* BOTÓN ELIMINAR CON MICRO-INTERACCIÓN */
+.dialog-actions button[color="warn"] {
+  background-color: #d32f2f;
+  color: #fff;
+  box-shadow: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.2s;
 }
 
-.dialog-actions {
-  justify-content: center;
-  padding-top: 0.5rem;
+.dialog-actions button[color="warn"]:hover {
+  background-color: #b71c1c;
+  transform: translateY(-1px);
+}
+
+.dialog-actions button[color="warn"]:active {
+  transform: scale(0.97);
+}
+
+/* KEYFRAMES */
+
+/* Entrada del modal */
+@keyframes fadeScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Aparición del icono */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

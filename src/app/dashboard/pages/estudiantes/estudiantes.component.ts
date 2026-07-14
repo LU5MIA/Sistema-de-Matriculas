@@ -1,24 +1,32 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Estudiantes, EstudiantesCreate } from '../../../shared/interfaces/estudiantes.interface';
+import {
+  Estudiantes,
+  EstudiantesCreate,
+} from '../../../shared/interfaces/estudiantes.interface';
 import { EstudiantesService } from '../../../core/services/estudiantes.service';
+import { AlertaService } from '../../../core/services/alerta.service';
 
 @Component({
   selector: 'app-estudiantes',
   standalone: false,
   templateUrl: './estudiantes.component.html',
-  styleUrl: './estudiantes.component.css'
+  styleUrl: './estudiantes.component.css',
 })
 export class EstudiantesComponent {
+  constructor(
+    private dialog: MatDialog,
+    private estudiantesService: EstudiantesService,
+    private alertaService: AlertaService,
+  ) {}
 
-  constructor(private dialog: MatDialog, private estudiantesService: EstudiantesService) { }
-
+  cargando: boolean = false;
   modalAbierto: boolean = false;
   modoEditar: boolean = false;
   estudiantes: Estudiantes[] = [];
   estudianteOriginal?: Estudiantes;
   dniBusqueda: string = '';
-  cantidadMostrar: number = 10; //cantidad de registros a mostrar
+  cantidadMostrar: number = 10; 
   estudiantesOriginales: Estudiantes[] = [];
   buscandoDni: boolean = false;
   estudiante: Estudiantes = {
@@ -29,26 +37,18 @@ export class EstudiantesComponent {
     apellido_materno: '',
     fecha_nacimiento: '',
     genero: '',
-    estado: 'Activo'
-  }
-
-  // // Variables del formulario
-  // nombres: string = '';
-  // apellido_paterno: string = '';
-  // apellido_materno: string = '';
-  // dni: string = '';
-  // fecha_nacimiento: string = '';
-  // genero: string = '';
+    estado: 'Activo',
+  };
 
   ngOnInit(): void {
     this.cargarEstudiantes();
   }
 
   cargarEstudiantes(): void {
-    this.estudiantesService.getEstudiantes().subscribe(data => {
+    this.estudiantesService.getEstudiantes().subscribe((data) => {
       this.estudiantesOriginales = data;
       this.aplicarFiltros();
-    })
+    });
   }
 
   cambiarCantidad(event: Event): void {
@@ -72,9 +72,7 @@ export class EstudiantesComponent {
 
     // filtro por DNI
     if (this.dniBusqueda.trim() !== '') {
-      lista = lista.filter(e =>
-        e.dni.includes(this.dniBusqueda.trim())
-      );
+      lista = lista.filter((e) => e.dni.includes(this.dniBusqueda.trim()));
     }
 
     // filtro por cantidad
@@ -95,7 +93,10 @@ export class EstudiantesComponent {
 
     // Validar que el DNI tenga 8 dígitos
     if (!dniString || dniString.length !== 8 || !/^\d{8}$/.test(dniString)) {
-      alert('Por favor ingrese un DNI válido de 8 dígitos');
+      this.alertaService.mostrar(
+        'DNI inválido. Debe tener 8 dígitos numéricos.',
+        'info',
+      );
       return;
     }
 
@@ -109,25 +110,41 @@ export class EstudiantesComponent {
 
         // Autocompletar campos con los datos de RENIEC
         this.estudiante.nombres = this.formatearNombre(response.nombres);
-        this.estudiante.apellido_paterno = this.formatearNombre(response.apellidoPaterno);
-        this.estudiante.apellido_materno = this.formatearNombre(response.apellidoMaterno);
+        this.estudiante.apellido_paterno = this.formatearNombre(
+          response.apellidoPaterno,
+        );
+        this.estudiante.apellido_materno = this.formatearNombre(
+          response.apellidoMaterno,
+        );
 
-        alert('✅ Datos encontrados en RENIEC. Complete los campos restantes.');
+        this.alertaService.mostrar(
+          'Datos encontrados en RENIEC. Complete los campos restantes.',
+          'success',
+        );
       },
       error: (err) => {
         this.buscandoDni = false;
         console.error('Error al buscar DNI:', err);
 
         if (err.status === 404) {
-          alert('❌ DNI no encontrado en RENIEC');
+          this.alertaService.mostrar('DNI no encontrado en RENIEC', 'error');
         } else if (err.status === 401) {
-          alert('❌ Error de autenticación con el servicio de RENIEC. Verifique el token.');
+          this.alertaService.mostrar(
+            'Error de autenticación con el servicio de RENIEC. Verifique el token.',
+            'error',
+          );
         } else if (err.status === 400) {
-          alert('❌ DNI inválido. Debe tener 8 dígitos numéricos.');
+          this.alertaService.mostrar(
+            'DNI inválido. Debe tener 8 dígitos numéricos.',
+            'error',
+          );
         } else {
-          alert('❌ Error al consultar DNI: ' + (err.error?.message || err.message));
+          this.alertaService.mostrar(
+            'Error al consultar DNI: ' + (err.error?.message || err.message),
+            'error',
+          );
         }
-      }
+      },
     });
   }
 
@@ -135,7 +152,7 @@ export class EstudiantesComponent {
     return texto
       .toLowerCase()
       .split(' ')
-      .map(palabra => palabra.charAt(0).toUpperCase() + palabra.slice(1))
+      .map((palabra) => palabra.charAt(0).toUpperCase() + palabra.slice(1))
       .join(' ');
   }
 
@@ -145,26 +162,37 @@ export class EstudiantesComponent {
     const apPaterno = this.estudiante.apellido_paterno.trim().toLowerCase();
     const apMaterno = this.estudiante.apellido_materno.trim().toLowerCase();
 
-    if (!dni || !nombres || !apPaterno || !apMaterno || !this.estudiante.fecha_nacimiento || !this.estudiante.genero) {
-      alert('Completa todos los campos');
+    if (
+      !dni ||
+      !nombres ||
+      !apPaterno ||
+      !apMaterno ||
+      !this.estudiante.fecha_nacimiento ||
+      !this.estudiante.genero
+    ) {
+      this.alertaService.mostrar('Completa todos los campos', 'info');
       return;
     }
 
-    const dniExiste = this.estudiantes.some(e => e.dni === dni);
+    const dniExiste = this.estudiantes.some((e) => e.dni === dni);
 
     if (dniExiste) {
-      alert('Ya existe un estudiante con ese DNI');
+      this.alertaService.mostrar('Ya existe un estudiante con ese DNI', 'info');
       return;
     }
 
-    const nombreCompletoExiste = this.estudiantes.some(e =>
-      e.nombres.trim().toLowerCase() === nombres &&
-      e.apellido_paterno.trim().toLowerCase() === apPaterno &&
-      e.apellido_materno.trim().toLowerCase() === apMaterno
+    const nombreCompletoExiste = this.estudiantes.some(
+      (e) =>
+        e.nombres.trim().toLowerCase() === nombres &&
+        e.apellido_paterno.trim().toLowerCase() === apPaterno &&
+        e.apellido_materno.trim().toLowerCase() === apMaterno,
     );
 
     if (nombreCompletoExiste) {
-      alert('Ya existe un estudiante con el mismo nombre y apellidos');
+      this.alertaService.mostrar(
+        'Ya existe un estudiante con el mismo nombre y apellidos',
+        'info',
+      );
       return;
     }
 
@@ -179,19 +207,20 @@ export class EstudiantesComponent {
 
     this.estudiantesService.addEstudiante(payload).subscribe({
       next: () => {
+        this.mostrarMensaje('Estudiante registrado exitosamente', 'success');
         this.cargarEstudiantes();
         this.cerrarModal();
-        alert('Se agregó el estudiante');
       },
       error: (err) => {
-        alert(err.error?.message || 'Error al registrar estudiante');
-      }
+        this.alertaService.mostrar(
+          err.error?.message || 'Error al registrar estudiante',
+          'error',
+        );
+      },
     });
-
   }
 
   updateEstudiante(): void {
-
     if (!this.estudianteOriginal) return;
 
     const cambios: Partial<Estudiantes> = {};
@@ -199,32 +228,48 @@ export class EstudiantesComponent {
     if (this.estudiante.nombres !== this.estudianteOriginal.nombres)
       cambios.nombres = this.estudiante.nombres;
 
-    if (this.estudiante.apellido_paterno !== this.estudianteOriginal.apellido_paterno)
+    if (
+      this.estudiante.apellido_paterno !==
+      this.estudianteOriginal.apellido_paterno
+    )
       cambios.apellido_paterno = this.estudiante.apellido_paterno;
 
-    if (this.estudiante.apellido_materno !== this.estudianteOriginal.apellido_materno)
+    if (
+      this.estudiante.apellido_materno !==
+      this.estudianteOriginal.apellido_materno
+    )
       cambios.apellido_materno = this.estudiante.apellido_materno;
 
-    if (this.estudiante.fecha_nacimiento !== this.estudianteOriginal.fecha_nacimiento)
+    if (
+      this.estudiante.fecha_nacimiento !==
+      this.estudianteOriginal.fecha_nacimiento
+    )
       cambios.fecha_nacimiento = this.estudiante.fecha_nacimiento;
 
     if (this.estudiante.genero !== this.estudianteOriginal.genero)
       cambios.genero = this.estudiante.genero;
 
     if (Object.keys(cambios).length === 0) {
-      alert('No se realizaron cambios');
+      this.alertaService.mostrar('No se realizaron cambios', 'info');
       return;
     }
 
-    const nombreCompletoExiste = this.estudiantes.some(e =>
-      e.estudiante_id !== this.estudiante.estudiante_id &&
-      e.nombres.trim().toLowerCase() === this.estudiante.nombres.trim().toLowerCase() &&
-      e.apellido_paterno.trim().toLowerCase() === this.estudiante.apellido_paterno.trim().toLowerCase() &&
-      e.apellido_materno.trim().toLowerCase() === this.estudiante.apellido_materno.trim().toLowerCase()
+    const nombreCompletoExiste = this.estudiantes.some(
+      (e) =>
+        e.estudiante_id !== this.estudiante.estudiante_id &&
+        e.nombres.trim().toLowerCase() ===
+          this.estudiante.nombres.trim().toLowerCase() &&
+        e.apellido_paterno.trim().toLowerCase() ===
+          this.estudiante.apellido_paterno.trim().toLowerCase() &&
+        e.apellido_materno.trim().toLowerCase() ===
+          this.estudiante.apellido_materno.trim().toLowerCase(),
     );
 
     if (nombreCompletoExiste) {
-      alert('Ya existe un estudiante con el mismo nombre y apellidos');
+      this.alertaService.mostrar(
+        'Ya existe un estudiante con el mismo nombre y apellidos',
+        'info',
+      );
       return;
     }
 
@@ -234,11 +279,14 @@ export class EstudiantesComponent {
         next: () => {
           this.cargarEstudiantes();
           this.cerrarModal();
-          alert('Se actualizó el estudiante');
+          this.alertaService.mostrar('Se actualizó el estudiante', 'success');
         },
         error: (err) => {
-          alert(err.error?.message || 'Error al actualizar estudiante');
-        }
+          this.alertaService.mostrar(
+            err.error?.message || 'Error al actualizar estudiante',
+            'error',
+          );
+        },
       });
   }
 
@@ -250,28 +298,81 @@ export class EstudiantesComponent {
     }
   }
 
+  // Variables para mostrar mensajes de éxito/error
+
+  mensaje: string = '';
+  tipoMensaje: 'success' | 'error' = 'success';
+
+  mostrarMensaje(texto: string, tipo: 'success' | 'error') {
+    this.mensaje = texto;
+    this.tipoMensaje = tipo;
+
+    setTimeout(() => {
+      this.mensaje = '';
+    }, 3000);
+  }
+
+  ocultando = false;
+
+  cerrarAlerta() {
+    this.ocultando = true;
+
+    setTimeout(() => {
+      this.mensaje = '';
+      this.ocultando = false;
+    }, 300); // mismo tiempo que la animación
+  }
+
+  mostrarConfirmacionEstado = false;
+
+  estudianteSeleccionado!: Estudiantes;
+
+  nuevoEstado!: string;
+
   cambiarEstado(estudiante: Estudiantes) {
-    const nuevoEstado = estudiante.estado === 'Activo' ? 'Inactivo' : 'Activo';
-    const accion = nuevoEstado === 'Activo' ? 'activar' : 'desactivar';
+    this.estudianteSeleccionado = estudiante;
 
-    if (confirm(`¿Seguro que deseas ${accion} a este estudiante?`)) {
+    this.nuevoEstado = estudiante.estado === 'Activo' ? 'Inactivo' : 'Activo';
 
-      this.estudiantesService
-        .cambiarEstado(estudiante.estudiante_id, nuevoEstado)
-        .subscribe(() => {
-          estudiante.estado = nuevoEstado;
-          console.log('Estado actualizado');
-        });
+    this.mostrarConfirmacionEstado = true;
+  }
 
-    }
+  confirmarCambioEstado() {
+    this.estudiantesService
+      .cambiarEstado(
+        this.estudianteSeleccionado.estudiante_id,
+        this.nuevoEstado,
+      )
+      .subscribe({
+        next: () => {
+          this.estudianteSeleccionado.estado = this.nuevoEstado;
+
+          this.mostrarConfirmacionEstado = false;
+
+          this.alertaService.mostrar(
+            `Estudiante ${
+              this.nuevoEstado === 'Activo' ? 'activado' : 'desactivado'
+            } correctamente`,
+            'success',
+          );
+        },
+
+        error: () => {
+          this.alertaService.mostrar('Error al cambiar estado', 'error');
+        },
+      });
+  }
+
+  cancelarCambioEstado() {
+    this.mostrarConfirmacionEstado = false;
   }
 
   abrirEditar = (estudiante: Estudiantes) => {
-    this.estudiante = { ...estudiante }
-    this.estudianteOriginal = { ...estudiante }
+    this.estudiante = { ...estudiante };
+    this.estudianteOriginal = { ...estudiante };
     this.modoEditar = true;
     this.modalAbierto = true;
-  }
+  };
 
   abrirAgregar(): void {
     this.estudiante = {
@@ -282,8 +383,8 @@ export class EstudiantesComponent {
       apellido_materno: '',
       fecha_nacimiento: '',
       genero: '',
-      estado: 'Activo'
-    }
+      estado: 'Activo',
+    };
     this.modoEditar = false;
     this.modalAbierto = true;
   }
@@ -297,5 +398,4 @@ export class EstudiantesComponent {
       }, 250); // tiempo que la animación dura
     }
   }
-
 }

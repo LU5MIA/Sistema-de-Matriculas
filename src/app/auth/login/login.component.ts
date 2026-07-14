@@ -6,7 +6,7 @@ import { AuthService } from '../auth.service';
   selector: 'app-login',
   standalone: false,
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   usuario: string = '';
@@ -17,8 +17,8 @@ export class LoginComponent {
 
   constructor(
     private router: Router,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+  ) {}
 
   togglePassword() {
     this.mostrarPassword = !this.mostrarPassword;
@@ -34,19 +34,23 @@ export class LoginComponent {
 
     this.isLoading = true;
 
-    this.authService.login({
-      username: this.usuario,
-      password: this.password
-    }).subscribe({
-      next: (response) => {
-        this.isLoading = false;
-        this.router.navigate(['/dashboard/panel-control']);
-      },
-      error: (error) => {
-        this.isLoading = false;
-        this.errorMessage = error.message || 'Nombre de usuario o contrasela incorrectos';
-      }
-    });
+    this.authService
+      .login({
+        username: this.usuario,
+        password: this.password,
+      })
+      .subscribe({
+        next: (response) => {
+          this.isLoading = false;
+          this.router.navigate(['/dashboard/panel-control']);
+          localStorage.setItem('nombreUsuario', response.user.username);
+          localStorage.setItem('rolUsuario', response.user.rol.nombre);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorMessage =
+            error.message || 'Nombre de usuario o contrasela incorrectos';
+        },
+      });
   }
-
 }
